@@ -1,38 +1,136 @@
 .App {
-  text-align: center;
+	text-align: center;
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+	height: 40vmin;
+	pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+	.App-logo {
+		animation: App-logo-spin infinite 20s linear;
+	}
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+	background-color: #282c34;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(10px + 2vmin);
+	color: white;
 }
 
 .App-link {
-  color: #61dafb;
+	color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.display {
+	position: relative;
+	width: 1440px;
+	height: 900px;
+	background: #313131;
+}
+
+.board {
+	position: absolute;
+	width: 486px;
+	height: 80vh;
+	left: 419px;
+	top: 94px;
+
+	background: #c4c4c4;
+	position: relative;
+}
+
+.rightPanel {
+	position: absolute;
+	width: 173px;
+	height: 80vh;
+	left: 924px;
+	top: 94px;
+
+	background: #c4c4c4;
+}
+.nextBloc {
+	position: absolute;
+	width: 173px;
+	height: 109px;
+	left: 0px;
+	top: 18px;
+
+	background: #989898;
+}
+
+.nextPiece {
+	position: absolute;
+	width: 74px;
+	height: 67px;
+	left: 49px;
+	top: 25px;
+
+	background: #c4c4c4;
+}
+
+.nextText {
+	position: absolute;
+	width: 36px;
+	height: 14px;
+	left: 69px;
+	top: 7px;
+	margin: 0;
+
+	font-style: normal;
+	font-weight: normal;
+	font-size: 12px;
+	line-height: 14px;
+	/* identical to box height */
+
+	text-align: center;
+
+	color: #000000;
+}
+
+.score {
+	position: absolute;
+	width: 45px;
+	height: 28px;
+	left: 65px;
+	top: 138px;
+	margin: 0;
+
+	font-style: normal;
+	font-weight: normal;
+	font-size: 12px;
+	line-height: 14px;
+	text-align: center;
+
+	color: #000000;
+}
+
+.line {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 5%;
+  border: 1px solid black;
+}
+
+.lineBloc {
+	position: absolute;
+	height: 100%;
+	width: 6.288%;
+  background-color: red;
 }
