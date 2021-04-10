@@ -45,14 +45,13 @@
 }
 
 .board {
-	position: absolute;
-	width: 486px;
-	height: 80vh;
+	width: 406px;
+	height: 69.5vh;
 	left: 419px;
 	top: 94px;
-
 	background: #c4c4c4;
 	position: relative;
+	padding: 40px;
 }
 
 .rightPanel {
@@ -121,16 +120,14 @@
 }
 
 .line {
-	position: absolute;
 	bottom: 0;
-	width: 100%;
-	height: 5%;
-  border: 1px solid black;
+	margin: auto;
+	width: 80%;
+	height: 4.8%;
+	background-color: lightgrey;
 }
 
 .lineBloc {
-	position: absolute;
 	height: 100%;
-	width: 6.288%;
-  background-color: red;
+	/* width: 6.288%; */
 }

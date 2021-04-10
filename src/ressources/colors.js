@@ -1,4 +1,5 @@
 const colors = [
+    'lightgrey',
     'grey',
     'red',
     'green',
