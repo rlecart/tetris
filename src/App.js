@@ -3,7 +3,7 @@ import './App.css';
 import React, { Component, Fragment } from 'react'
 
 import colors from './ressources/colors.js'
-import { anotherOnePlease } from './api.js'
+import { move } from './api.js'
 import openSocket from 'socket.io-client'
 
 class App extends Component {
@@ -49,7 +49,7 @@ class App extends Component {
   createLines() {
     let ret = []
     for (let line of this.state.lines) {
-      ret.unshift(
+      ret.push(
         <table className='line' cellSpacing="0" cellPadding="0">
           {this.createLine(line)}
         </table>
@@ -62,39 +62,44 @@ class App extends Component {
     console.log(text)
   }
 
-  bjr(event) {
-    console.log('AH')
-    if (event.key === "z") {
-      const state = this.state
-
-      for (let line in state.lines) {
-        for (let char in state.lines[line]) {
-          state.lines[line][char]++;
-          state.lines[line][char] = (state.lines[line][char] % 9)
-        }
+  acidMode(event, state) {
+    for (let line in state.lines) {
+      for (let char in state.lines[line]) {
+        state.lines[line][char]++;
+        state.lines[line][char] = (state.lines[line][char] % 9)
       }
-      anotherOnePlease(this.socket)
-      this.setState(state)
     }
+    this.setState(state)
+  }
+
+  bjr(event) {
+    const state = this.state
+    console.log('AH')
+    if (event.key === "z")
+      this.acidMode(event, state)
+    else if (event.key === '.')
+      move('right', this.socket)
+    else if (event.key === ',')
+      move('left', this.socket)
+    else if (event.key === ' ')
+      move('down', this.socket)
   }
 
   refreshGame(game, context) {
-    console.log(context.state)
-    console.log(game)
-    // const state = context.state
-    // state.lines = game.lines
-    // state.tetri = game.tetri
-    // console.log('refreshed')
-    // context.setState(state)
+    const state = context.state
+    state.lines = game.lines
+    state.tetri = game.tetri
+    console.log('refreshed')
+    context.setState(state)
   }
 
 
   componentDidMount() {
     // fonction pour set toutes les reponses serv
-    this.socket.on('reponse', (text) => {
-      console.log(text)
-    });
-    this.socket.on('refreshVue', (game) => { this.refreshGame(game, this)})
+    // this.socket.on('reponse', (text) => {
+    //   console.log(text)
+    // });
+    this.socket.on('refreshVue', (game) => { this.refreshGame(game, this) })
     this.socket.emit('start')
     window.addEventListener("keypress", this.bjr.bind(this))
   }
