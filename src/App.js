@@ -83,13 +83,19 @@ class App extends Component {
       move('left', this.socket)
     else if (event.key === ' ')
       move('down', this.socket)
+    else if (event.key === '/')
+      move('turn', this.socket)
   }
 
   refreshGame(game, context) {
+    console.log(game)
     const state = context.state
     state.lines = game.lines
     state.tetri = game.tetri
+    state.interval = game.interval
+    // state.client = game.client
     console.log('refreshed')
+    // console.log(game.tetri.id)
     context.setState(state)
   }
 
@@ -107,6 +113,19 @@ class App extends Component {
   render() {
     return (
       <div className='display'>
+        <div className="commands">
+
+          <p>Controles :
+          <br />
+            {'< = left'}
+            <br />
+            {'> = right'}
+            <br />
+            {'space = down'}
+            <br />
+            {'/ = turn'}
+          </p>
+        </div>
         <div className="board">
           {this.createLines()}
         </div>

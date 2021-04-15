@@ -131,3 +131,17 @@
 	height: 100%;
 	/* width: 6.288%; */
 }
+
+.commands {
+	height: 90px;
+	width: 115px;
+	position: absolute;
+	background: lightgrey;
+	left: 30vh;
+	top: 10vh;
+}
+
+.commands > p {
+	font-size: x-small;
+    text-align: center;
+}

@@ -11,27 +11,47 @@ const io = socketio(server, {
 const game = require('../src/ressources/game.js')
 const refresh = require('./refresh.js')
 
-const move = (dir, client) => {
+let sioClient = undefined
+let interval = undefined
+
+const move = (dir) => {
+  let reponse = -1
+
   if (dir === 'right')
-    refresh.moveTetri(game.game, 1, 0)
+    reponse = refresh.moveTetri(game.game, 1, 0)
   else if (dir === 'left')
-    refresh.moveTetri(game.game, -1, 0)
+    reponse = refresh.moveTetri(game.game, -1, 0)
   else if (dir === 'down')
-    refresh.moveTetri(game.game, 0, 1)
-  client.emit('refreshVue', game.game)
+    reponse = refresh.moveTetri(game.game, 0, 1)
+  else if (dir === 'turn')
+    reponse = refresh.moveTetri(game.game, 0, 0)
+  if (reponse !== 0)
+    sioClient.emit('refreshVue', game.game)
+}
+
+const gameLoop = () => {
+  let sock = game.game
+  sock = refresh.refresh(sock)
+  game.game = sock
+  sioClient.emit('refreshVue', sock)
+}
+
+const launchInterval = () => {
+  interval = setInterval(gameLoop, 1000)
+  console.log('interval init')
+}
+
+const resetInterval = (sock) => {
+  game.game = sock
+  clearInterval(interval)
+  launchInterval()
 }
 
 // liste de tous les sockets serveurs
 io.on('connection', (client) => {
-  client.on('move', (dir) => { move(dir, client) })
-  client.on('start', () => {
-    console.log('game started')
-    interval = setInterval(() => {
-      let sock = game.game
-      refresh.refresh(sock)
-      client.emit('refreshVue', sock)
-    }, 500);
-  })
+  sioClient = client
+  client.on('move', (dir) => { move(dir, sioClient) })
+  client.on('start', launchInterval)
   console.log('connected')
 })
 
@@ -39,3 +59,6 @@ io.on('connection', (client) => {
 const port = 8000;
 io.listen(port);
 console.log('listening on port ', port);
+
+exports.resetInterval = resetInterval
+exports.gameLoop = gameLoop
