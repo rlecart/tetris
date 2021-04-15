@@ -47,11 +47,16 @@ const resetInterval = (sock) => {
   launchInterval()
 }
 
+const pushToClient = (req) => {
+  sioClient.emit(req)
+}
+
 // liste de tous les sockets serveurs
 io.on('connection', (client) => {
   sioClient = client
   client.on('move', (dir) => { move(dir, sioClient) })
   client.on('start', launchInterval)
+  client.on('endGame', () => { pushToClient('endGame') })
   console.log('connected')
 })
 
@@ -62,3 +67,4 @@ console.log('listening on port ', port);
 
 exports.resetInterval = resetInterval
 exports.gameLoop = gameLoop
+exports.pushToClient = pushToClient

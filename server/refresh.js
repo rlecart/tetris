@@ -208,6 +208,11 @@ const checkFilledLine = (game) => {
   }
 }
 
+const endGame = (game) => {
+  server.resetInterval()
+  server.pushToClient('endgame')
+}
+
 function refresh(game) {
   let hasMoved = 0
 
@@ -217,7 +222,7 @@ function refresh(game) {
     // console.log('move')
     hasMoved = moveTetri(game, 0, 1)
     if (hasMoved == -1)
-      process.exit(1)
+      endGame(game)
     else if (hasMoved == 1) {
       checkFilledLine(game)
       createNewTetri(game)

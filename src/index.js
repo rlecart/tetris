@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
-import App from './App';
 import NotFound from './components/NotFound'
+import App from './App';
+import Room from './vues/Room';
+import Game from './vues/Game';
 
 import {
   BrowserRouter as Router,
@@ -16,6 +18,8 @@ const Root = () => (
   <Router>
     <Switch>
       <Route exact path='/' component={App} />
+      <Route exact path='/room' component={Room} />
+      <Route exact path='/game' component={Game} />
       <Route component={NotFound} />
     </Switch>
   </Router>
