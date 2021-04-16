@@ -51,15 +51,38 @@ const pushToClient = (req) => {
   sioClient.emit(req)
 }
 
+// let clients = {}
+
+// const addNewClient = (add) => {
+// }
+
+const defaultRules = require('../src/ressources/rules')
+let rooms = []
+
+const createNewRoom = (profil) => {
+  if (profil.id === -1)
+    profil.id = rooms.length
+  let room = {
+    id: `${profil.id}-${new Date()}`,
+    listPlayers: { ... [profil] },
+    rules: defaultRules.defaultRules,
+    url: 'hashed'
+  }
+  rooms.push(room)
+  console.log(rooms)
+  console.log('\n')
+  console.log(profil)
+}
+
 // liste de tous les sockets serveurs
 io.on('connection', (client) => {
   sioClient = client
   client.on('move', (dir) => { move(dir, sioClient) })
-  client.on('start', launchInterval)
+  client.on('createRoom', (profil) => { createNewRoom(profil) })
+  client.on('startGame', launchInterval)
   client.on('endGame', () => { pushToClient('endGame') })
   console.log('connected')
 })
-
 
 const port = 8000;
 io.listen(port);

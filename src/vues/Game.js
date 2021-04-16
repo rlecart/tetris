@@ -100,7 +100,6 @@ class Game extends Component {
     context.setState(state)
   }
 
-
   componentDidMount() {
     // fonction pour set toutes les reponses serv
     // this.socket.on('reponse', (text) => {

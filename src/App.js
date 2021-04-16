@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { Component, Fragment } from 'react'
+import { Provider } from 'react-redux'
+import Store from './Store/configureStore'
 
 import colors from './ressources/colors.js'
 import { move } from './api/clientApi.js'
@@ -10,17 +12,24 @@ import Room from "./vues/Room"
 import Accueil from "./vues/Accueil"
 
 class App extends Component {
+  socket = openSocket('http://localhost:8000')
+
+  state = {
+    vueId: 0
+  }
+
+  componentDidMount() {
+    // fonction pour set toutes les reponses serv
+
+    // this.socket.on('')
+  }
+
   render() {
-    let vue = undefined
-    if (1) {
-      vue = <Accueil />
-    }
-    else {
-      vue = <Room />
-    }
     return (
       <Fragment>
-        {vue}
+        <Provider store={Store}>
+          <Accueil socket={this.socket}/>
+        </Provider>
       </Fragment>
     )
   }

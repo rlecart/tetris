@@ -1,8 +1,8 @@
 import { Redirect } from "react-router-dom";
 
 function redirectTo(path) {
-    {console.log('hahaha')}
-    <Redirect push to={path}/>
+    console.log(path)
+    return <Redirect push to={path} />
 }
 
 export { redirectTo }

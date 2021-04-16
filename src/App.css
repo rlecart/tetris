@@ -143,20 +143,20 @@
 
 .commands > p {
 	font-size: x-small;
-    text-align: center;
+	text-align: center;
 }
 
 .v9_11 {
 	width: 100%;
 	height: 900px;
-	background: rgba(48,48,48,1);
+	background: rgba(48, 48, 48, 1);
 	opacity: 1;
 	position: relative;
 	top: 0px;
 	left: 0px;
 	overflow: hidden;
-  }
-  .v9_12 {
+}
+.v9_12 {
 	width: 908px;
 	height: 325px;
 	background-repeat: no-repeat;
@@ -167,95 +167,95 @@
 	top: 288px;
 	left: 266px;
 	overflow: hidden;
-  }
-  .v11_25 {
+}
+.v11_25 {
 	width: 908px;
 	height: 240px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 85px;
 	left: 0px;
 	overflow: hidden;
-  }
-  .v9_22 {
+}
+.v9_22 {
 	width: 310px;
 	height: 184px;
-	background: rgba(151,151,151,1);
+	background: rgba(151, 151, 151, 1);
 	opacity: 1;
 	position: absolute;
 	top: 28px;
 	left: 71px;
 	overflow: hidden;
-  }
-  .v11_5 {
+}
+.v11_5 {
 	width: 186px;
 	height: 25px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 139px;
 	left: 62px;
 	overflow: hidden;
-  }
-  .v11_4 {
+}
+.v11_4 {
 	width: 96px;
 	height: 99px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 20px;
 	left: 107px;
 	overflow: hidden;
-  }
-  .v11_8 {
+}
+.v11_8 {
 	width: 25px;
 	height: 16px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 62px;
 	left: 223px;
-	border: 1px solid rgba(0,0,0,1);
+	border: 1px solid rgba(0, 0, 0, 1);
 	overflow: hidden;
-  }
-  .v11_113 {
+}
+.v11_113 {
 	width: 25px;
 	height: 16px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 62px;
 	left: 62px;
-	border: 1px solid rgba(0,0,0,1);
+	border: 1px solid rgba(0, 0, 0, 1);
 	overflow: hidden;
-  }
-  .name {
+}
+.name {
 	color: #fff;
-  }
-  .v11_26 {
+}
+.v11_26 {
 	width: 310px;
 	height: 184px;
-	background: rgba(151,151,151,1);
+	background: rgba(151, 151, 151, 1);
 	opacity: 1;
 	position: absolute;
 	top: 28px;
 	left: 527px;
 	overflow: hidden;
-  }
-  .v11_32 {
+}
+.v11_32 {
 	width: 256px;
 	height: 18px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 22px;
 	left: 27px;
 	overflow: hidden;
-  }
-  .v11_37 {
+}
+.v11_37 {
 	width: 247px;
-	color: rgba(0,0,0,1);
+	color: rgba(0, 0, 0, 1);
 	position: absolute;
 	top: 3px;
 	left: 4px;
@@ -264,20 +264,20 @@
 	font-size: 10px;
 	opacity: 1;
 	text-align: left;
-  }
-  .v11_33 {
+}
+.v11_33 {
 	width: 142px;
 	height: 47px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 60px;
 	left: 84px;
 	overflow: hidden;
-  }
-  .v11_38 {
+}
+.v11_38 {
 	width: 141px;
-	color: rgba(0,0,0,1);
+	color: rgba(0, 0, 0, 1);
 	position: absolute;
 	top: 0px;
 	left: 1px;
@@ -286,20 +286,20 @@
 	font-size: 18px;
 	opacity: 1;
 	text-align: center;
-  }
-  .v11_34 {
+}
+.v11_34 {
 	width: 166px;
 	height: 47px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 117px;
 	left: 72px;
 	overflow: hidden;
-  }
-  .v11_110 {
+}
+.v11_110 {
 	width: 160px;
-	color: rgba(0,0,0,1);
+	color: rgba(0, 0, 0, 1);
 	position: absolute;
 	top: 0px;
 	left: 6px;
@@ -308,8 +308,8 @@
 	font-size: 18px;
 	opacity: 1;
 	text-align: center;
-  }
-  .v11_1 {
+}
+.v11_1 {
 	width: 162px;
 	height: 37px;
 	background-repeat: no-repeat;
@@ -320,8 +320,8 @@
 	top: 67px;
 	left: 381px;
 	overflow: hidden;
-  }
-  .v11_2 {
+}
+.v11_2 {
 	width: 162px;
 	height: 37px;
 	background-repeat: no-repeat;
@@ -332,179 +332,184 @@
 	top: 0px;
 	left: 381px;
 	overflow: hidden;
-  }
-  .v11_9 {
+}
+.v11_9 {
 	width: 910px;
 	height: 75px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 0px;
 	left: 2px;
 	overflow: hidden;
-  }
-  .v10_5 {
+}
+.v10_5 {
 	width: 907px;
-	color: rgba(0,0,0,1);
+	color: rgba(0, 0, 0, 1);
 	position: absolute;
 	top: 0px;
 	left: 3px;
 	font-size: 30px;
 	opacity: 1;
 	text-align: center;
-  }
-  
-  .v13_2 {
+}
+
+.v13_2 {
 	width: 100%;
 	height: 900px;
-	background: rgba(48,48,48,1);
+	background: rgba(48, 48, 48, 1);
 	opacity: 1;
 	position: relative;
 	top: 0px;
 	left: 0px;
 	overflow: hidden;
-  }
-  .v13_4 {
+}
+.v13_4 {
 	width: 908px;
 	height: 401px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 292px;
 	left: 266px;
 	overflow: hidden;
-  }
-  .v14_4 {
+}
+.v14_4 {
 	width: 587px;
 	height: 341px;
-	background: rgba(151,151,151,1);
+	background: rgba(151, 151, 151, 1);
 	opacity: 1;
 	position: absolute;
 	top: 30px;
 	left: 291px;
 	overflow: hidden;
-  }
-  .v14_5 {
+}
+.v14_5 {
 	width: 120px;
 	height: 106px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 20px;
 	left: 20px;
 	overflow: hidden;
-  }
-  .v14_10 {
+}
+.v14_10 {
 	width: 120px;
 	height: 106px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 146px;
 	left: 20px;
 	overflow: hidden;
-  }
-  .v14_6 {
+}
+.v14_6 {
 	width: 120px;
 	height: 106px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 20px;
 	left: 162px;
 	overflow: hidden;
-  }
-  .v14_11 {
+}
+.v14_11 {
 	width: 120px;
 	height: 106px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 146px;
 	left: 162px;
 	overflow: hidden;
-  }
-  .v14_14 {
+}
+.v14_14 {
 	width: 283px;
 	height: 49px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 272px;
 	left: 152px;
 	overflow: hidden;
-  }
-  .v14_7 {
+}
+.v14_7 {
 	width: 120px;
 	height: 106px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 20px;
 	left: 305px;
 	overflow: hidden;
-  }
-  .v14_12 {
+}
+.v14_12 {
 	width: 120px;
 	height: 106px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 146px;
 	left: 305px;
 	overflow: hidden;
-  }
-  .v14_8 {
+}
+.v14_8 {
 	width: 120px;
 	height: 106px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 20px;
 	left: 447px;
 	overflow: hidden;
-  }
-  .v14_13 {
+}
+.v14_13 {
 	width: 120px;
 	height: 106px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 146px;
 	left: 447px;
 	overflow: hidden;
-  }
-  .name {
+}
+.name {
 	color: #fff;
-  }
-  .v14_3 {
+}
+.v14_3 {
 	width: 201px;
 	height: 341px;
-	background: rgba(151,151,151,1);
+	background: rgba(151, 151, 151, 1);
 	opacity: 1;
 	position: absolute;
 	top: 30px;
 	left: 30px;
 	overflow: hidden;
-  }
-  .v14_17 {
+}
+.v14_17 {
 	width: 910px;
 	height: 75px;
-	background: rgba(196,196,196,1);
+	background: rgba(196, 196, 196, 1);
 	opacity: 1;
 	position: absolute;
 	top: 207px;
 	left: 264px;
 	overflow: hidden;
-  }
-  .v14_18 {
+}
+.v14_18 {
 	width: 907px;
-	color: rgba(0,0,0,1);
+	color: rgba(0, 0, 0, 1);
 	position: absolute;
 	top: 0px;
 	left: 3px;
 	font-size: 30px;
 	opacity: 1;
 	text-align: center;
-  }
-  
+}
+
+.playerList {
+	width: 100%;
+	height: 80%;
+	border: 1px solid;
+}
