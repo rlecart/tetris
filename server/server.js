@@ -59,26 +59,38 @@ const pushToClient = (req) => {
 const defaultRules = require('../src/ressources/rules')
 let rooms = {}
 
-const createNewRoom = (profil, cb) => {
-  let room = {
-    url: 'hashed',
-    nbPlayer: 0,
-    listPlayers: [],
-    rules: defaultRules.defaultRules,
-  }
-  rooms = { ...rooms, [room.url]: { ...room } }
-  console.log(rooms)
-  console.log('\n')
-  // console.log(profil)
-  connectToRoom(profil, room.url, cb)
-  // cb(`/#${room.url}[${profil.}]`)
+const generateUrl = () => {
+  return (Math.random().toString(36).substring(7))
 }
 
-const connectToRoom = (profil, url, cb) => {
-  if (rooms[url]) {
+const createNewUrl = (roomsList) => {
+  let url = generateUrl()
+  while (roomsList[url])
+    url = generateUrl()
+  return (url)
+}
+
+const createRoom = (profil, cb) => {
+  if (profil.name) {
+    let room = {
+      url: createNewUrl(rooms),
+      nbPlayer: 0,
+      listPlayers: [],
+      rules: defaultRules.defaultRules,
+    }
+    rooms = { ...rooms, [room.url]: { ...room } }
+    // console.log(profil)
+    joinRoom(profil, room.url, cb)
+    // cb(`/#${room.url}[${profil.}]`)
+  }
+}
+
+const joinRoom = (profil, url, cb) => {
+  if (rooms[url] && profil.name) {
     if (rooms[url].nbPlayer < 8) {
       rooms[url].listPlayers.push(profil)
       rooms[url].nbPlayer++
+      console.log(rooms, '\n')
       cb(`/#${url}[${profil.name}]`)
     }
   }
@@ -88,8 +100,8 @@ const connectToRoom = (profil, url, cb) => {
 io.on('connection', (client) => {
   sioClient = client
   client.on('move', (dir) => { move(dir, sioClient) })
-  client.on('createRoom', (profil, cb) => { createNewRoom(profil, cb) })
-  client.on('joinRoom', (profil, url, cb) => { connectToRoom(profil, url, cb) })
+  client.on('createRoom', (profil, cb) => { createRoom(profil, cb) })
+  client.on('joinRoom', (profil, url, cb) => { joinRoom(profil, url, cb) })
   client.on('startGame', launchInterval)
   client.on('endGame', () => { pushToClient('endGame') })
   console.log('connected')

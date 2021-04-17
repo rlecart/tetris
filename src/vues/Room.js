@@ -4,7 +4,11 @@ import { getPlayerList } from '../api/clientApi'
 
 class Room extends Component {
   state = {
-    playersList: {},
+    profil: {
+      name: '',
+    },
+    roomUrl: '',
+    playersList: [],
     rules: {},
   }
 
@@ -15,11 +19,15 @@ class Room extends Component {
 
   componentDidMount() {
     let state = this.state
-    // state.playersList = getPlayerList(socket, idRoom)
-    this.setState(state)
+    let url = this.props.match.url
+    state.profil.name = url.substring(url.search(/\[[0-9a-zA-Z]+\]/) + 1, url.length - 1)
+    state.roomUrl = url.substring(1, url.search(/\[/))
+      console.log(this.props)
+    // state.playersList = getPlayerList(this.props.socket, state.roomUrl, () => { this.setState(state) })
   }
 
   render() {
+    console.log(this.props)
     return (
       <div className="v13_2">
         <div className="v13_4">

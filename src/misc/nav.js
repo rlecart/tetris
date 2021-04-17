@@ -1,6 +1,4 @@
-import history from './history'
-
-const nav = (path) => {
+const nav = (history, path) => {
     history.push(path)
 }
 

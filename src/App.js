@@ -13,7 +13,6 @@ import Accueil from "./vues/Accueil"
 
 class App extends Component {
   socket = openSocket('http://localhost:8000')
-
   state = {
     vueId: 0
   }
@@ -27,9 +26,9 @@ class App extends Component {
   render() {
     return (
       <Fragment>
-        <Provider store={Store}>
-          <Accueil socket={this.socket}/>
-        </Provider>
+        {/* <Provider store={Store}> */}
+          <Accueil socket={this.socket} history={this.props.history}/>
+        {/* </Provider> */}
       </Fragment>
     )
   }

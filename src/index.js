@@ -8,23 +8,21 @@ import App from './App';
 import Room from './vues/Room';
 import Game from './vues/Game';
 
-import history from './misc/history'
-
 import {
-  Router,
+  HashRouter,
   Route,
   Switch
 } from 'react-router-dom'
 
 const Root = () => (
-  <Router history={history}>
+  <HashRouter hashType='noslash'>
     <Switch>
       <Route exact path='/' component={App} />
-      <Route path='/room' component={Room} />
+      <Route exact path='/:room' component={Room} />
       <Route exact path='/game' component={Game} />
       <Route component={NotFound} />
     </Switch>
-  </Router>
+  </HashRouter>
 )
 
 ReactDOM.render(<Root />, document.getElementById('root'))
