@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { Redirect, Link, useHistory } from 'react-router-dom'
 import { redirectTo } from '../api/serverApi'
 import { connect } from 'react-redux'
-import { createRoom } from "../api/clientApi";
+import { createRoom, joinRoom } from "../api/clientApi";
+import nav from '../misc/nav'
 
 function GoToCreateRoom(props, state) {
   const history = useHistory()
@@ -20,7 +21,6 @@ function GoToCreateRoom(props, state) {
 class Accueil extends Component {
   state = {
     profil: {
-      id: -1,
       name: '',
     },
     roomUrl: '',
@@ -36,11 +36,7 @@ class Accueil extends Component {
     this.setState(state)
   }
 
-  handleClick() {
-    // createRoom(this.props.socket, this.state.profil)
-    return <Redirect push to='/aefwa'/>
-  }
-
+    
   render() {
     console.log(this.state.profil)
     return (
@@ -60,17 +56,12 @@ class Accueil extends Component {
             </div>
             <div className="v11_26">
               <input className='v11_32' type="text" name="roomUrl" required onChange={(event) => this.handleChange(event)} placeHolder='http://abcdef.com/absfaskfew?abc=oui' />
-              <Link to='/room'>
-                <button className="v11_33" onClick={() => redirectTo('/room')}>
+                <button className="v11_33" onClick={() => { joinRoom(this.props.socket, this.state.profil, this.state.roomUrl, nav) }}>
                   <span className="v11_38">Join room</span>
                 </button>
-              </Link>
-              {/* <Link to={`/room?${this.state.profil.name}`}> */}
-              <button type='submit' className="v11_34" onSubmit={this.handleClick}>
+              <button className="v11_34" onClick={() => { createRoom(this.props.socket, this.state.profil, nav) }}>
                 <span className="v11_110">Create Room</span>
               </button>
-              {/* {<GoToCreateRoom props={this.props} state={this.state} />} */}
-              {/* </Link> */}
             </div>
           </div>
           <div className="v11_1">

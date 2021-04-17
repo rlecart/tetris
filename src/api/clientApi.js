@@ -10,8 +10,12 @@ function move(dir, socket) {
 //   socket.emit('getPlayerList', idRoom)
 // }
 
-function createRoom(socket, profil) {
-  socket.emit('createRoom', profil)
+function createRoom(socket, profil, cb) {
+  socket.emit('createRoom', profil, cb)
 }
 
-export { anotherOnePlease, move, createRoom }
+function joinRoom(socket, profil, url, cb) {
+  socket.emit('joinRoom', profil, url, cb)
+}
+
+export { anotherOnePlease, move, createRoom, joinRoom }

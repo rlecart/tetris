@@ -8,14 +8,16 @@ import App from './App';
 import Room from './vues/Room';
 import Game from './vues/Game';
 
+import history from './misc/history'
+
 import {
-  BrowserRouter as Router,
+  Router,
   Route,
   Switch
 } from 'react-router-dom'
 
 const Root = () => (
-  <Router>
+  <Router history={history}>
     <Switch>
       <Route exact path='/' component={App} />
       <Route path='/room' component={Room} />
