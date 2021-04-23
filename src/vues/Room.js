@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Redirect, Link } from 'react-router-dom'
-import { getRoomInfo } from '../api/clientApi'
+import { getRoomInfo, startGame } from '../api/clientApi'
 import { connect } from "react-redux";
+import nav from "../misc/nav";
 
 
 class Room extends Component {
@@ -39,13 +40,14 @@ class Room extends Component {
   }
 
   componentDidMount() {
+    this.props.socketConnector.socket.on('goToGame', () => { nav(this.props.history, `${this.props.location.pathname}/game`) })
     this.props.socketConnector.socket.on('refreshRoomInfo', (roomInfo) => { this.syncRoomData(roomInfo) })
     let state = this.state
     let url = this.props.match.url
     state.profil.name = url.substring(url.search(/\[[0-9a-zA-Z]+\]/) + 1, url.length - 1)
     state.roomUrl = url.substring(1, url.search(/\[/))
-      console.log('mount', state.roomInfo)
-      console.log('propsmount', this.props)
+    console.log('mount', state.roomInfo)
+    console.log('propsmount', this.props)
     if (!state.roomInfo) {
       console.log('init')
       getRoomInfo(this.props.socketConnector.socket, state.roomUrl, this.syncRoomData.bind(this))
@@ -66,9 +68,8 @@ class Room extends Component {
           <div className="v14_4">
             <div className="playerList">
               {players}
-              <Link to='/game'>
-                <button className="v14_14"></button>
-              </Link>
+              <button className="v14_14" onClick={() => { startGame(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl, (path) => { nav(this.props.history, path) }) }}>
+              </button>
             </div>
           </div>
           <div className="name"></div>

@@ -23,7 +23,7 @@ const Root = () => (
       <Switch>
         <Route exact path='/' component={App} />
         <Route exact path='/:room' component={Room} />
-        <Route exact path='/game' component={Game} />
+        <Route exact path='/:room/:game' component={Game} />
         <Route component={NotFound} />
       </Switch>
     </HashRouter>

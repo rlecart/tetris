@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import openSocket from 'socket.io-client'
+import { connect } from "react-redux";
 
 import colors from '../ressources/colors.js'
 import { move } from '../api/clientApi.js'
 import { redirectTo } from "../api/serverApi";
 
 class Game extends Component {
-  socket = openSocket('http://localhost:8000');
+  socket = this.props.socketConnector.socket
   state = {
     lines: [
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -73,19 +74,24 @@ class Game extends Component {
 
   bjr(event) {
     const state = this.state
+    const socket = this.props.socketConnector.socket
+    const url = this.props.roomReducer.roomInfo.url
+
+    console.log(url)
+
     console.log('AH')
     if (event.key === "z")
       this.acidMode(event, state)
     else if (event.key === '.')
-      move('right', this.socket)
+      move('right', url, socket)
     else if (event.key === ',')
-      move('left', this.socket)
+      move('left', url, socket)
     else if (event.key === ' ')
-      move('down', this.socket)
+      move('down', url, socket)
     else if (event.key === '/')
-      move('turn', this.socket)
+      move('turn', url, socket)
     else if (event.key === 'c')
-      this.socket.emit('endGame')
+      socket.emit('endGame')
   }
 
   refreshGame(game, context) {
@@ -101,13 +107,14 @@ class Game extends Component {
   }
 
   componentDidMount() {
+    // console.log('bonjoru', this.props)
     // fonction pour set toutes les reponses serv
     // this.socket.on('reponse', (text) => {
     //   console.log(text)
     // });
     this.socket.on('refreshVue', (game) => { this.refreshGame(game, this) })
     this.socket.on('endGame', () => { redirectTo('/') })
-    this.socket.emit('start')
+    this.socket.emit('readyToStart', this.socket.id, this.props.roomReducer.roomInfo.url)
     window.addEventListener("keypress", this.bjr.bind(this))
   }
 
@@ -143,4 +150,9 @@ class Game extends Component {
   }
 }
 
-export default Game
+
+const mapStateToProps = (state) => {
+  return state
+}
+
+export default connect(mapStateToProps)(Game)

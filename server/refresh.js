@@ -226,7 +226,7 @@ function refresh(game) {
     else if (hasMoved == 1) {
       checkFilledLine(game)
       createNewTetri(game)
-      server.gameLoop()
+      // server.gameLoop()
       // server.resetInterval(game)
     }
   }
