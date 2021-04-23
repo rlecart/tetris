@@ -25,6 +25,7 @@ class Accueil extends Component {
 
     
   render() {
+    console.log(this.props)
     return (
       <div className="v9_11">
         <div className="v9_12">
@@ -42,10 +43,10 @@ class Accueil extends Component {
             </div>
             <div className="v11_26">
               <input className='v11_32' type="text" name="roomUrl" required onChange={(event) => this.handleChange(event)} placeHolder='http://abcdef.com/absfaskfew?abc=oui' />
-                <button className="v11_33" onClick={() => { joinRoom(this.props.socket, this.state.profil, this.state.roomUrl, (path) => { nav(this.props.history, path) }) }}>
+                <button className="v11_33" onClick={() => { joinRoom(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl, (path) => { nav(this.props.history, path) }) }}>
                   <span className="v11_38">Join room</span>
                 </button>
-              <button className="v11_34" onClick={() => { createRoom(this.props.socket, this.state.profil, (path) => { nav(this.props.history, path) }) }}>
+              <button className="v11_34" onClick={() => { createRoom(this.props.socketConnector.socket, this.state.profil, (path) => { nav(this.props.history, path) }) }}>
                 <span className="v11_110">Create Room</span>
               </button>
             </div>
@@ -66,5 +67,5 @@ class Accueil extends Component {
 const mapStateToProps = (state) => {
   return state
 }
-// export default connect(mapStateToProps)(Accueil)
-export default Accueil
+
+export default connect(mapStateToProps)(Accueil)

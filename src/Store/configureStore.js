@@ -1,4 +1,5 @@
-import { createStore } from "redux";
-import changeVue from './Reducers/changeVue'
+import { combineReducers, createStore } from "redux";
+import socketConnector from './Reducers/socketConnector'
+import roomReducer from "./Reducers/roomReducer";
 
-export default createStore(changeVue)
+export default createStore(combineReducers({socketConnector, roomReducer}))

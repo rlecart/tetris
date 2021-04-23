@@ -3,19 +3,19 @@ function anotherOnePlease(socket, cb) {
 }
 
 function move(dir, socket) {
-  socket.emit('move', dir, () => { console.log('move envoye') })
+  socket.emit('move', socket.id, dir, () => { console.log('move envoye') })
 }
 
-function getPlayerList(socket, idRoom) {
-  socket.emit('getPlayerList', idRoom)
+function getRoomInfo(socket, idRoom, cb) {
+  socket.emit('getRoomInfo', idRoom, cb)
 }
 
 function createRoom(socket, profil, cb) {
-  socket.emit('createRoom', profil, cb)
+  socket.emit('createRoom', socket.id, profil, cb)
 }
 
 function joinRoom(socket, profil, url, cb) {
-  socket.emit('joinRoom', profil, url, cb)
+  socket.emit('joinRoom', socket.id, profil, url, cb)
 }
 
-export { anotherOnePlease, move, createRoom, joinRoom, getPlayerList }
+export { anotherOnePlease, move, createRoom, joinRoom, getRoomInfo }

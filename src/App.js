@@ -1,8 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { Component, Fragment } from 'react'
-import { Provider } from 'react-redux'
-import Store from './Store/configureStore'
 
 import colors from './ressources/colors.js'
 import { move } from './api/clientApi.js'
@@ -11,27 +9,32 @@ import Game from './vues/Game'
 import Room from "./vues/Room"
 import Accueil from "./vues/Accueil"
 
+import { connect } from "react-redux";
+
 class App extends Component {
-  socket = openSocket('http://localhost:8000')
   state = {
-    vueId: 0
   }
 
   componentDidMount() {
     // fonction pour set toutes les reponses serv
-
+    let sock = openSocket('http://localhost:8000')
+    const action = { type: 'CONNECT_SOCKET', value: sock }
+    this.props.dispatch(action)
     // this.socket.on('')
   }
 
   render() {
+    console.log('app props', this.props)
     return (
       <Fragment>
-        {/* <Provider store={Store}> */}
-          <Accueil socket={this.socket} history={this.props.history}/>
-        {/* </Provider> */}
+          <Accueil history={this.props.history}/>
       </Fragment>
     )
   }
 }
 
-export default App
+const mapStateToProps = (state) => {
+  return state
+}
+
+export default connect(mapStateToProps)(App)

@@ -11,10 +11,11 @@ const io = socketio(server, {
 const game = require('../src/ressources/game.js')
 const refresh = require('./refresh.js')
 
-let sioClient = undefined
+
+let sioClientList = {}
 let interval = undefined
 
-const move = (dir) => {
+const move = (clientId, dir) => {
   let reponse = -1
 
   if (dir === 'right')
@@ -26,14 +27,14 @@ const move = (dir) => {
   else if (dir === 'turn')
     reponse = refresh.moveTetri(game.game, 0, 0)
   if (reponse !== 0)
-    sioClient.emit('refreshVue', game.game)
+    sioClientList.emit('refreshVue', game.game)
 }
 
 const gameLoop = () => {
   let sock = game.game
   sock = refresh.refresh(sock)
   game.game = sock
-  sioClient.emit('refreshVue', sock)
+  sioClientList.emit('refreshVue', sock)
 }
 
 const launchInterval = () => {
@@ -48,15 +49,9 @@ const resetInterval = (sock) => {
 }
 
 const pushToClient = (req) => {
-  sioClient.emit(req)
+  sioClientList.emit(req)
 }
 
-// let clients = {}
-
-// const addNewClient = (add) => {
-// }
-
-const defaultRules = require('../src/ressources/rules')
 let rooms = {}
 
 const generateUrl = () => {
@@ -70,38 +65,80 @@ const createNewUrl = (roomsList) => {
   return (url)
 }
 
-const createRoom = (profil, cb) => {
+const { defaultRoom } = require('../src/ressources/room.js');
+
+const createRoom = (clientId, profil, cb) => {
   if (profil.name) {
-    let room = {
-      url: createNewUrl(rooms),
-      nbPlayer: 0,
-      listPlayers: [],
-      rules: defaultRules.defaultRules,
-    }
+    let room = defaultRoom
+    room.url = createNewUrl(rooms)
+    room.nbPlayer++
     rooms = { ...rooms, [room.url]: { ...room } }
-    // console.log(profil)
-    joinRoom(profil, room.url, cb)
-    // cb(`/#${room.url}[${profil.}]`)
+    console.log(room)
+    // console.log('\n', rooms)
+    joinRoom(clientId, profil, room.url, cb)
   }
 }
 
-const joinRoom = (profil, url, cb) => {
-  if (rooms[url] && profil.name) {
-    if (rooms[url].nbPlayer < 8) {
-      rooms[url].listPlayers.push(profil)
-      rooms[url].nbPlayer++
-      console.log(rooms, '\n')
-      cb(`/#${url}[${profil.name}]`)
+const getClientListFromRoom = (roomUrl) => {
+  let ret = []
+
+  if (rooms && rooms[roomUrl] && rooms[roomUrl].listPlayers) {
+    for (let [key, value] of Object.entries(rooms[roomUrl].listPlayers)) {
+      ret.push(sioClientList[key])
     }
+  }
+  return ret
+}
+
+const emitAll = (message, target, except, obj) => {
+  let clientList = target ? getClientListFromRoom(target) : sioClientList
+
+  for (let [key, value] of Object.entries(clientList)) {
+    if (key !== except) {
+      value.emit(message, obj)
+    }
+  }
+}
+
+const joinRoom = (clientId, profil, url, cb) => {
+  if (rooms[url] && profil.name && !rooms[url].listPlayers[clientId] && rooms[url].nbPlayer < 8) {
+    rooms[url].listPlayers = { ...rooms[url].listPlayers, [clientId]: profil }
+    rooms[url].nbPlayer++
+    console.log(rooms, '\n')
+    cb(`/#${url}[${profil.name}]`)
+    emitAll('refreshRoomInfo', url, clientId, getRoomInfo(url))
+  }
+}
+
+const getArrayFromObject = (obj) => {
+  let ret = []
+
+  for (let [key, value] of Object.entries(obj))
+    ret.push(value)
+  return ret
+}
+
+const getRoomInfo = (idRoom, cb) => {
+  let roomInfo
+
+  if (rooms && rooms[idRoom]) {
+    roomInfo = { ...rooms[idRoom], listPlayers: getArrayFromObject(rooms[idRoom].listPlayers) }
+    console.log('getRoomInfo', roomInfo)
+    if (cb)
+      cb(roomInfo)
+    else
+      return roomInfo
   }
 }
 
 // liste de tous les sockets serveurs
 io.on('connection', (client) => {
-  sioClient = client
-  client.on('move', (dir) => { move(dir, sioClient) })
-  client.on('createRoom', (profil, cb) => { createRoom(profil, cb) })
-  client.on('joinRoom', (profil, url, cb) => { joinRoom(profil, url, cb) })
+  sioClientList = { ...sioClientList, [client.id]: client }
+  // console.log(sioClientList)
+  client.on('move', (clientId, dir) => { move(clientId, dir, sioClientList) })
+  client.on('createRoom', (clientId, profil, cb) => { createRoom(clientId, profil, cb) })
+  client.on('joinRoom', (clientId, profil, url, cb) => { joinRoom(clientId, profil, url, cb) })
+  client.on('getRoomInfo', (idRoom, cb) => { getRoomInfo(idRoom, cb) })
   client.on('startGame', launchInterval)
   client.on('endGame', () => { pushToClient('endGame') })
   console.log('connected')
