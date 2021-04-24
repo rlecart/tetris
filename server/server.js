@@ -133,23 +133,22 @@ const gameLoop = (clientsRoom, url) => {
   for (let [key, value] of Object.entries(clientsRoom)) {
     console.log('key=', key)
     // console.log('value=', value)
-    if (!gameRooms || !gameRooms[url] || !gameRooms[url][key]) {
-      gameRooms = {
-        ...gameRooms, [url]: {
-          ...gameRooms[url], [key]: {
-            ...clonedeep(game.game)
-          },
-        }
+    if (gameRooms[url][key] === undefined) {
+      gameRooms[url] = {
+        ...gameRooms[url], [key]: {
+          ...clonedeep(game.game)
+        },
       }
     }
-    gameRooms[url][key] = refresh.refresh(gameRooms[url][key])
+    gameRooms[url][key] = refresh.refresh(gameRooms[url][key], gameRooms[url])
   }
   for (let [key, value] of Object.entries(clientsRoom))
     if (gameRooms && gameRooms[url] && gameRooms[url][key]) {
       value.emit('refreshVue', gameRooms[url][key])
     }
-  console.log('\n\n\n', gameRooms, gameRooms[url], '\n\n\n')
+  // console.log('\n\n\n', gameRooms, gameRooms[url], '\n\n\n')
 }
+
 
 
 const resetInterval = (sock) => {
@@ -193,8 +192,17 @@ const readyToStart = (clientId, url) => {
         ...roomsRTS[url], [clientId]: true
       }
     }
-    if (res = tryToStart(roomsRTS[url], rooms[url].nbPlayer))
+    if (res = tryToStart(roomsRTS[url], rooms[url].nbPlayer)) {
+      gameRooms = {
+        ...gameRooms,
+        [url]: {
+          shapes: [],
+          shapesId: [],
+        },
+      }
+      refresh.initShapes(gameRooms[url])
       launchInterval(url)
+    }
   }
   console.log(res)
 }

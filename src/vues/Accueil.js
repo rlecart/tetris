@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { createRoom, joinRoom } from "../api/clientApi";
 import nav from '../misc/nav'
 
+
 class Accueil extends Component {
   state = {
     profil: {

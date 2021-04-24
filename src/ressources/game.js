@@ -24,7 +24,6 @@ const game = {
   ],
   tetri: {
     id: 0,
-    shapes: [],
     actualShape: [],
     nextShape: [],
     rotation: 0,

@@ -3,24 +3,30 @@ const tetriminos = require('../src/ressources/tetriminos.js')
 const server = require('./server.js')
 
 const newRand = (min, max) => {
- return Math.floor(Math.random() * (max - min + 1)) + min;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const newShape = (game, choice, rand) => {
+const newShape = (room, rand) => {
   const i = rand % 6
 
-  if (choice == 'new')
-    game.tetri.id = i + 2
-  return (tetriminos.tetriminos[i])
+  room.shapesId.push(i + 2)
+  return (tetriminos.tetriminos[i]) // deep clone ?
 }
 
-const createNewTetri = (game) => {
+function initShapes(room) {
+  room.shapes.push(newShape(room, newRand(1, 6)))
+  room.shapes.push(newShape(room, newRand(1, 6)))
+}
+
+const createNewTetri = (game, room) => {
   game.placed++
-  game.tetri.shapes.push(newShape(game, 'new', newRand(1, 6)))
-  game.tetri.actualShape = game.tetri.shapes[game.placed]
-  game.tetri.nextShape = newShape(game, 'next', newRand(1, 6))
+  if (game.placed >= room.shapes.length - 1)
+    room.shapes.push(newShape(room, newRand(1, 6)))
+  game.tetri.actualShape = room.shapes[game.placed]
+  game.tetri.nextShape = room.shapes[game.placed + 1]
+  game.tetri.id = room.shapesId[game.placed]
   game.tetri.x = Math.trunc(game.lines[0].length / 2 - game.tetri.actualShape[0].length / 2)
-  game.tetri.y = 0
+  game.tetri.y = -1
 }
 
 const addTetri = (game) => {
@@ -171,7 +177,8 @@ const moveTetri = (game, x, y) => {
 
   if (errors !== 'ok')
     return (errors)
-  removeTetri(game)
+  if (game.tetri.y !== -1 || (y === 0 && x !== 0))
+    removeTetri(game)
   if (x === 0 && y === 0)
     turnTetri(game, true)
   game.tetri.y += y
@@ -213,25 +220,26 @@ const endGame = (game) => {
   server.pushToClient('endgame')
 }
 
-function refresh(game) {
+function refresh(game, room) {
   let hasMoved = 0
 
   if (game.placed === -1)
-    createNewTetri(game)
-  else {
-    // console.log('move')
-    hasMoved = moveTetri(game, 0, 1)
-    if (hasMoved == -1)
-      endGame(game)
-    else if (hasMoved == 1) {
-      checkFilledLine(game)
-      createNewTetri(game)
-      // server.gameLoop()
-      // server.resetInterval(game)
-    }
+    createNewTetri(game, room)
+  // console.log('move')
+  hasMoved = moveTetri(game, 0, 1)
+  if (hasMoved == -1)
+    endGame(game)
+  else if (hasMoved == 1) {
+    checkFilledLine(game)
+    createNewTetri(game, room)
+    refresh(game, room)
+    // server.gameLoop()
+    // server.resetInterval(game)
   }
   return (game)
 }
 
+
 exports.refresh = refresh
 exports.moveTetri = moveTetri
+exports.initShapes = initShapes
