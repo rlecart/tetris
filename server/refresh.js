@@ -1,6 +1,7 @@
 // const { anotherOnePlease } = require('../src/api.js')
 const tetriminos = require('../src/ressources/tetriminos.js')
 const server = require('./server.js')
+const clonedeep = require('lodash.clonedeep')
 
 const newRand = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -39,8 +40,11 @@ const addTetri = (game) => {
 
   while (++i < actual.length) {
     while (++j < actual[0].length) {
-      if (actual[i][j] == 1)
+      if (actual[i][j] === 1) {
+        // console.log(x, y)
+        // console.log(game.tetri)
         game.lines[y][x] = id
+      }
       x++
     }
     x = game.tetri.x
@@ -49,23 +53,28 @@ const addTetri = (game) => {
   }
 }
 
-const checkTetri = (game) => {
+const checkTetri = (game, truePos) => {
   let i = -1;
   let j = -1;
   let x = game.tetri.x
   let y = game.tetri.y
   let actual = game.tetri.actualShape
 
+  if (x + truePos.lengthX - 1 > game.lines[0].length
+    || y + truePos.lengthY - 1 > game.lines.length)
+    return (-1)
   while (++i < actual.length) {
-    while (++j < actual[0].length) {
-      if (actual[i][j] == 1 && game.lines[y][x] !== 0)
+    while (++j < actual[i].length) { // ici ? Bug des 11 cases des fois taille plateau
+      if (actual[i][j] === 1 && game.lines[y][x] !== 0) {
         return (-1)
+      }
       x++
     }
     j = -1;
     x = game.tetri.x
     y++
   }
+  console.log('check ok\n')
   return (1)
 }
 
@@ -77,7 +86,7 @@ const removeTetri = (game) => {
   let actual = game.tetri.actualShape
 
   while (++i < actual.length) {
-    while (++j < actual[0].length) {
+    while (++j < actual[i].length) {
       if (actual[i][j] == 1)
         game.lines[y][x] = 0
       x++
@@ -89,7 +98,7 @@ const removeTetri = (game) => {
 }
 
 const noMoreSpace = (game) => {
-  if (game.tetri.y == 1)
+  if (game.tetri.y > 0)
     return (true)
   return (false)
 }
@@ -125,9 +134,37 @@ const turnTetri = (game, dir) => {
   //   21 10
   //   22 20
 
-  //   x 1 1 x
-  //   x 1 1 x
-  //   x x x x
+  //   x 1 1 
+  //   1 1 x
+  //   x x x
+}
+
+const parseLen = (tab) => {
+  let counterX = [0, 0, 0, 0]
+  let counterY = [0, 0, 0, 0]
+  let x = 0
+  let y = 0
+  let i = -1
+  let j = -1
+
+  while (++i < tab.length) {
+    while (++j < tab[i].length) {
+      if (tab[i][j] === 1) {
+        counterX[j] = 1
+        counterY[i] = 1
+      }
+    }
+    j = -1
+  }
+  for (let val of counterX) {
+    if (val === 1)
+      x++
+  }
+  for (let val of counterY) {
+    if (val === 1)
+      y++
+  }
+  return ([x, y])
 }
 
 const parseTruePos = (tab) => {
@@ -135,27 +172,28 @@ const parseTruePos = (tab) => {
   let y = tab.length
   let lengthX = 0
   let lengthY = 0
-  let tmpX = 0
+  // let tmpX = 0
   let i = -1
   let j = -1
 
   while (++i < tab.length) {
     while (++j < tab[i].length) {
       if (tab[i][j] === 1) {
-        tmpX++
+        // tmpX++
         if (j < x)
           x = j
         if (i < y)
           y = i
       }
     }
-    if (tmpX > lengthX)
-      lengthX = tmpX
-    if (tmpX > 0)
-      lengthY++
-    tmpX = 0
+    // if (tmpX > lengthX)
+    //   lengthX = tmpX
+    // if (tmpX > 0)
+    //   lengthY++
+    // tmpX = 0
     j = -1
   }
+  [lengthX, lengthY] = parseLen(tab)
   return ({ x, y, lengthX, lengthY })
 }
 
@@ -163,29 +201,45 @@ const checkIfOk = (game, x, y, truePos) => {
   if (game.tetri.id === 5 && x === 0 && y === 0)
     return (0)
   if (game.tetri.x + truePos.x + x < 0
-    || game.tetri.x + truePos.x + truePos.lengthX + x > game.lines[0].length)
+    || game.tetri.x + truePos.x + truePos.lengthX - 1 + x >= game.lines[0].length) {
     return (0)
+  }
   if (game.tetri.y + truePos.y + y < 0
-    || game.tetri.y + truePos.y + truePos.lengthY + y > game.lines.length)
+    || game.tetri.y + truePos.y + truePos.lengthY - 1 + y >= game.lines.length)
     return (1)
+  if (x === 0 && y === 0
+    && ((truePos.lengthX < truePos.lengthY && game.tetri.x + truePos.x + truePos.lengthX - 1 + truePos.lengthY - truePos.lengthX > game.lines[0].length)
+    || (truePos.lengthY < truePos.lengthX && game.tetri.y + truePos.y + truePos.lengthY - 1 + truePos.lengthX - truePos.lengthY > game.lines.length))) {
+    return (0)
+  }
   return ('ok')
 }
 
 const moveTetri = (game, x, y) => {
   let truePos = parseTruePos(game.tetri.actualShape)
   let errors = checkIfOk(game, x, y, truePos)
-
-  if (errors !== 'ok')
+  if (x === 0 && y === 0) {
+    // console.log(truePos)
+    // console.log(game.tetri)
+  }
+  console.log(game.tetri.x, game.tetri.y, truePos)
+  if (errors !== 'ok') {
+    console.log(truePos)
+    console.log(game.tetri)
+    console.log('errors = ', errors)
     return (errors)
+  }
   if (game.tetri.y !== -1 || (y === 0 && x !== 0))
     removeTetri(game)
   if (x === 0 && y === 0)
     turnTetri(game, true)
   game.tetri.y += y
   game.tetri.x += x
-  if (checkTetri(game) == -1) {
-    if (noMoreSpace(game) == true)
+  if (checkTetri(game, truePos) === -1) {
+    if (noMoreSpace(game) === false) {
+      // console.log(game, game.tetri)
       return (-1)//gameover
+    }
     else {
       game.tetri.y -= y
       game.tetri.x -= x
@@ -215,9 +269,9 @@ const checkFilledLine = (game) => {
   }
 }
 
-const endGame = (game) => {
-  server.resetInterval()
-  server.pushToClient('endgame')
+const endGame = (room) => {
+  server.emitAll('endGame', room.url, undefined, room)
+  server.closeRoom(room)
 }
 
 function refresh(game, room) {
@@ -225,16 +279,15 @@ function refresh(game, room) {
 
   if (game.placed === -1)
     createNewTetri(game, room)
-  // console.log('move')
   hasMoved = moveTetri(game, 0, 1)
-  if (hasMoved == -1)
-    endGame(game)
+  if (hasMoved == -1) {
+    console.log('endgame')
+    endGame(game, room)
+  }
   else if (hasMoved == 1) {
     checkFilledLine(game)
     createNewTetri(game, room)
     refresh(game, room)
-    // server.gameLoop()
-    // server.resetInterval(game)
   }
   return (game)
 }

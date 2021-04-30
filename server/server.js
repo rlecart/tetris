@@ -14,12 +14,6 @@ const clonedeep = require('lodash.clonedeep')
 
 
 let sioClientList = {}
-let interval = undefined
-
-
-const pushToClient = (req) => {
-  sioClientList.emit(req)
-}
 
 let rooms = {}
 
@@ -38,7 +32,7 @@ const { defaultRoom } = require('../src/ressources/room.js');
 
 const createRoom = (clientId, profil, cb) => {
   if (profil.name) {
-    let room = { ...defaultRoom }
+    let room = clonedeep(defaultRoom)
     room.url = createNewUrl(rooms)
     rooms = { ...rooms, [room.url]: { ...room } }
     // console.log(room)
@@ -81,8 +75,8 @@ const emitOnly = (message, clientId, target, obj) => {
 }
 
 const joinRoom = (clientId, profil, url, cb) => {
-  if (rooms[url] && profil.name && !rooms[url].listPlayers[clientId] && rooms[url].nbPlayer < 8) {
-    console.log('hahahah')
+  if (!rooms[url].inGame && rooms[url] && profil.name && !rooms[url].listPlayers[clientId] && rooms[url].nbPlayer < 8) {
+    console.log('joinroom')
     rooms[url].listPlayers = { ...rooms[url].listPlayers, [clientId]: profil }
     rooms[url].nbPlayer++
     // console.log(rooms, '\n')
@@ -151,15 +145,20 @@ const gameLoop = (clientsRoom, url) => {
 
 
 
-const resetInterval = (sock) => {
-  game.game = sock
-  clearInterval(interval)
-  launchInterval()
+const closeRoom = (room) => {
+  let clientsRoom = getClientListFromRoom(url, true)
+
+  clearInterval(room.interval)
+  room.inGame = false
+  for (let [key, value] of Object.entries(clientsRoom)) {
+    room[key] = undefined
+  }
+  console.log(room)
 }
 
-const launchInterval = (url) => {
-  clientsRoom = getClientListFromRoom(url, true)
-  interval = setInterval(gameLoop, 1000, clientsRoom, url)
+const launchInterval = (url, room) => {
+  let clientsRoom = getClientListFromRoom(url, true)
+  room.interval = setInterval(gameLoop, 1000, clientsRoom, url)
   console.log(`interval ${url} init`)
 }
 
@@ -196,12 +195,15 @@ const readyToStart = (clientId, url) => {
       gameRooms = {
         ...gameRooms,
         [url]: {
+          interval: undefined,
           shapes: [],
           shapesId: [],
         },
       }
       refresh.initShapes(gameRooms[url])
-      launchInterval(url)
+      rooms[url].inGame = true
+      launchInterval(url, gameRooms[url])
+      roomsRTS[url] = undefined
     }
   }
   console.log(res)
@@ -225,6 +227,6 @@ const port = 8000;
 io.listen(port);
 console.log('listening on port ', port);
 
-exports.resetInterval = resetInterval
+exports.closeRoom = closeRoom
 exports.gameLoop = gameLoop
-exports.pushToClient = pushToClient
+exports.emitAll = emitAll
