@@ -40,6 +40,7 @@ class Room extends Component {
   }
 
   componentDidMount() {
+
     this.props.socketConnector.socket.on('goToGame', () => { nav(this.props.history, `${this.props.location.pathname}/game`) })
     this.props.socketConnector.socket.on('refreshRoomInfo', (roomInfo) => { this.syncRoomData(roomInfo) })
     let state = this.state

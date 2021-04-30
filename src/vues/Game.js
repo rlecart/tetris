@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import colors from '../ressources/colors.js'
 import { move } from '../api/clientApi.js'
-import { redirectTo } from "../api/serverApi";
+import nav from "../misc/nav";
 
 class Game extends Component {
   socket = this.props.socketConnector.socket
@@ -73,7 +73,7 @@ class Game extends Component {
 
   bjr(event) {
     const state = this.state
-    const socket = this.props.socketConnector.socket
+    const socket = this.socket
     const url = this.props.roomReducer.roomInfo.url
 
     console.log(url)
@@ -112,7 +112,12 @@ class Game extends Component {
     //   console.log(text)
     // });
     this.socket.on('refreshVue', (game) => { this.refreshGame(game, this) })
-    this.socket.on('endGame', () => { redirectTo('/') })
+    this.socket.on('endGame', (roomInfo) => { 
+      console.log(roomInfo)
+      console.log('\n')
+      console.log(this.props)
+      nav(this.props.history, `/#${this.props.match.params.room}`)
+     })
     this.socket.emit('readyToStart', this.socket.id, this.props.roomReducer.roomInfo.url)
     window.addEventListener("keypress", this.bjr.bind(this))
   }

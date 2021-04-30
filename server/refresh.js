@@ -270,19 +270,21 @@ const checkFilledLine = (game) => {
 }
 
 const endGame = (room) => {
-  server.emitAll('endGame', room.url, undefined, room)
+  console.log(room)
+  server.emitAll('endGame', room.url, undefined, server.getRoomInfo(room.url))
   server.closeRoom(room)
 }
 
 function refresh(game, room) {
   let hasMoved = 0
 
+  console.log(room)
   if (game.placed === -1)
     createNewTetri(game, room)
   hasMoved = moveTetri(game, 0, 1)
   if (hasMoved == -1) {
     console.log('endgame')
-    endGame(game, room)
+    endGame(room)
   }
   else if (hasMoved == 1) {
     checkFilledLine(game)

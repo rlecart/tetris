@@ -6,7 +6,8 @@ const io = socketio(server, {
     origin: "http://localhost:3000",
     methods: ["GET", "POST"],
     credentials: true
-  }
+  },
+  'pingInterval': 5000,
 });
 const game = require('../src/ressources/game.js')
 const refresh = require('./refresh.js')
@@ -59,6 +60,7 @@ const emitAll = (message, target, except, obj) => {
   let clientList = target ? getClientListFromRoom(target, true) : sioClientList
 
   for (let [key, value] of Object.entries(clientList)) {
+    console.log('engame?', key)
     if (key !== except) {
       value.emit(message, obj)
     }
@@ -123,37 +125,46 @@ const move = (clientId, url, dir) => {
 let gameRooms = {}
 
 const gameLoop = (clientsRoom, url) => {
+  let gameRoomsTmp = { ...gameRooms }
 
   for (let [key, value] of Object.entries(clientsRoom)) {
     console.log('key=', key)
     // console.log('value=', value)
-    if (gameRooms[url][key] === undefined) {
-      gameRooms[url] = {
-        ...gameRooms[url], [key]: {
+    if (gameRoomsTmp[url][key] === undefined) {
+      gameRoomsTmp[url] = {
+        ...gameRoomsTmp[url], [key]: {
           ...clonedeep(game.game)
         },
+        url: url,
       }
     }
-    gameRooms[url][key] = refresh.refresh(gameRooms[url][key], gameRooms[url])
+    gameRoomsTmp[url][key] = refresh.refresh(gameRoomsTmp[url][key], gameRoomsTmp[url])
   }
-  for (let [key, value] of Object.entries(clientsRoom))
-    if (gameRooms && gameRooms[url] && gameRooms[url][key]) {
-      value.emit('refreshVue', gameRooms[url][key])
-    }
+  if (rooms[url].inGame === true) {
+    gameRooms = { ...gameRoomsTmp }
+    for (let [key, value] of Object.entries(clientsRoom))
+      if (gameRooms && gameRooms[url] && gameRooms[url][key]) {
+        value.emit('refreshVue', gameRooms[url][key])
+      }
+  }
   // console.log('\n\n\n', gameRooms, gameRooms[url], '\n\n\n')
 }
 
 
 
 const closeRoom = (room) => {
-  let clientsRoom = getClientListFromRoom(url, true)
+  let clientsRoom = getClientListFromRoom(room.url, true)
 
+  console.log('\n\naaaaaaaaaaaaaaaaaa', room)
+  console.log('aaaaaaaaaaaaaaaaaa', rooms[room.url], '\n\n')
   clearInterval(room.interval)
-  room.inGame = false
+  room.interval = undefined
   for (let [key, value] of Object.entries(clientsRoom)) {
-    room[key] = undefined
+    gameRooms[room.url][key] = undefined
+    // room[key] = undefined
   }
-  console.log(room)
+  // gameRooms[room.url] = undefined
+  console.log(`room ${room.url} closed`)
 }
 
 const launchInterval = (url, room) => {
@@ -184,7 +195,8 @@ let roomsRTS = {}
 
 const readyToStart = (clientId, url) => {
   let res
-  // console.log('aaaaa', url, clientId, rooms[url], rooms[url].listPlayers[clientId])
+  console.log(roomsRTS)
+  console.log('aaaaa', url, clientId, rooms[url], rooms[url].listPlayers[clientId])
   if (url && clientId && rooms[url].listPlayers[clientId]) {
     roomsRTS = {
       ...roomsRTS, [url]: {
@@ -219,7 +231,29 @@ io.on('connection', (client) => {
   client.on('getRoomInfo', (idRoom, cb) => { getRoomInfo(idRoom, cb) })
   client.on('startGame', (clientId, profil, url, cb) => { startGame(clientId, profil, url, cb) })
   client.on('readyToStart', (clientId, url) => { readyToStart(clientId, url) })
-  client.on('endGame', () => { pushToClient('endGame') })
+  client.conn.on('heartbeat', () => {
+    console.log('heartbeat called!');
+    sioClientList[client.id].hbeat = Date.now();
+    setTimeout(function () {
+      var now = Date.now();
+      if (now - sioClientList[client.id].hbeat > 5000) {
+        console.log('this client id will be closed ' + client.id);
+        if (1) {
+          // removeFromLobby(client.id);
+
+          try {
+            // this is the most important part
+            console.log(io.clients, '\n')
+            io.clients.connected[client.id].disconnect();
+          } catch (error) {
+            console.log(error)
+          }
+        }
+      }
+      now = null;
+    }, 6000);
+  });
+
   console.log('connected')
 })
 
@@ -230,3 +264,4 @@ console.log('listening on port ', port);
 exports.closeRoom = closeRoom
 exports.gameLoop = gameLoop
 exports.emitAll = emitAll
+exports.getRoomInfo = getRoomInfo
