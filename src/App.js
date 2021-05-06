@@ -15,8 +15,9 @@ class App extends Component {
   state = {
   }
 
-  componentDidMount() {
+  componentDidMount() { // soit checker si socket existant soit regler le pb de App qui se lance au redirect
     // fonction pour set toutes les reponses serv
+    console.log('\n\n\nquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjour\n\n\n')
     let sock = openSocket('http://localhost:8000')
     const action = { type: 'CONNECT_SOCKET', value: sock }
     this.props.dispatch(action)

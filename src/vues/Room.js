@@ -40,13 +40,12 @@ class Room extends Component {
   }
 
   componentDidMount() {
-
-    this.props.socketConnector.socket.on('goToGame', () => { nav(this.props.history, `${this.props.location.pathname}/game`) })
-    this.props.socketConnector.socket.on('refreshRoomInfo', (roomInfo) => { this.syncRoomData(roomInfo) })
     let state = this.state
     let url = this.props.match.url
     state.profil.name = url.substring(url.search(/\[[0-9a-zA-Z]+\]/) + 1, url.length - 1)
     state.roomUrl = url.substring(1, url.search(/\[/))
+    this.props.socketConnector.socket.on('goToGame', () => { nav(this.props.history, `${this.props.location.pathname}/game`) })
+    this.props.socketConnector.socket.on('refreshRoomInfo', (roomInfo) => { this.syncRoomData(roomInfo) })
     console.log('mount', state.roomInfo)
     console.log('propsmount', this.props)
     if (!state.roomInfo) {
@@ -58,6 +57,10 @@ class Room extends Component {
       state.roomInfo = this.props.roomReducer.roomInfo
     }
     this.setState(state)
+  }
+
+  componentWillUnmount() {
+    this.props.socketConnector.socket.removeAllListeners()
   }
 
   render() {

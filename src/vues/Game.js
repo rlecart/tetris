@@ -108,18 +108,18 @@ class Game extends Component {
   componentDidMount() {
     // console.log('bonjoru', this.props)
     // fonction pour set toutes les reponses serv
-    // this.socket.on('reponse', (text) => {
-    //   console.log(text)
-    // });
     this.socket.on('refreshVue', (game) => { this.refreshGame(game, this) })
-    this.socket.on('endGame', (roomInfo) => { 
-      console.log(roomInfo)
-      console.log('\n')
-      console.log(this.props)
-      nav(this.props.history, `/#${this.props.match.params.room}`)
-     })
+    this.socket.on('endGame', (roomInfo) => { nav(this.props.history, `/${this.props.match.params.room}`) })
+    if (this.props.socketConnector.areGameEventsLoaded === false) {
+      window.addEventListener("keypress", this.bjr.bind(this))
+      const action = { type: 'GAME_EVENTS_LOADED' }
+      this.props.dispatch(action)
+    }
     this.socket.emit('readyToStart', this.socket.id, this.props.roomReducer.roomInfo.url)
-    window.addEventListener("keypress", this.bjr.bind(this))
+  }
+
+  componentWillUnmount() {
+    this.socket.removeAllListeners()
   }
 
   render() {

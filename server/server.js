@@ -161,9 +161,9 @@ const closeRoom = (room) => {
   room.interval = undefined
   for (let [key, value] of Object.entries(clientsRoom)) {
     gameRooms[room.url][key] = undefined
-    // room[key] = undefined
+    room[key] = undefined
   }
-  // gameRooms[room.url] = undefined
+  gameRooms[room.url] = undefined
   console.log(`room ${room.url} closed`)
 }
 
@@ -176,7 +176,7 @@ const launchInterval = (url, room) => {
 const startGame = (clientId, profil, url, cb) => {
   console.log(profil, url)
   if (rooms && rooms[url]) {
-    rooms[url].inGame = true
+    // rooms[url].inGame = true
     emitAll('goToGame', url, undefined, undefined)
   }
 }
@@ -225,7 +225,9 @@ const readyToStart = (clientId, url) => {
 io.on('connection', (client) => {
   sioClientList = { ...sioClientList, [client.id]: client }
   // console.log(sioClientList)
-  client.on('move', (clientId, url, dir) => { move(clientId, url, dir) })
+  client.on('move', (clientId, url, dir) => { 
+    console.log('move x1\n\n')
+    move(clientId, url, dir) })
   client.on('createRoom', (clientId, profil, cb) => { createRoom(clientId, profil, cb) })
   client.on('joinRoom', (clientId, profil, url, cb) => { joinRoom(clientId, profil, url, cb) })
   client.on('getRoomInfo', (idRoom, cb) => { getRoomInfo(idRoom, cb) })

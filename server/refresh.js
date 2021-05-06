@@ -222,7 +222,7 @@ const moveTetri = (game, x, y) => {
     // console.log(truePos)
     // console.log(game.tetri)
   }
-  console.log(game.tetri.x, game.tetri.y, truePos)
+  // console.log(game.tetri.x, game.tetri.y, truePos)
   if (errors !== 'ok') {
     console.log(truePos)
     console.log(game.tetri)
@@ -278,7 +278,7 @@ const endGame = (room) => {
 function refresh(game, room) {
   let hasMoved = 0
 
-  console.log(room)
+  // console.log(room)
   if (game.placed === -1)
     createNewTetri(game, room)
   hasMoved = moveTetri(game, 0, 1)

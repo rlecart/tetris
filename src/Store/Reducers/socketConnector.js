@@ -1,16 +1,26 @@
-const initialState = { socket: {} }
+const initialState = {
+  socket: {},
+  areGameEventsLoaded: false,
+}
 
 function socketConnector(state = initialState, action) {
   let nextState
 
+  if (action)
+    console.log(action.type)
   switch (action.type) {
     case 'CONNECT_SOCKET':
-      console.log('CONNECT_SOCKET')
       nextState = {
         ...state,
         socket: action.value
       }
-      console.log('nextState = ', nextState, '\n')
+      // console.log('nextState = ', nextState, '\n')
+      return nextState || state
+    case 'GAME_EVENTS_LOADED':
+      nextState = {
+        ...state,
+        areGameEventsLoaded: true
+      }
       return nextState || state
     default:
       return state
