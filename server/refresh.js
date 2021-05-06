@@ -209,7 +209,7 @@ const checkIfOk = (game, x, y, truePos) => {
     return (1)
   if (x === 0 && y === 0
     && ((truePos.lengthX < truePos.lengthY && game.tetri.x + truePos.x + truePos.lengthX - 1 + truePos.lengthY - truePos.lengthX > game.lines[0].length)
-    || (truePos.lengthY < truePos.lengthX && game.tetri.y + truePos.y + truePos.lengthY - 1 + truePos.lengthX - truePos.lengthY > game.lines.length))) {
+      || (truePos.lengthY < truePos.lengthX && game.tetri.y + truePos.y + truePos.lengthY - 1 + truePos.lengthX - truePos.lengthY > game.lines.length))) {
     return (0)
   }
   return ('ok')
@@ -259,24 +259,51 @@ const moveTetri = (game, x, y) => {
 
 const checkFilledLine = (game) => {
   let i = -1
+  let count = 0
 
   while (++i < game.lines.length) {
-    if (!(game.lines[i].includes(0)) && !(game.lines[i].includes(-1))) {
+    if (!(game.lines[i].includes(0)) && !(game.lines[i].includes(1))) {
       game.lines.splice(i, 1)
       game.lines.unshift(new Array(game.lines[0].length).fill(0))
       i--
+      count++
+    }
+  }
+  return (count)
+}
+
+const endGame = (room, id) => {
+  console.log(room)
+  // server.emitAll('endGame', room.url, undefined, server.getRoomInfo(room.url))
+  // server.emitOnly('endGame', room.url, id, server.getRoomInfo(room.url))
+  server.closeRoom(room)
+}
+
+function addFilledLine(room, exception, amount) {
+  let players = server.getClientListFromRoom(room.url, true)
+
+  for (let [key, value] of Object.entries(players)) {
+    if (key !== exception) {
+      for (let i = 0; i < amount; i++) {
+        if (room[key].lines[0].find((elem) => { elem !== 0 })) {
+          server.emitOnly('endGame', room.url, key, server.getRoomInfo(room.url))
+          break;
+        }
+        else {
+          if (room[key].tetri.y === 0)
+            refresh(room[key], room, key)
+          room[key].tetri.y--
+          room[key].lines.push(new Array(room[key].lines[0].length).fill(1))
+          room[key].lines.shift()
+        }
+      }
     }
   }
 }
 
-const endGame = (room) => {
-  console.log(room)
-  server.emitAll('endGame', room.url, undefined, server.getRoomInfo(room.url))
-  server.closeRoom(room)
-}
-
-function refresh(game, room) {
+function refresh(game, room, id) {
   let hasMoved = 0
+  let filledLines = 0
 
   // console.log(room)
   if (game.placed === -1)
@@ -284,12 +311,15 @@ function refresh(game, room) {
   hasMoved = moveTetri(game, 0, 1)
   if (hasMoved == -1) {
     console.log('endgame')
-    endGame(room)
+    endGame(room, id)
   }
   else if (hasMoved == 1) {
-    checkFilledLine(game)
+    if ((filledLines = checkFilledLine(game)) > 0) {
+      console.log('\n\nnombre=', filledLines)
+      addFilledLine(room, id, filledLines)
+    }
     createNewTetri(game, room)
-    refresh(game, room)
+    refresh(game, room, id)
   }
   return (game)
 }

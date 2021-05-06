@@ -67,11 +67,11 @@ const emitAll = (message, target, except, obj) => {
   }
 }
 
-const emitOnly = (message, clientId, target, obj) => {
+const emitOnly = (message, target, only, obj) => {
   let clientList = getClientListFromRoom(target, true)
 
   for (let [key, value] of Object.entries(clientList)) {
-    if (key === clientId)
+    if (key === only)
       value.emit(message, obj)
   }
 }
@@ -119,7 +119,7 @@ const move = (clientId, url, dir) => {
   else if (dir === 'turn')
     reponse = refresh.moveTetri(gameRooms[url][clientId], 0, 0)
   if (reponse !== 0)
-    emitOnly('refreshVue', clientId, url, gameRooms[url][clientId])
+    emitOnly('refreshVue', url, clientId, gameRooms[url][clientId])
 }
 
 let gameRooms = {}
@@ -138,7 +138,8 @@ const gameLoop = (clientsRoom, url) => {
         url: url,
       }
     }
-    gameRoomsTmp[url][key] = refresh.refresh(gameRoomsTmp[url][key], gameRoomsTmp[url])
+    // console.log(gameRooms[url])
+    gameRoomsTmp[url][key] = refresh.refresh(gameRoomsTmp[url][key], gameRoomsTmp[url], key)
   }
   if (rooms[url].inGame === true) {
     gameRooms = { ...gameRoomsTmp }
@@ -266,4 +267,6 @@ console.log('listening on port ', port);
 exports.closeRoom = closeRoom
 exports.gameLoop = gameLoop
 exports.emitAll = emitAll
+exports.emitOnly = emitOnly
 exports.getRoomInfo = getRoomInfo
+exports.getClientListFromRoom = getClientListFromRoom
