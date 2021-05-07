@@ -26,6 +26,7 @@ const createNewTetri = (game, room) => {
   game.tetri.actualShape = room.shapes[game.placed]
   game.tetri.nextShape = room.shapes[game.placed + 1]
   game.tetri.id = room.shapesId[game.placed]
+  game.tetri.nextId = room.shapesId[game.placed + 1]
   game.tetri.x = Math.trunc(game.lines[0].length / 2 - game.tetri.actualShape[0].length / 2)
   game.tetri.y = -1
 }

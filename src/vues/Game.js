@@ -33,25 +33,29 @@ class Game extends Component {
     ],
   }
 
-  createbloc(bloc) {
-    return <div className='lineBloc' style={{ backgroundColor: colors[bloc] }} />
+  createbloc(bloc, blocClass, id) {
+    let col = id && bloc !== 0 ? id : bloc
+    return <div className={blocClass} style={{ backgroundColor: colors[col] }} />
   }
 
-  createLine(line) {
+  createLine(line, blocClass, id) {
     let ret = []
     for (let bloc of line) {
-      ret.push(this.createbloc(bloc))
+      ret.push(this.createbloc(bloc, blocClass, id))
     }
     return ret
   }
 
-  createLines() {
+  createLines(lines, lineClass, blocClass, id) {
     let ret = []
-    for (let line of this.state.lines) {
+
+    if (id === 5)
+      lines.unshift(new Array(lines[0].length).fill(0))
+    for (let line of lines) {
       ret.push(
         // <table className='line' cellSpacing="0" cellPadding="0">
-        <div className='line'>
-          {this.createLine(line)}
+        <div className={lineClass}>
+          {this.createLine(line, blocClass, id)}
         </div>
         // </table>
       )
@@ -130,11 +134,13 @@ class Game extends Component {
         <div className="game">
           <div className="board">
 
-            {this.createLines()}
+            {this.createLines(this.state.lines, 'line', 'lineBloc')}
           </div>
           <div className="rightPanel">
-              <div className="nextText">NEXT :</div>
-              <div className="nextPiece"></div>
+            <div className="nextText">NEXT :</div>
+            <div className="nextPiece">
+              {this.state.tetri !== undefined ? this.createLines(this.state.tetri.nextShape, 'lineNext', 'lineBlocNext', this.state.tetri.nextId) : undefined}
+            </div>
             <div className="score">Score :<br />00</div>
           </div>
         </div>
