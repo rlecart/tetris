@@ -60,7 +60,6 @@ const emitAll = (message, target, except, obj) => {
   let clientList = target ? getClientListFromRoom(target, true) : sioClientList
 
   for (let [key, value] of Object.entries(clientList)) {
-    console.log('engame?', key)
     if (key !== except) {
       value.emit(message, obj)
     }

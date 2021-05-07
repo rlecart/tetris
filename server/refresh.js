@@ -295,6 +295,8 @@ function addFilledLine(room, exception, amount) {
           room[key].tetri.y--
           room[key].lines.push(new Array(room[key].lines[0].length).fill(1))
           room[key].lines.shift()
+          refresh(room[key], room, key)
+          server.emitOnly('refreshVue', room.url, key, room[key])
         }
       }
     }
@@ -305,19 +307,14 @@ function refresh(game, room, id) {
   let hasMoved = 0
   let filledLines = 0
 
-  // console.log(room)
   if (game.placed === -1)
     createNewTetri(game, room)
   hasMoved = moveTetri(game, 0, 1)
-  if (hasMoved == -1) {
-    console.log('endgame')
+  if (hasMoved == -1)
     endGame(room, id)
-  }
   else if (hasMoved == 1) {
-    if ((filledLines = checkFilledLine(game)) > 0) {
-      console.log('\n\nnombre=', filledLines)
+    if ((filledLines = checkFilledLine(game)) > 0)
       addFilledLine(room, id, filledLines)
-    }
     createNewTetri(game, room)
     refresh(game, room, id)
   }
