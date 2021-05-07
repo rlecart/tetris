@@ -37,32 +37,6 @@
 	}
 }
 
-.display {
-	position: relative;
-	width: 1440px;
-	height: 900px;
-	background: #313131;
-}
-
-.board {
-	width: 406px;
-	height: 69.5vh;
-	left: 419px;
-	top: 94px;
-	background: #c4c4c4;
-	position: relative;
-	padding: 40px;
-}
-
-.rightPanel {
-	position: absolute;
-	width: 173px;
-	height: 80vh;
-	left: 924px;
-	top: 94px;
-
-	background: #c4c4c4;
-}
 .nextBloc {
 	position: absolute;
 	width: 173px;
@@ -73,63 +47,14 @@
 	background: #989898;
 }
 
-.nextPiece {
-	position: absolute;
-	width: 74px;
-	height: 67px;
-	left: 49px;
-	top: 25px;
-
-	background: #c4c4c4;
-}
-
-.nextText {
-	position: absolute;
-	width: 36px;
-	height: 14px;
-	left: 69px;
-	top: 7px;
-	margin: 0;
-
-	font-style: normal;
-	font-weight: normal;
-	font-size: 12px;
-	line-height: 14px;
-	/* identical to box height */
-
-	text-align: center;
-
-	color: #000000;
-}
-
-.score {
-	position: absolute;
-	width: 45px;
-	height: 28px;
-	left: 65px;
-	top: 138px;
-	margin: 0;
-
-	font-style: normal;
-	font-weight: normal;
-	font-size: 12px;
-	line-height: 14px;
-	text-align: center;
-
-	color: #000000;
-}
 
 .line {
-	bottom: 0;
-	margin: auto;
-	width: 80%;
-	height: 4.8%;
-	background-color: lightgrey;
+	display: flex;
 }
 
 .lineBloc {
-	height: 100%;
-	/* width: 6.288%; */
+	min-width: 35px;
+	min-height: 35px;
 }
 
 .commands {
@@ -520,4 +445,66 @@
 	height: 106px;
 	background: rgba(196, 196, 196, 1);
 	margin: 20px 20px 0 20px;
+}
+
+#root {
+	background: #313131;
+	height: 100vh;
+	width: 100vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.display {
+	height: 90%;
+	width: 90%;
+	display: flex;
+	justify-content: center;
+	flex-wrap: nowrap;
+	align-items: center;
+}
+
+.game {
+	display: flex;
+	min-width: 530px;
+	padding: 40px;
+	background: #c4c4c4;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+}
+
+.board {
+	display: flex;
+	flex-direction: column;
+}
+
+.rightPanel {
+	background: #989898;
+	flex: 1;
+	margin-left: 40px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: nowrap;
+}
+
+.nextText {
+	width: 100%;
+	margin-top: 15px;
+	text-align: center;
+}
+
+.nextPiece {
+	width: 80px;
+	height: 80px;
+	background: lightgrey;
+	margin-top: 15px;
+}
+
+.score {
+	width: 100%;
+	margin-top: 15px;
+	text-align: center;
 }

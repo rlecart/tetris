@@ -34,7 +34,7 @@ class Game extends Component {
   }
 
   createbloc(bloc) {
-    return <td className='lineBloc' style={{ backgroundColor: colors[bloc] }} />
+    return <div className='lineBloc' style={{ backgroundColor: colors[bloc] }} />
   }
 
   createLine(line) {
@@ -49,9 +49,11 @@ class Game extends Component {
     let ret = []
     for (let line of this.state.lines) {
       ret.push(
-        <table className='line' cellSpacing="0" cellPadding="0">
+        // <table className='line' cellSpacing="0" cellPadding="0">
+        <div className='line'>
           {this.createLine(line)}
-        </table>
+        </div>
+        // </table>
       )
     }
     return ret
@@ -125,28 +127,16 @@ class Game extends Component {
   render() {
     return (
       <div className='display'>
-        <div className="commands">
+        <div className="game">
+          <div className="board">
 
-          <p>Controles :
-  <br />
-            {'< = left'}
-            <br />
-            {'> = right'}
-            <br />
-            {'space = down'}
-            <br />
-            {'/ = turn'}
-          </p>
-        </div>
-        <div className="board">
-          {this.createLines()}
-        </div>
-        <div className="rightPanel">
-          <div className="nextBloc">
-            <p className="nextText">NEXT :</p>
-            <div className="nextPiece"></div>
+            {this.createLines()}
           </div>
-          <p className="score">Score :<br />00</p>
+          <div className="rightPanel">
+              <div className="nextText">NEXT :</div>
+              <div className="nextPiece"></div>
+            <div className="score">Score :<br />00</div>
+          </div>
         </div>
       </div>
 
