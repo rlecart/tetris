@@ -24,40 +24,33 @@ class Accueil extends Component {
     this.setState(state)
   }
 
-    
+
   render() {
     console.log(this.props)
     return (
-      <div className="v9_11">
-        <div className="v9_12">
-          <div className="v11_25">
-            <div className="v9_22">
-              <input className='v11_5' type="text" name="name" required onChange={(event) => this.handleChange(event)} />
-              <div className="v11_4">
+      <div className="display">
+        <div className="homeMenu">
+          <div className="topPanel">
+            <span className="title">Super Tetris 3000</span>
+          </div>
+          <div className="bottomPanel">
+            <div className="blocMenu" id="home">
+              <div className="avatarSelector">
+                <div className="avatarButton" />
+                <div className="avatar" />
+                <div className="avatarButton" />
               </div>
-              <div className="v11_8">
-              </div>
-              <div className="v11_113">
-              </div>
+              <input className='nickname' type="text" name="name" required onChange={(event) => this.handleChange(event)} />
             </div>
-            <div className="name">
-            </div>
-            <div className="v11_26">
-              <input className='v11_32' type="text" name="roomUrl" required onChange={(event) => this.handleChange(event)} placeHolder='http://abcdef.com/absfaskfew?abc=oui' />
-                <button className="v11_33" onClick={() => { joinRoom(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl, (path) => { nav(this.props.history, path) }) }}>
-                  <span className="v11_38">Join room</span>
-                </button>
-              <button className="v11_34" onClick={() => { createRoom(this.props.socketConnector.socket, this.state.profil, (path) => { nav(this.props.history, path) }) }}>
-                <span className="v11_110">Create Room</span>
+            <div className="blocMenu" id="home">
+              <input className='roomUrl' type="text" name="roomUrl" required onChange={(event) => this.handleChange(event)} placeHolder='http://abcdef.com/absfaskfew?abc=oui' />
+              <button className="roomButton" onClick={() => { joinRoom(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl, (path) => { nav(this.props.history, path) }) }}>
+                <span className="textButton">Join room</span>
+              </button>
+              <button className="roomButton" onClick={() => { createRoom(this.props.socketConnector.socket, this.state.profil, (path) => { nav(this.props.history, path) }) }}>
+                <span className="textButton">Create Room</span>
               </button>
             </div>
-          </div>
-          <div className="v11_1">
-          </div>
-          <div className="v11_2">
-          </div>
-          <div className="v11_9">
-            <span className="v10_5">Super Tetris 3000</span>
           </div>
         </div>
       </div>

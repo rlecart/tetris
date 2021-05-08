@@ -67,19 +67,24 @@ class Room extends Component {
     let players = this.createList()
     console.log('players', players)
     return (
-      <div className="v13_2">
-        <div className="v13_4">
-          <div className="v14_4">
-            <div className="playerList">
-              {players}
-              <button className="v14_14" onClick={() => { startGame(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl, (path) => { nav(this.props.history, path) }) }}>
+      <div className="display">
+        <div className="homeMenu" id="inRoom">
+          <div className="topPanel">
+            <span className="title">Super Tetris 3000</span>
+          </div>
+          <div className="bottomPanel" id="inRoom">
+            <div className="blocMenu" id="rules">
+            </div>
+            <div className="blocMenu" id="listPlayers">
+              <div className="playerList">
+                {players}
+              </div>
+              <button className="roomButton" id="launchGame" onClick={() => { startGame(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl, (path) => { nav(this.props.history, path) }) }}>
+                <span className="textButton">Lancer la partie</span>
               </button>
             </div>
           </div>
-          <div className="name"></div>
-          <div className="v14_3"></div>
         </div>
-        <div className="v14_17"><span className="v14_18">Super Tetris 3000</span></div>
       </div>
     )
   }
