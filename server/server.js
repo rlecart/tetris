@@ -238,9 +238,11 @@ const readyToStart = (clientId, url) => {
 io.on('connection', (client) => {
   sioClientList = { ...sioClientList, [client.id]: client }
   // console.log(sioClientList)
-  client.on('move', (clientId, url, dir) => { 
+  client.on('move', (clientId, url, dir) => {
     console.log('move x1\n\n')
-    move(clientId, url, dir) })
+    if (rooms[url].inGame)
+      move(clientId, url, dir)
+  })
   client.on('createRoom', (clientId, profil, cb) => { createRoom(clientId, profil, cb) })
   client.on('joinRoom', (clientId, profil, url, cb) => { joinRoom(clientId, profil, url, cb) })
   client.on('getRoomInfo', (idRoom, cb) => { getRoomInfo(idRoom, cb) })
