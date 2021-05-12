@@ -56,22 +56,22 @@ const getClientListFromRoom = (url, objVersion) => {
   return ret
 }
 
-const emitAll = (message, target, except, obj) => {
+const emitAll = (message, target, except, obj, spec) => {
   let clientList = target ? getClientListFromRoom(target, true) : sioClientList
 
   for (let [key, value] of Object.entries(clientList)) {
     if (key !== except) {
-      value.emit(message, obj)
+      value.emit(message, obj, spec)
     }
   }
 }
 
-const emitOnly = (message, target, only, obj) => {
+const emitOnly = (message, target, only, obj, spec) => {
   let clientList = getClientListFromRoom(target, true)
 
   for (let [key, value] of Object.entries(clientList)) {
     if (key === only)
-      value.emit(message, obj)
+      value.emit(message, obj, spec)
   }
 }
 
@@ -118,7 +118,7 @@ const move = (clientId, url, dir) => {
   else if (dir === 'turn')
     reponse = refresh.moveTetri(gameRooms[url][clientId], 0, 0)
   if (reponse !== 0)
-    emitOnly('refreshVue', url, clientId, gameRooms[url][clientId])
+    emitOnly('refreshVue', url, clientId, gameRooms[url][clientId], createSpecList(gameRooms[url], clientId, url))
 }
 
 let gameRooms = {}
@@ -144,19 +144,32 @@ const gameLoop = (clientsRoom, url) => {
     gameRooms = { ...gameRoomsTmp }
     for (let [key, value] of Object.entries(clientsRoom))
       if (gameRooms && gameRooms[url] && gameRooms[url][key]) {
-        value.emit('refreshVue', gameRooms[url][key])
+        value.emit('refreshVue', gameRooms[url][key], createSpecList(gameRooms[url], key, url))
       }
   }
   // console.log('\n\n\n', gameRooms, gameRooms[url], '\n\n\n')
 }
 
+const createSpecList = (obj, exception, url) => {
+  let ret = []
 
+  for (let [key, value] of Object.entries(obj)) {
+    if (key !== exception && value && value.lines) {
+      ret.push({
+        lines: value.lines,
+        name: rooms[url].listPlayers[key].name,
+      })
+    }
+  }
+  console.log(ret)
+  return ret
+}
 
 const closeRoom = (room) => {
   let clientsRoom = getClientListFromRoom(room.url, true)
 
-  console.log('\n\naaaaaaaaaaaaaaaaaa', room)
-  console.log('aaaaaaaaaaaaaaaaaa', rooms[room.url], '\n\n')
+  // console.log('\n\naaaaaaaaaaaaaaaaaa', room)
+  // console.log('aaaaaaaaaaaaaaaaaa', rooms[room.url], '\n\n')
   clearInterval(room.interval)
   room.interval = undefined
   for (let [key, value] of Object.entries(clientsRoom)) {
@@ -195,8 +208,8 @@ let roomsRTS = {}
 
 const readyToStart = (clientId, url) => {
   let res
-  console.log(roomsRTS)
-  console.log('aaaaa', url, clientId, rooms[url], rooms[url].listPlayers[clientId])
+  // console.log(roomsRTS)
+  // console.log('aaaaa', url, clientId, rooms[url], rooms[url].listPlayers[clientId])
   if (url && clientId && rooms[url].listPlayers[clientId]) {
     roomsRTS = {
       ...roomsRTS, [url]: {
@@ -218,7 +231,7 @@ const readyToStart = (clientId, url) => {
       roomsRTS[url] = undefined
     }
   }
-  console.log(res)
+  // console.log(res)
 }
 
 // liste de tous les sockets serveurs
@@ -269,3 +282,4 @@ exports.emitAll = emitAll
 exports.emitOnly = emitOnly
 exports.getRoomInfo = getRoomInfo
 exports.getClientListFromRoom = getClientListFromRoom
+exports.createSpecList = createSpecList

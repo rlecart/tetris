@@ -31,33 +31,32 @@ class Game extends Component {
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ],
+    spec: [],
   }
 
-  createbloc(bloc, blocClass, id) {
-    let col = id && bloc !== 0 ? id : bloc
-    return <div className={blocClass} style={{ backgroundColor: colors[col] }} />
+  createbloc(bloc, blocClass, id, idTetri) {
+    let col = (idTetri && bloc !== 0) ? idTetri : bloc
+    return <div className={blocClass} id={id} style={{ backgroundColor: colors[col] }} />
   }
 
-  createLine(line, blocClass, id) {
+  createLine(line, blocClass, id, idTetri) {
     let ret = []
     for (let bloc of line) {
-      ret.push(this.createbloc(bloc, blocClass, id))
+      ret.push(this.createbloc(bloc, blocClass, id, idTetri))
     }
     return ret
   }
 
-  createLines(lines, lineClass, blocClass, id) {
+  createLines(lines, lineClass, blocClass, id, idTetri) {
     let ret = []
 
-    if (id === 5)
+    if (idTetri === 5)
       lines.unshift(new Array(lines[0].length).fill(0))
     for (let line of lines) {
       ret.push(
-        // <table className='line' cellSpacing="0" cellPadding="0">
         <div className={lineClass}>
-          {this.createLine(line, blocClass, id)}
+          {this.createLine(line, blocClass, id, idTetri)}
         </div>
-        // </table>
       )
     }
     return ret
@@ -99,12 +98,14 @@ class Game extends Component {
       socket.emit('endGame')
   }
 
-  refreshGame(game, context) {
-    console.log(game)
+  refreshGame(game, spec, context) {
+    // console.log(game)
     const state = context.state
     state.lines = game.lines
     state.tetri = game.tetri
     state.interval = game.interval
+    console.log('\n\n', spec, '\n\n')
+    state.spec = spec
     // state.client = game.client
     console.log('refreshed')
     // console.log(game.tetri.id)
@@ -114,7 +115,7 @@ class Game extends Component {
   componentDidMount() {
     // console.log('bonjoru', this.props)
     // fonction pour set toutes les reponses serv
-    this.socket.on('refreshVue', (game) => { this.refreshGame(game, this) })
+    this.socket.on('refreshVue', (game, spec) => { this.refreshGame(game, spec, this) })
     this.socket.on('endGame', (roomInfo) => { nav(this.props.history, `/${this.props.match.params.room}`) })
     if (this.props.socketConnector.areGameEventsLoaded === false) {
       window.addEventListener("keypress", this.bjr.bind(this))
@@ -128,9 +129,35 @@ class Game extends Component {
     this.socket.removeAllListeners()
   }
 
+  createSpec(players) {
+    let ret = []
+
+    for (let player of players) {
+      ret.push(
+        <div className='blocSpec'>
+          <div className="board" id='spec'>
+            {this.createLines(player.lines, 'line', 'lineBloc', 'spec')}
+          </div>
+          <div className="nicknameSpec">{player.name}</div>
+        </div>
+      )
+    }
+    return ret
+  }
+
   render() {
+    console.log(this.state)
+      let spec = (this.state.spec.length !== 0) ? [
+        this.state.spec.slice(0, this.state.spec.length / 2),
+        this.state.spec.slice(this.state.spec.length / 2)
+      ] : undefined
     return (
       <div className='display'>
+        <div className="game" id="spec">
+          <div className="spec">
+            {spec ? this.createSpec(spec[0]) : undefined}
+          </div>
+        </div>
         <div className="game">
           <div className="board">
 
@@ -139,9 +166,14 @@ class Game extends Component {
           <div className="rightPanel">
             <div className="nextText">NEXT :</div>
             <div className="nextPiece">
-              {this.state.tetri !== undefined ? this.createLines(this.state.tetri.nextShape, 'lineNext', 'lineBlocNext', this.state.tetri.nextId) : undefined}
+              {this.state.tetri !== undefined ? this.createLines(this.state.tetri.nextShape, 'lineNext', 'lineBlocNext', undefined, this.state.tetri.nextId) : undefined}
             </div>
             <div className="score">Score :<br />00</div>
+          </div>
+        </div>
+        <div className="game" id="spec">
+          <div className="spec">
+            {spec ? this.createSpec(spec[1]) : undefined}
           </div>
         </div>
       </div>

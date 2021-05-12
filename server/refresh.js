@@ -275,8 +275,8 @@ const checkFilledLine = (game) => {
 
 const endGame = (room, id) => {
   console.log(room)
-  // server.emitAll('endGame', room.url, undefined, server.getRoomInfo(room.url))
-  // server.emitOnly('endGame', room.url, id, server.getRoomInfo(room.url))
+  server.emitAll('endGame', room.url, undefined, server.getRoomInfo(room.url))
+  server.emitOnly('endGame', room.url, id, server.getRoomInfo(room.url))
   server.closeRoom(room)
 }
 
@@ -297,7 +297,7 @@ function addFilledLine(room, exception, amount) {
           room[key].lines.push(new Array(room[key].lines[0].length).fill(1))
           room[key].lines.shift()
           refresh(room[key], room, key)
-          server.emitOnly('refreshVue', room.url, key, room[key])
+          server.emitOnly('refreshVue', room.url, key, room[key], server.createSpecList(room, key, room.url))
         }
       }
     }
