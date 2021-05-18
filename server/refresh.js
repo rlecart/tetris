@@ -276,7 +276,7 @@ const checkFilledLine = (game) => {
 const endGame = (room, id) => {
   console.log(room)
   server.emitAll('endGame', room.url, undefined, server.getRoomInfo(room.url))
-  server.emitOnly('endGame', room.url, id, server.getRoomInfo(room.url))
+  // server.emitOnly('endGame', room.url, id, server.getRoomInfo(room.url))
   server.closeRoom(room)
 }
 
