@@ -13,28 +13,20 @@ const game = require('../src/ressources/game.js')
 const refresh = require('./refresh.js')
 const clonedeep = require('lodash.clonedeep')
 
+const utils = require('./utils.js')
+
 
 let sioClientList = {}
 
 let rooms = {}
 
-const generateUrl = () => {
-  return (Math.random().toString(36).substring(7))
-}
-
-const createNewUrl = (roomsList) => {
-  let url = generateUrl()
-  while (roomsList[url])
-    url = generateUrl()
-  return (url)
-}
 
 const { defaultRoom } = require('../src/ressources/room.js');
 
 const createRoom = (clientId, profil, cb) => {
   if (profil.name) {
     let room = clonedeep(defaultRoom)
-    room.url = createNewUrl(rooms)
+    room.url = utils.createNewUrl(rooms)
     rooms = { ...rooms, [room.url]: { ...room } }
     // console.log(room)
     // console.log('\n', rooms)
@@ -86,19 +78,11 @@ const joinRoom = (clientId, profil, url, cb) => {
   }
 }
 
-const getArrayFromObject = (obj) => {
-  let ret = []
-
-  for (let [key, value] of Object.entries(obj))
-    ret.push(value)
-  return ret
-}
-
 const getRoomInfo = (idRoom, cb) => {
   let roomInfo
 
   if (rooms && rooms[idRoom]) {
-    roomInfo = { ...rooms[idRoom], listPlayers: getArrayFromObject(rooms[idRoom].listPlayers) }
+    roomInfo = { ...rooms[idRoom], listPlayers: utils.getArrayFromObject(rooms[idRoom].listPlayers) }
     // console.log('getRoomInfo', roomInfo)
     if (cb)
       cb(roomInfo)

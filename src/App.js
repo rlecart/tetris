@@ -17,7 +17,7 @@ class App extends Component {
 
   componentDidMount() { // checker si socket existant
     // fonction pour set toutes les reponses serv
-    console.log('\n\n\nquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjour\n\n\n')
+    // console.log('\n\n\nquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjour\n\n\n')
     let sock = openSocket('http://localhost:8000')
     const action = { type: 'CONNECT_SOCKET', value: sock }
     this.props.dispatch(action)

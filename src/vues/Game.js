@@ -76,7 +76,7 @@ class Game extends Component {
     this.setState(state)
   }
 
-  bjr(event) {
+  eventDispatcher(event) {
     const state = this.state
     const socket = this.socket
     const url = this.props.roomReducer.roomInfo.url
@@ -116,9 +116,9 @@ class Game extends Component {
     // console.log('bonjoru', this.props)
     // fonction pour set toutes les reponses serv
     this.socket.on('refreshVue', (game, spec) => { this.refreshGame(game, spec, this) })
-    this.socket.on('endGame', (roomInfo) => { nav(this.props.history, `/${this.props.match.params.room}`) })
+    this.socket.on('endGame', (roomInfo) => { nav(this.props.history, `/${this.props.match.params.room}`) }) // ici gestion gamover
     if (this.props.socketConnector.areGameEventsLoaded === false) {
-      window.addEventListener("keypress", this.bjr.bind(this))
+      window.addEventListener("keypress", this.eventDispatcher.bind(this))
       const action = { type: 'GAME_EVENTS_LOADED' }
       this.props.dispatch(action)
     }
@@ -160,7 +160,6 @@ class Game extends Component {
         </div>
         <div className="game">
           <div className="board">
-
             {this.createLines(this.state.lines, 'line', 'lineBloc')}
           </div>
           <div className="rightPanel">
