@@ -44,7 +44,7 @@ class Room extends Component {
     let url = this.props.match.url
     state.profil.name = url.substring(url.search(/\[[0-9a-zA-Z]+\]/) + 1, url.length - 1)
     state.roomUrl = url.substring(1, url.search(/\[/))
-    this.props.socketConnector.socket.on('goToGame', () => { nav(this.props.history, `${this.props.location.pathname}/game`) }) // utile avec la cb en bas ? ca fait 2 fois la meme
+    this.props.socketConnector.socket.on('goToGame', () => { nav(this.props.history, `${this.props.location.pathname}/game`) })
     this.props.socketConnector.socket.on('refreshRoomInfo', (roomInfo) => { this.syncRoomData(roomInfo) })
     console.log('mount', state.roomInfo)
     console.log('propsmount', this.props)
@@ -79,7 +79,7 @@ class Room extends Component {
               <div className="playerList">
                 {players}
               </div>
-              <button className="roomButton" id="launchGame" onClick={() => { startGame(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl, (path) => { nav(this.props.history, path) }) }}>
+              <button className="roomButton" id="launchGame" onClick={() => { startGame(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl, undefined) }}>
                 <span className="textButton">Lancer la partie</span>
               </button>
             </div>

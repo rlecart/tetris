@@ -18,27 +18,29 @@ const utils = require('./utils.js')
 
 let sioClientList = {}
 
-let rooms = {}
+let roomsList = {}
 
 
 const { defaultRoom } = require('../src/ressources/room.js');
+const { Room } = require('./classes/Room')
 
 const createRoom = (clientId, profil, cb) => {
   if (profil.name) {
-    let room = clonedeep(defaultRoom)
-    room.url = utils.createNewUrl(rooms)
-    rooms = { ...rooms, [room.url]: { ...room } }
+    let room = new Room()
+    // let room = clonedeep(defaultRoom)
+    room.setUrl(utils.createNewUrl(roomsList))
+    roomsList = { ...roomsList, [room.getUrl()]: room }
     // console.log(room)
-    // console.log('\n', rooms)
-    joinRoom(clientId, profil, room.url, cb)
+    // console.log('\n', roomsList)
+    joinRoom(clientId, profil, room.getUrl(), cb)
   }
 }
 
-const getClientListFromRoom = (url, objVersion) => {
+const getSocketClientListFromRoom = (url, objVersion) => {
   let ret = objVersion ? {} : []
 
-  if (rooms && rooms[url] && rooms[url].listPlayers) {
-    for (let [key, value] of Object.entries(rooms[url].listPlayers)) {
+  if (roomsList && roomsList[url] && roomsList[url].getListPlayers()) {
+    for (let [key, value] of Object.entries(roomsList[url].getListPlayers())) {
       if (objVersion)
         ret = { ...ret, [key]: sioClientList[key] }
       else
@@ -49,7 +51,7 @@ const getClientListFromRoom = (url, objVersion) => {
 }
 
 const emitAll = (message, target, except, obj, spec) => {
-  let clientList = target ? getClientListFromRoom(target, true) : sioClientList
+  let clientList = target ? getSocketClientListFromRoom(target, true) : sioClientList
 
   for (let [key, value] of Object.entries(clientList)) {
     if (key !== except) {
@@ -59,7 +61,7 @@ const emitAll = (message, target, except, obj, spec) => {
 }
 
 const emitOnly = (message, target, only, obj, spec) => {
-  let clientList = getClientListFromRoom(target, true)
+  let clientList = getSocketClientListFromRoom(target, true)
 
   for (let [key, value] of Object.entries(clientList)) {
     if (key === only)
@@ -68,28 +70,19 @@ const emitOnly = (message, target, only, obj, spec) => {
 }
 
 const joinRoom = (clientId, profil, url, cb) => {
-  if (!rooms[url].inGame && rooms[url] && profil.name && !rooms[url].listPlayers[clientId] && rooms[url].nbPlayer < 8) {
+  if (roomsList && roomsList[url] && profil.name && !roomsList[url].getInGame() && !roomsList[url].getListPlayers(clientId) && roomsList[url].getNbPlayer() < 8) {
     console.log('joinroom')
-    rooms[url].listPlayers = { ...rooms[url].listPlayers, [clientId]: profil }
-    rooms[url].nbPlayer++
-    // console.log(rooms, '\n')
+    roomsList[url].addNewPlayer(clientId, profil)
+    // roomsList[url].listPlayers = { ...roomsList[url].listPlayers, [clientId]: profil }
+    // roomsList[url].nbPlayer++
+    console.log('profil = ' + profil + '\n')
+    console.log(roomsList, '\n')
+    console.log(roomsList[url].getListPlayers(), '\n')
     cb(`/#${url}[${profil.name}]`)
-    emitAll('refreshRoomInfo', url, clientId, getRoomInfo(url))
+    emitAll('refreshRoomInfo', url, clientId, roomsList[url].getRoomInfo())
   }
 }
 
-const getRoomInfo = (idRoom, cb) => {
-  let roomInfo
-
-  if (rooms && rooms[idRoom]) {
-    roomInfo = { ...rooms[idRoom], listPlayers: utils.getArrayFromObject(rooms[idRoom].listPlayers) }
-    // console.log('getRoomInfo', roomInfo)
-    if (cb)
-      cb(roomInfo)
-    else
-      return roomInfo
-  }
-}
 const move = (clientId, url, dir) => {
   let reponse = -1
 
@@ -102,78 +95,34 @@ const move = (clientId, url, dir) => {
   else if (dir === 'turn')
     reponse = refresh.moveTetri(gameRooms[url][clientId], 0, 0)
   if (reponse !== 0)
-    emitOnly('refreshVue', url, clientId, gameRooms[url][clientId], createSpecList(gameRooms[url], clientId, url))
+    emitOnly('refreshVue', url, clientId, gameRooms[url][clientId], roomsList[url].createSpecList(gameRooms[url], clientId, url))
 }
 
 let gameRooms = {}
 
-const gameLoop = (clientsRoom, url) => {
-  let gameRoomsTmp = { ...gameRooms }
 
-  for (let [key, value] of Object.entries(clientsRoom)) {
-    console.log('key=', key)
-    // console.log('value=', value)
-    if (gameRoomsTmp[url][key] === undefined) {
-      gameRoomsTmp[url] = {
-        ...gameRoomsTmp[url], [key]: {
-          ...clonedeep(game.game)
-        },
-        url: url,
-      }
-    }
-    // console.log(gameRooms[url])
-    gameRoomsTmp[url][key] = refresh.refresh(gameRoomsTmp[url][key], gameRoomsTmp[url], key)
-  }
-  if (rooms[url].inGame === true) {
-    gameRooms = { ...gameRoomsTmp }
-    for (let [key, value] of Object.entries(clientsRoom))
-      if (gameRooms && gameRooms[url] && gameRooms[url][key]) {
-        value.emit('refreshVue', gameRooms[url][key], createSpecList(gameRooms[url], key, url))
-      }
-  }
-  // console.log('\n\n\n', gameRooms, gameRooms[url], '\n\n\n')
-}
-
-const createSpecList = (obj, exception, url) => {
-  let ret = []
-
-  for (let [key, value] of Object.entries(obj)) {
-    if (key !== exception && value && value.lines) {
-      ret.push({
-        lines: value.lines,
-        name: rooms[url].listPlayers[key].name,
-      })
-    }
-  }
-  console.log(ret)
-  return ret
-}
 
 const closeRoom = (room) => {
-  let clientsRoom = getClientListFromRoom(room.url, true)
+  let clientsRoom = getSocketClientListFromRoom(room.getUrl(), true)
 
   // console.log('\n\naaaaaaaaaaaaaaaaaa', room)
-  // console.log('aaaaaaaaaaaaaaaaaa', rooms[room.url], '\n\n')
-  clearInterval(room.interval)
-  room.interval = undefined
+  // console.log('aaaaaaaaaaaaaaaaaa', roomsList[room.url], '\n\n')
+  clearInterval(gameRooms[room.getUrl()].interval)
+  // clearInterval(room.getInterval())
+  room.resetInterval()
   for (let [key, value] of Object.entries(clientsRoom)) {
-    gameRooms[room.url][key] = undefined
-    room[key] = undefined
+    gameRooms[room.getUrl()][key] = undefined
+    room.resetUrl()
   }
-  gameRooms[room.url] = undefined
-  console.log(`room ${room.url} closed`)
+  gameRooms[room.getUrl()] = undefined
+  console.log(`room ${room.getUrl()} closed`)
 }
 
-const launchInterval = (url, room) => {
-  let clientsRoom = getClientListFromRoom(url, true)
-  room.interval = setInterval(gameLoop, 1000, clientsRoom, url)
-  console.log(`interval ${url} init`)
-}
 
 const startGame = (clientId, profil, url, cb) => {
   console.log(profil, url)
-  if (rooms && rooms[url]) {
-    // rooms[url].inGame = true
+  if (roomsList && roomsList[url]) {
+    // roomsList[url].inGame = true
     emitAll('goToGame', url, undefined, undefined)
   }
 }
@@ -181,7 +130,7 @@ const startGame = (clientId, profil, url, cb) => {
 const tryToStart = (clientsRTS, nbPlayers) => {
   let i = 0
 
-  for (let client in clientsRTS)
+  for (let client in clientsRTS) // a changer pour iter sur obj ?
     i++
   if (i === nbPlayers)
     return true
@@ -192,27 +141,26 @@ let roomsRTS = {}
 
 const readyToStart = (clientId, url) => {
   let res
+  let shapes = {} // ici aussi
+  const room = roomsList[url]
   // console.log(roomsRTS)
-  // console.log('aaaaa', url, clientId, rooms[url], rooms[url].listPlayers[clientId])
-  if (url && clientId && rooms[url].listPlayers[clientId]) {
-    roomsRTS = {
-      ...roomsRTS, [url]: {
-        ...roomsRTS[url], [clientId]: true
-      }
-    }
-    if (res = tryToStart(roomsRTS[url], rooms[url].nbPlayer)) {
-      gameRooms = {
-        ...gameRooms,
-        [url]: {
-          interval: undefined,
-          shapes: [],
-          shapesId: [],
-        },
-      }
-      refresh.initShapes(gameRooms[url])
-      rooms[url].inGame = true
-      launchInterval(url, gameRooms[url])
-      roomsRTS[url] = undefined
+  // console.log('aaaaa', url, clientId, roomsList[url], roomsList[url].listPlayers[clientId])
+  if (url && clientId && room.getListPlayers(clientId)) {
+    room.addReadyToStart(clientId)
+    if (res = tryToStart(room.getReadyToStart(), room.getNbPlayer())) {
+      // gameRooms = {
+      //   ...gameRooms,
+      //   [url]: {
+      //     interval: undefined,
+      //     shapes: [],
+      //     shapesId: [],
+      //   },
+      // }
+      refresh.initShapes(shapes) // a rechecker plus tard
+      room.addNewShape(shapes)
+      room.setInGame(true)
+      room.launchInterval()
+      room.resetReadyToStart()
     }
   }
   // console.log(res)
@@ -224,12 +172,12 @@ io.on('connection', (client) => {
   // console.log(sioClientList)
   client.on('move', (clientId, url, dir) => {
     console.log('move x1\n\n')
-    if (rooms[url].inGame)
+    if (roomsList[url].getInGame())
       move(clientId, url, dir)
   })
   client.on('createRoom', (clientId, profil, cb) => { createRoom(clientId, profil, cb) })
   client.on('joinRoom', (clientId, profil, url, cb) => { joinRoom(clientId, profil, url, cb) })
-  client.on('getRoomInfo', (idRoom, cb) => { getRoomInfo(idRoom, cb) })
+  client.on('getRoomInfo', (idRoom, cb) => { roomsList[idRoom].getRoomInfo(cb) })
   client.on('startGame', (clientId, profil, url, cb) => { startGame(clientId, profil, url, cb) })
   client.on('readyToStart', (clientId, url) => { readyToStart(clientId, url) })
   client.conn.on('heartbeat', () => {
@@ -263,9 +211,6 @@ io.listen(port);
 console.log('listening on port ', port);
 
 exports.closeRoom = closeRoom
-exports.gameLoop = gameLoop
 exports.emitAll = emitAll
 exports.emitOnly = emitOnly
-exports.getRoomInfo = getRoomInfo
-exports.getClientListFromRoom = getClientListFromRoom
-exports.createSpecList = createSpecList
+exports.getSocketClientListFromRoom = getSocketClientListFromRoom

@@ -15,6 +15,8 @@ const newShape = (room, rand) => {
 }
 
 function initShapes(room) {
+  room.shapes = []
+  room.shapesId = []
   room.shapes.push(newShape(room, newRand(1, 6)))
   room.shapes.push(newShape(room, newRand(1, 6)))
 }
@@ -281,7 +283,7 @@ const endGame = (room, id) => {
 }
 
 function addFilledLine(room, exception, amount) {
-  let players = server.getClientListFromRoom(room.url, true)
+  let players = server.getSocketClientListFromRoom(room.url, true)
 
   for (let [key, value] of Object.entries(players)) {
     if (key !== exception) {

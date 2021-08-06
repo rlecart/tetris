@@ -103,7 +103,7 @@ class Game extends Component {
     const state = context.state
     state.lines = game.lines
     state.tetri = game.tetri
-    state.interval = game.interval
+    state.interval = game.interval // se trouve ailleurs normalement -> a checker
     console.log('\n\n', spec, '\n\n')
     state.spec = spec
     // state.client = game.client
