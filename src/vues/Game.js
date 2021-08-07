@@ -99,11 +99,11 @@ class Game extends Component {
   }
 
   refreshGame(game, spec, context) {
-    // console.log(game)
+    console.log(game)
     const state = context.state
-    state.lines = game.lines
-    state.tetri = game.tetri
-    state.interval = game.interval // se trouve ailleurs normalement -> a checker
+    state.lines = game._lines
+    state.tetri = game._tetri
+    state.interval = game._interval // se trouve ailleurs normalement -> a checker
     console.log('\n\n', spec, '\n\n')
     state.spec = spec
     // state.client = game.client

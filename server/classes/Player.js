@@ -1,4 +1,4 @@
-const { defaultGame } = require('../../src/ressources/game')
+const { Game } = require('./Game')
 
 exports.Player = class Player {
   constructor(profil, clientId) {
@@ -27,7 +27,11 @@ exports.Player = class Player {
     this._game = undefined
   }
 
-  setNewGame() {
-    this._game = defaultGame
+  setNewGame(shapes, shapesId) {
+    this._game = new Game(shapes, shapesId)
+  }
+
+  setGame(newGame) {
+    this._game = newGame
   }
 }

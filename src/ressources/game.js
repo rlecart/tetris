@@ -1,4 +1,4 @@
-const game = {
+const defaultGame = {
   lines: [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -33,4 +33,4 @@ const game = {
   placed: -1,
 }
 
-exports.game = game
+exports.defaultGame = defaultGame

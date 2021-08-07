@@ -9,9 +9,7 @@ const io = socketio(server, {
   },
   'pingInterval': 5000,
 });
-const game = require('../src/ressources/game.js')
 const refresh = require('./refresh.js')
-const clonedeep = require('lodash.clonedeep')
 
 const utils = require('./utils.js')
 
@@ -71,13 +69,8 @@ const emitOnly = (message, target, only, obj, spec) => {
 
 const joinRoom = (clientId, profil, url, cb) => {
   if (roomsList && roomsList[url] && profil.name && !roomsList[url].getInGame() && !roomsList[url].getListPlayers(clientId) && roomsList[url].getNbPlayer() < 8) {
-    console.log('joinroom')
+    // console.log('joinroom')
     roomsList[url].addNewPlayer(clientId, profil)
-    // roomsList[url].listPlayers = { ...roomsList[url].listPlayers, [clientId]: profil }
-    // roomsList[url].nbPlayer++
-    console.log('profil = ' + profil + '\n')
-    console.log(roomsList, '\n')
-    console.log(roomsList[url].getListPlayers(), '\n')
     cb(`/#${url}[${profil.name}]`)
     emitAll('refreshRoomInfo', url, clientId, roomsList[url].getRoomInfo())
   }
@@ -87,15 +80,15 @@ const move = (clientId, url, dir) => {
   let reponse = -1
 
   if (dir === 'right')
-    reponse = refresh.moveTetri(gameRooms[url][clientId], 1, 0)
+    reponse = refresh.moveTetri(roomsList[url].getListPlayers(clientId).getGame(), 1, 0)
   else if (dir === 'left')
-    reponse = refresh.moveTetri(gameRooms[url][clientId], -1, 0)
+    reponse = refresh.moveTetri(roomsList[url].getListPlayers(clientId).getGame(), -1, 0)
   else if (dir === 'down')
-    reponse = refresh.moveTetri(gameRooms[url][clientId], 0, 1)
+    reponse = refresh.moveTetri(roomsList[url].getListPlayers(clientId).getGame(), 0, 1)
   else if (dir === 'turn')
-    reponse = refresh.moveTetri(gameRooms[url][clientId], 0, 0)
+    reponse = refresh.moveTetri(roomsList[url].getListPlayers(clientId).getGame(), 0, 0)
   if (reponse !== 0)
-    emitOnly('refreshVue', url, clientId, gameRooms[url][clientId], roomsList[url].createSpecList(gameRooms[url], clientId, url))
+    emitOnly('refreshVue', url, clientId, roomsList[url].getListPlayers(clientId).getGame(), roomsList[url].createSpecList(roomsList[url].getListPlayers(clientId).getGame(), url))
 }
 
 let gameRooms = {}
@@ -105,24 +98,18 @@ let gameRooms = {}
 const closeRoom = (room) => {
   let clientsRoom = getSocketClientListFromRoom(room.getUrl(), true)
 
-  // console.log('\n\naaaaaaaaaaaaaaaaaa', room)
-  // console.log('aaaaaaaaaaaaaaaaaa', roomsList[room.url], '\n\n')
-  clearInterval(gameRooms[room.getUrl()].interval)
-  // clearInterval(room.getInterval())
-  room.resetInterval()
+  room.endGame()
   for (let [key, value] of Object.entries(clientsRoom)) {
-    gameRooms[room.getUrl()][key] = undefined
+    roomsList[room.getUrl()][key] = undefined
     room.resetUrl()
   }
-  gameRooms[room.getUrl()] = undefined
+  roomsList[room.getUrl()] = undefined
   console.log(`room ${room.getUrl()} closed`)
 }
 
 
 const startGame = (clientId, profil, url, cb) => {
-  console.log(profil, url)
   if (roomsList && roomsList[url]) {
-    // roomsList[url].inGame = true
     emitAll('goToGame', url, undefined, undefined)
   }
 }
@@ -130,7 +117,7 @@ const startGame = (clientId, profil, url, cb) => {
 const tryToStart = (clientsRTS, nbPlayers) => {
   let i = 0
 
-  for (let client in clientsRTS) // a changer pour iter sur obj ?
+  for (let client in clientsRTS) // a changer pour iter sur obj ? pas besoin car juste besoin de compter ?
     i++
   if (i === nbPlayers)
     return true
@@ -141,29 +128,13 @@ let roomsRTS = {}
 
 const readyToStart = (clientId, url) => {
   let res
-  let shapes = {} // ici aussi
   const room = roomsList[url]
-  // console.log(roomsRTS)
-  // console.log('aaaaa', url, clientId, roomsList[url], roomsList[url].listPlayers[clientId])
   if (url && clientId && room.getListPlayers(clientId)) {
     room.addReadyToStart(clientId)
     if (res = tryToStart(room.getReadyToStart(), room.getNbPlayer())) {
-      // gameRooms = {
-      //   ...gameRooms,
-      //   [url]: {
-      //     interval: undefined,
-      //     shapes: [],
-      //     shapesId: [],
-      //   },
-      // }
-      refresh.initShapes(shapes) // a rechecker plus tard
-      room.addNewShape(shapes)
-      room.setInGame(true)
-      room.launchInterval()
-      room.resetReadyToStart()
+      room.startGame()
     }
   }
-  // console.log(res)
 }
 
 // liste de tous les sockets serveurs
