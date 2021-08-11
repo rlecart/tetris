@@ -146,15 +146,15 @@ exports.Room = class Room {
       ret = { ...ret, [key]: value.getGame() }
       // console.log('getAllGames')
     }
-    console.log(ret)
+    // console.log(ret)
     return (ret)
   }
 
   setAllGames(games) {
-    console.log('setAllGames')
-    console.log(this)
-    console.log(games)
-    console.log('setAllGames')
+    // console.log('setAllGames')
+    // console.log(this)
+    // console.log(games)
+    // console.log('setAllGames')
     for (let [key, value] of Object.entries(this.getListPlayers()))
       value.setGame(games[key])
   }
@@ -165,12 +165,20 @@ exports.Room = class Room {
     for (let [key, value] of Object.entries(obj)) {
       if (key !== exception && value && value.lines) {
         ret.push({
-          lines: value.lines,
-          name: this.getListPlayers(key).name,
+          lines: value.getGame().getLines(),
+          name: value.getName(),
         })
       }
     }
+    // console.log('\n\n\n')
+    // console.log('\n\n\n')
+    // console.log('\n\n\n')
+    // console.log('ret')
     // console.log(ret)
+    // console.log('\n\n\n')
+    // console.log('\n\n\n')
+    // console.log('\n\n\n')
+    // console.log('\n\n\n')
     return ret
   }
 
@@ -189,24 +197,24 @@ exports.Room = class Room {
     //--------------------------------------------------------------------------------------------------
 
 
-    console.log('gamesLoop\n\n')
+    // console.log('gamesLoop\n\n')
     // console.log('listPlayers =')
     // console.log(this._listPlayers)
     // console.log('socket =')
     // console.log(socketClients)
     // console.log('gamesTmp =')
-    console.log(gamesTmp)
+    // console.log(gamesTmp)
     // console.log(gamesTmp[key])
-    console.log('gamesLoop fin\n\n')
+    // console.log('gamesLoop fin\n\n')
 
-    console.log('sockets')
-    console.log(socketClients)
-    console.log(Object.keys(socketClients).length)
-    console.log('sockets fin')
+    // console.log('sockets')
+    // console.log(socketClients)
+    // console.log(Object.keys(socketClients).length)
+    // console.log('sockets fin')
     let i = 0
 
     for (let [key, value] of Object.entries(socketClients)) {
-      console.log(++i)
+      // console.log(++i)
       // console.log('key=', key)
       // console.log('value=', value)
 
@@ -219,27 +227,27 @@ exports.Room = class Room {
       //   }
       // }
 
-      console.log('\n\ngamesTmp =')
-      console.log(gamesTmp)
-      console.log('key =')
-      console.log(key)
-      console.log('gamesTmp[key] =')
-      console.log(gamesTmp[key])
-      console.log('avant refresh')
+      // console.log('\n\ngamesTmp =')
+      // console.log(gamesTmp)
+      // console.log('key =')
+      // console.log(key)
+      // console.log('gamesTmp[key] =')
+      // console.log(gamesTmp[key])
+      // console.log('avant refresh')
       gamesTmp[key] = refresh(gamesTmp[key], this, key)
-      console.log('apres refresh\n\n')
+      // console.log('apres refresh\n\n')
     }
-    console.log('oui')
-    console.log((this.getInGame()))
+    // console.log('oui')
+    // console.log((this.getInGame()))
     if (this.getInGame() === true) {
-      console.log('avant setAllGames')
+      // console.log('avant setAllGames')
       this.setAllGames(gamesTmp)
-      console.log('apres setAllGames')
-      console.log('avant all refreshVue')
+      // console.log('apres setAllGames')
+      // console.log('avant all refreshVue')
       for (let [key, value] of Object.entries(socketClients))
         value.emit('refreshVue', this.getAllGames(key), this.createSpecList(this.getAllGames(), key, url))
     }
-    console.log('apres all refreshVue')
+    // console.log('apres all refreshVue')
     // console.log('\n\n\n', gameRooms, gameRooms, '\n\n\n')
   }
 }

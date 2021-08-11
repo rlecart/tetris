@@ -78,7 +78,7 @@ const checkTetri = (game, truePos) => {
     x = game.getX()
     y++
   }
-  console.log('check ok\n')
+  // console.log('check ok\n')
   return (1)
 }
 
@@ -286,19 +286,37 @@ function addFilledLine(room, exception, amount) {
   let players = server.getSocketClientListFromRoom(room.getUrl(), true)
 
   for (let [key, value] of Object.entries(players)) {
+    // console.log('haha = ', ++haha)
     if (key !== exception) {
       for (let i = 0; i < amount; i++) {
-        if (room.getListPLayers(key).getLines(0).find((elem) => { elem !== 0 })) { // ca check si y'avait deja un bloc en [0;X] avant d'ajouter la ligne car si oui alors ca veut dire que le joueur en question a perdu donc fin de game, sinon bah ca continue
+        // console.log('i = ', i)
+        // console.log('room = ', room)
+        // console.log('getlistplayers = ', room.getListPlayers(key))
+        // console.log('getlistplayers = ', room.getListPlayers(key))
+        if (room.getListPlayers(key).getGame().getLines(0).find((elem) => { elem !== 0 })) { // ca check si y'avait deja un bloc en [0;X] avant d'ajouter la ligne car si oui alors ca veut dire que le joueur en question a perdu donc fin de game, sinon bah ca continue
           server.emitOnly('endGame', room.getUrl(), key, server.getRoomInfo(room.getUrl()))
           break;
         }
         else {
-          if (room.getListPlayers(key).getY() === 0)
-            refresh(room.getListPlayers(key), room, key)
-          room.getListPlayers(key).subY(1)
-          room.getListPlayers(key).fillLine()
-          refresh(room.getListPlayers(key), room, key)
-          server.emitOnly('refreshVue', room.getUrl(), key, room.getListPlayers(key), server.createSpecList(room, key, room.getUrl()))
+          // console.log('else')
+          if (room.getListPlayers(key).getGame().getY() === 0)
+            refresh(room.getListPlayers(key).getGame(), room, key) // ici ca bug quand c'est tetri first line
+          // console.log('apres refresh cas tetri first line')
+          room.getListPlayers(key).getGame().subY(1)
+          // console.log('apres subY')
+          room.getListPlayers(key).getGame().fillLine()
+          // console.log('apres fillLine')
+          refresh(room.getListPlayers(key).getGame(), room, key)
+          // console.log('apres refresh')
+            console.log('avant refreshvue')
+            server.emitOnly('refreshVue', room.getUrl(), key, room.getListPlayers(key).getGame(), () => {
+            console.log('avant createspec')
+            let ret = room.createSpecList(room.getListPlayers(), key, room.getUrl())
+            console.log('createSpecList = ')
+            console.log(ret)
+            console.log('fin')
+            return (ret)
+          })
         }
       }
     }
@@ -310,29 +328,28 @@ function refresh(game, room, id) {
   let filledLines = 0
 
   // console.log(game)
-    console.log('debut refresh')
+    //console.log('debut refresh')
     if (game.getPlaced() === -1)
     createNewTetri(game, room)
-    console.log('avant move')
+    //console.log('avant move')
     hasMoved = moveTetri(game, 0, 1)
-    console.log('apres move')
+    //console.log('apres move')
     if (hasMoved == -1) {
-      console.log('avant endgamee')
-
+      //console.log('avant endgamee')
       endGame(room, id)
-      console.log('apres endgamee')
+      //console.log('apres endgamee')
     }
   else if (hasMoved == 1) {
-      console.log('avant moved=1')
-      if ((filledLines = checkFilledLine(game)) > 0)
+    //console.log('avant moved=1')
+    if ((filledLines = checkFilledLine(game)) > 0)
       addFilledLine(room, id, filledLines)
-      console.log('avant createnewtetri')
-      createNewTetri(game, room)
-      console.log('apres createnewtetri')
-    console.log('avant de relaunch refresh')
+    //console.log('avant createnewtetri')
+    createNewTetri(game, room)
+    //console.log('apres createnewtetri')
+    //console.log('avant de relaunch refresh')
     refresh(game, room, id)
 }
-  console.log('refresh finish')
+  //console.log('refresh finish')
   return (game)
 }
 
