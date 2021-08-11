@@ -108,7 +108,7 @@ const noMoreSpace = (game) => {
 }
 
 const turnTetri = (game, dir) => {
-  if (game.getId === 5) {
+  if (game.getId() === 5) {
     // console.log(game.tetri.actualShape)
     return (1)
   }
@@ -310,17 +310,29 @@ function refresh(game, room, id) {
   let filledLines = 0
 
   // console.log(game)
-  if (game.getPlaced() === -1)
+    console.log('debut refresh')
+    if (game.getPlaced() === -1)
     createNewTetri(game, room)
-  hasMoved = moveTetri(game, 0, 1)
-  if (hasMoved == -1)
-    endGame(room, id)
+    console.log('avant move')
+    hasMoved = moveTetri(game, 0, 1)
+    console.log('apres move')
+    if (hasMoved == -1) {
+      console.log('avant endgamee')
+
+      endGame(room, id)
+      console.log('apres endgamee')
+    }
   else if (hasMoved == 1) {
-    if ((filledLines = checkFilledLine(game)) > 0)
+      console.log('avant moved=1')
+      if ((filledLines = checkFilledLine(game)) > 0)
       addFilledLine(room, id, filledLines)
-    createNewTetri(game, room)
+      console.log('avant createnewtetri')
+      createNewTetri(game, room)
+      console.log('apres createnewtetri')
+    console.log('avant de relaunch refresh')
     refresh(game, room, id)
-  }
+}
+  console.log('refresh finish')
   return (game)
 }
 

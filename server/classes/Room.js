@@ -12,7 +12,7 @@ exports.Room = class Room {
     this._inGame = false
     this._nbPlayer = 0
     this._listPlayers = {}
-    this._rules = defaultRules
+    this._rules = clonedeep(defaultRules)
 
     this._interval = undefined
     this._shapes = []
@@ -50,7 +50,7 @@ exports.Room = class Room {
   endGame() {
     clearInterval(this._interval)
     this._interval = undefined
-    this._inGame = false
+    this.setInGame(false)
   }
 
   resetUrl() {
@@ -128,6 +128,7 @@ exports.Room = class Room {
 
   getAllGames(only) {
     let ret = {}
+    let playersList = {}
 
     // console.log('getAllGames')
     // console.log(this.getListPlayers())
@@ -136,14 +137,17 @@ exports.Room = class Room {
 
     if (only !== undefined)
       return (this.getListPlayers(only)._game) // a voir plus tard pour que ce soit utilise comme objet et pas acces direct
-    for (let [key, value] of Object.entries(this.getListPlayers())) {
-      console.log('getAllGames')
-      console.log('key =', key)
-      console.log('value =', value)
+    else
+      playersList = this.getListPlayers()
+    for (let [key, value] of Object.entries(playersList)) {
+      // console.log('getAllGames')
+      // console.log('key =', key)
+      // console.log('value =', value)
       ret = { ...ret, [key]: value.getGame() }
-      console.log('getAllGames')
-      return (ret)
+      // console.log('getAllGames')
     }
+    console.log(ret)
+    return (ret)
   }
 
   setAllGames(games) {
@@ -180,18 +184,29 @@ exports.Room = class Room {
     let gamesTmp = this.getAllGames() // parce qu'on a besoin que tout soit actualise en meme temps a la fin
     // ici need un deepclone ?? (pas sur que ce soit une copie quoi)
 
-
     //--------------------------------------------------------------------------------------------------
     // ici je sais pas pourquoi gamesTmp ne chope que le premier joueur et pas le reste (enfin je crois)
     //--------------------------------------------------------------------------------------------------
 
 
-    console.log('aaaaaaaaaaaaaaaaaaa\n\n')
+    console.log('gamesLoop\n\n')
+    // console.log('listPlayers =')
+    // console.log(this._listPlayers)
+    // console.log('socket =')
+    // console.log(socketClients)
+    // console.log('gamesTmp =')
     console.log(gamesTmp)
     // console.log(gamesTmp[key])
-    console.log('aaaaaaaaaaaaaaaaaaa2\n\n')
+    console.log('gamesLoop fin\n\n')
+
+    console.log('sockets')
+    console.log(socketClients)
+    console.log(Object.keys(socketClients).length)
+    console.log('sockets fin')
+    let i = 0
 
     for (let [key, value] of Object.entries(socketClients)) {
+      console.log(++i)
       // console.log('key=', key)
       // console.log('value=', value)
 
@@ -204,13 +219,27 @@ exports.Room = class Room {
       //   }
       // }
 
+      console.log('\n\ngamesTmp =')
+      console.log(gamesTmp)
+      console.log('key =')
+      console.log(key)
+      console.log('gamesTmp[key] =')
+      console.log(gamesTmp[key])
+      console.log('avant refresh')
       gamesTmp[key] = refresh(gamesTmp[key], this, key)
+      console.log('apres refresh\n\n')
     }
+    console.log('oui')
+    console.log((this.getInGame()))
     if (this.getInGame() === true) {
+      console.log('avant setAllGames')
       this.setAllGames(gamesTmp)
+      console.log('apres setAllGames')
+      console.log('avant all refreshVue')
       for (let [key, value] of Object.entries(socketClients))
         value.emit('refreshVue', this.getAllGames(key), this.createSpecList(this.getAllGames(), key, url))
     }
+    console.log('apres all refreshVue')
     // console.log('\n\n\n', gameRooms, gameRooms, '\n\n\n')
   }
 }
