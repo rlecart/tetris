@@ -1,6 +1,5 @@
 // const { anotherOnePlease } = require('../src/api.js')
 const tetriminos = require('../src/ressources/tetriminos.js')
-const server = require('./server.js')
 
 const newRand = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -275,15 +274,14 @@ const checkFilledLine = (game) => {
   return (count)
 }
 
-const endGame = (room, id) => {
+const endGame = (room, id) => { // gameover
   // console.log(room)
-  server.emitAll('endGame', room.getUrl(), undefined, room)
-  // server.emitOnly('endGame', room.url, id, server.getRoomInfo(room.url))
-  server.closeRoom(room)
+  room.emitAll('endGame') // ici emitOnly plutot pour faire continuer les autres
+  room.getParent().closeRoom(room)
 }
 
 function addFilledLine(room, exception, amount) {
-  let players = server.getSocketClientListFromRoom(room.getUrl(), true)
+  let players = room.getSioFromParent()
 
   for (let [key, value] of Object.entries(players)) {
     // console.log('haha = ', ++haha)
@@ -294,7 +292,7 @@ function addFilledLine(room, exception, amount) {
         // console.log('getlistplayers = ', room.getListPlayers(key))
         // console.log('getlistplayers = ', room.getListPlayers(key))
         if (room.getListPlayers(key).getGame().getLines(0).find((elem) => { elem !== 0 })) { // ca check si y'avait deja un bloc en [0;X] avant d'ajouter la ligne car si oui alors ca veut dire que le joueur en question a perdu donc fin de game, sinon bah ca continue
-          server.emitOnly('endGame', room.getUrl(), key, server.getRoomInfo(room.getUrl()))
+          room.emitOnly('endGame', key, this)
           break;
         }
         else {
@@ -308,13 +306,13 @@ function addFilledLine(room, exception, amount) {
           // console.log('apres fillLine')
           refresh(room.getListPlayers(key).getGame(), room, key)
           // console.log('apres refresh')
-            console.log('avant refreshvue')
+            // console.log('avant refreshvue')
             server.emitOnly('refreshVue', room.getUrl(), key, room.getListPlayers(key).getGame(), () => {
-            console.log('avant createspec')
-            let ret = room.createSpecList(room.getListPlayers(), key, room.getUrl())
-            console.log('createSpecList = ')
+            // console.log('avant createspec')
+            let ret = room.createSpecList(key)
+            // console.log('createSpecList = ')
             console.log(ret)
-            console.log('fin')
+            // console.log('fin')
             return (ret)
           })
         }

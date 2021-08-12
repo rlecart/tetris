@@ -1,24 +1,30 @@
 const { defaultRules } = require('../../src/ressources/rules')
-const { defaultGame } = require('../../src/ressources/game.js')
 const utils = require('../utils')
 const { Player } = require('./Player')
 const server = require('../server.js')
-const clonedeep = require('lodash.clonedeep')
+const _ = require('lodash')
+// const { clonedeep } = require('lodash.clonedeep')
 const { refresh, initShapes } = require('../refresh.js')
 
 exports.Room = class Room {
-  constructor() {
+  constructor(parent) {
+    this._parent = parent
+    
     this._url = ''
     this._inGame = false
     this._nbPlayer = 0
     this._listPlayers = {}
-    this._rules = clonedeep(defaultRules)
+    this._rules = _.cloneDeep(defaultRules)
 
     this._interval = undefined
     this._shapes = []
     this._shapesId = []
 
     this._readyToStart = {}
+  }
+
+  getParent() {
+    return (this._parent)
   }
 
   setUrl(url) {
@@ -35,7 +41,7 @@ exports.Room = class Room {
     return (this._listPlayers)
   }
 
-  getInGame() {
+  isInGame() {
     return (this._inGame)
   }
 
@@ -58,7 +64,7 @@ exports.Room = class Room {
   }
 
   addNewPlayer(clientId, profil) {
-    this._listPlayers = { ...this._listPlayers, [clientId]: new Player(profil, clientId) }
+    this._listPlayers = { ...this._listPlayers, [clientId]: new Player(profil, clientId, this) }
     this._nbPlayer++
   }
 
@@ -115,18 +121,18 @@ exports.Room = class Room {
       return roomInfo
   }
 
-  startGame() {
-    let socketClients = server.getSocketClientListFromRoom(this.getUrl(), true)
+  launchGame(sio) {
+    // let socketClients = server.getSioListFromRoom(this.getUrl(), true)
 
     initShapes(this)
     this.initGames()
     this.setInGame(true)
-    this._interval = setInterval(this.gameLoop.bind(this), 1000, socketClients, this.getUrl())
+    this._interval = setInterval(this.gameLoop.bind(this), 1000, sio, this.getUrl())
     this._readyToStart = undefined
     console.log(`interval ${this.getUrl()} init`)
   }
 
-  getAllGames(only) {
+  getAllGames(only, exception) {
     let ret = {}
     let playersList = {}
 
@@ -135,7 +141,8 @@ exports.Room = class Room {
     else
       playersList = this.getListPlayers()
     for (let [key, value] of Object.entries(playersList)) {
-      ret = { ...ret, [key]: value.getGame() }
+      if (key !== exception && key !== undefined)
+        ret = { ...ret, [key]: value.getGame() }
     }
     return (ret)
   }
@@ -145,10 +152,10 @@ exports.Room = class Room {
       value.setGame(games[key])
   }
 
-  createSpecList(obj, exception, url) {
+  createSpecList(exception) {
     let ret = []
 
-    for (let [key, value] of Object.entries(obj)) {
+    for (let [key, value] of Object.entries(this.getListPlayers())) {
       if (key !== exception && value && value.lines) {
         ret.push({
           lines: value.getGame().getLines(),
@@ -172,10 +179,33 @@ exports.Room = class Room {
     for (let [key, value] of Object.entries(socketClients)) {
       gamesTmp[key] = refresh(gamesTmp[key], this, key)
     }
-    if (this.getInGame() === true) {
+    if (this.isInGame() === true) {
       this.setAllGames(gamesTmp)
       for (let [key, value] of Object.entries(socketClients))
         value.emit('refreshVue', this.getAllGames(key), this.createSpecList(this.getAllGames(), key, url))
+    }
+  }
+
+  getSioFromParent() {
+    return (this.getParent().getSioListFromRoom(this.getUrl()))
+  }
+
+  emitAll(message, except, obj, spec) {
+    let clientList = this.getSioFromParent()
+  
+    for (let [key, value] of Object.entries(clientList)) {
+      if (key !== except) {
+        value.emit(message, _.omit(obj, ['_parent', '_parent']), spec) // ici ca pete la stack, a cause de parent enfin j'imagine
+      }
+    }
+  }
+  
+  emitOnly(message, only, obj, spec) {
+    let clientList = this.getSioFromParent()
+  
+    for (let [key, value] of Object.entries(clientList)) {
+      if (key === only)
+        value.emit(message, _.omit(obj, ['_parent', 'parent']), spec) // ici ca pete la stack, a cause de parent enfin j'imagine
     }
   }
 }

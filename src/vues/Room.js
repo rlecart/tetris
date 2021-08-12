@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect, Link } from 'react-router-dom'
-import { getRoomInfo, startGame } from '../api/clientApi'
+import { getRoomInfo, askToMove } from '../api/clientApi'
 import { connect } from "react-redux";
 import nav from "../misc/nav";
 
@@ -79,7 +79,7 @@ class Room extends Component {
               <div className="playerList">
                 {players}
               </div>
-              <button className="roomButton" id="launchGame" onClick={() => { startGame(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl, undefined) }}>
+              <button className="roomButton" id="launchGame" onClick={() => { askToMove(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl, undefined) }}>
                 <span className="textButton">Lancer la partie</span>
               </button>
             </div>
