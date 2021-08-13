@@ -31,6 +31,9 @@ const createRoom = (clientId, profil, cb) => {
     // console.log(room)
     // console.log('\n', roomsList)
     joinRoom(clientId, profil, room.getUrl(), cb)
+
+    //Bidouille Pacome
+    return (room)
   }
 }
 
@@ -181,6 +184,10 @@ const port = 8000;
 io.listen(port);
 console.log('listening on port ', port);
 
+const stopserver = () => { process.exit() }
+
+exports.stopserver = stopserver
+exports.createRoom = createRoom
 exports.closeRoom = closeRoom
 exports.emitAll = emitAll
 exports.emitOnly = emitOnly
