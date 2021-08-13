@@ -86,7 +86,6 @@ exports.Master = class Master {
     closeRoom(room) {
       let clientsRoom = this.getSioListFromRoom(room.getUrl(), true)
     
-      room.endGame()
       for (let [key, value] of Object.entries(clientsRoom)) {
         room.removePlayer(key)
       }

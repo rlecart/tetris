@@ -293,7 +293,7 @@ function addFilledLine(room, exception, amount) {
         // console.log('getlistplayers = ', room.getListPlayers(key))
         // console.log('getlistplayers = ', room.getListPlayers(key))
         if (room.getListPlayers(key).getGame().getLines(0).find((elem) => { elem !== 0 })) { // ca check si y'avait deja un bloc en [0;X] avant d'ajouter la ligne car si oui alors ca veut dire que le joueur en question a perdu donc fin de game, sinon bah ca continue
-          room.emitOnly('endGame', key, this)
+          endGame(room, key)
           break;
         }
         else {
@@ -307,15 +307,8 @@ function addFilledLine(room, exception, amount) {
           // console.log('apres fillLine')
           refresh(room.getListPlayers(key).getGame(), room, key)
           // console.log('apres refresh')
-            // console.log('avant refreshvue')
-            server.emitOnly('refreshVue', room.getUrl(), key, room.getListPlayers(key).getGame(), () => {
-            // console.log('avant createspec')
-            let ret = room.createSpecList(key)
-            // console.log('createSpecList = ')
-            console.log(ret)
-            // console.log('fin')
-            return (ret)
-          })
+          // console.log('avant refreshvue')
+          room.emitOnly('refreshVue', key, room.getListPlayers(key).getGame(), room.createSpecList(key))
         }
       }
     }
@@ -327,17 +320,17 @@ function refresh(game, room, id) {
   let filledLines = 0
 
   // console.log(game)
-    //console.log('debut refresh')
-    if (game.getPlaced() === -1)
+  //console.log('debut refresh')
+  if (game.getPlaced() === -1)
     createNewTetri(game, room)
-    //console.log('avant move')
-    hasMoved = moveTetri(game, 0, 1)
-    //console.log('apres move')
-    if (hasMoved == -1) {
-      //console.log('avant endgamee')
-      endGame(room, id)
-      //console.log('apres endgamee')
-    }
+  //console.log('avant move')
+  hasMoved = moveTetri(game, 0, 1)
+  //console.log('apres move')
+  if (hasMoved == -1) {
+    //console.log('avant endgamee')
+    endGame(room, id)
+    //console.log('apres endgamee')
+  }
   else if (hasMoved == 1) {
     //console.log('avant moved=1')
     if ((filledLines = checkFilledLine(game)) > 0)
@@ -347,7 +340,7 @@ function refresh(game, room, id) {
     //console.log('apres createnewtetri')
     //console.log('avant de relaunch refresh')
     refresh(game, room, id)
-}
+  }
   //console.log('refresh finish')
   return (game)
 }

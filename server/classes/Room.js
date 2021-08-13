@@ -3,13 +3,10 @@ const utils = require('../utils')
 const { Player } = require('./Player')
 const server = require('../server.js')
 const _ = require('lodash')
-// const { clonedeep } = require('lodash.clonedeep')
 const { refresh, initShapes } = require('../refresh.js')
 
 exports.Room = class Room {
   constructor() {
-    // this._parent = parent
-    
     this._url = ''
     this._inGame = false
     this._nbPlayer = 0
@@ -24,10 +21,6 @@ exports.Room = class Room {
 
     this._sioList = {}
   }
-
-  // getParent() {
-  //   return (this._parent)
-  // }
 
   addSio(sio) {
     this._sioList = { ...this._sioList, [sio.id]: sio }
@@ -207,7 +200,7 @@ exports.Room = class Room {
   
     for (let [key, value] of Object.entries(clientList)) {
       if (key !== except) {
-        value.emit(message, _.omit(obj, ['_parent', 'parent']), spec) // ici ca pete la stack, a cause de parent enfin j'imagine
+        value.emit(message, obj, spec) // ici ca pete la stack, a cause de parent enfin j'imagine
       }
     }
   }
@@ -217,7 +210,7 @@ exports.Room = class Room {
   
     for (let [key, value] of Object.entries(clientList)) {
       if (key === only)
-        value.emit(message, _.omit(obj, ['_parent', 'parent']), spec) // ici ca pete la stack, a cause de parent enfin j'imagine
+        value.emit(message, obj, spec) // ici ca pete la stack, a cause de parent enfin j'imagine
     }
   }
 }

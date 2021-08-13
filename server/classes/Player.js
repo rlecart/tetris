@@ -3,7 +3,6 @@ const { Game } = require('./Game')
 
 exports.Player = class Player {
   constructor(profil, clientId) {
-    // this._parent = parent
 
     this._clientId = clientId
     this._profil = profil
@@ -29,10 +28,6 @@ exports.Player = class Player {
   getGame() {
     return (this._game)
   }
-
-  // getParent() {
-  //   return (this._parent)
-  // }
 
   deleteGame() {
     this._game = undefined
