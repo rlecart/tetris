@@ -82,6 +82,15 @@ exports.Master = class Master {
       }
       return ret
     }
+
+    leaveRoom(clientId, profil, url, cb) {
+      let room = {}
+    
+      if ((room = this.getRoom(url)) && room.getListPlayers(clientId)) {
+        room.removePlayer(clientId)
+        room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
+      }
+    }
     
     closeRoom(room) {
       let clientsRoom = this.getSioListFromRoom(room.getUrl(), true)
@@ -96,7 +105,7 @@ exports.Master = class Master {
     askToStartGame(clientId, profil, url, cb) {
       let room = {}
     
-      if ((room = this.getRoom(url))) {
+      if ((room = this.getRoom(url)) && room.isOwner(clientId)) {
         room.emitAll('goToGame')
       }
     }

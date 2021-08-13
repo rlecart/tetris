@@ -18,9 +18,14 @@ class App extends Component {
   componentDidMount() { // checker si socket existant
     // fonction pour set toutes les reponses serv
     // console.log('\n\n\nquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjour\n\n\n')
-    let sock = openSocket('http://localhost:8000')
-    const action = { type: 'CONNECT_SOCKET', value: sock }
-    this.props.dispatch(action)
+    let sock
+
+    // console.log(this.props.socketConnector)
+    // if (!this.props.socketConnector.socket) { // ici ca cree un nouveau socket a chaque retour arriere lors d'un leaveRoom()
+      sock = openSocket('http://localhost:8000')
+      const action = { type: 'CONNECT_SOCKET', value: sock }
+      this.props.dispatch(action)
+    // }
     // this.socket.on('')
   }
 
@@ -28,7 +33,7 @@ class App extends Component {
     console.log('app props', this.props)
     return (
       <Fragment>
-          <Accueil history={this.props.history}/>
+        <Accueil history={this.props.history} />
       </Fragment>
     )
   }

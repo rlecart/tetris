@@ -13,6 +13,7 @@ exports.Room = class Room {
     this._listPlayers = {}
     this._rules = _.cloneDeep(defaultRules)
 
+
     this._interval = undefined
     this._shapes = []
     this._shapesId = []
@@ -20,6 +21,8 @@ exports.Room = class Room {
     this._readyToStart = {}
 
     this._sioList = {}
+    this._owner = undefined
+    this._arrivalOrder = []
   }
 
   addSio(sio) {
@@ -73,12 +76,25 @@ exports.Room = class Room {
   }
 
   addNewPlayer(clientId, profil) {
+    let owner = false
+
+    if (this._nbPlayer === 0) {
+      this._owner = clientId
+      owner = true
+    }
+    profil = { ...profil, owner: owner }
+    this._arrivalOrder.push(clientId)
     this._listPlayers = { ...this._listPlayers, [clientId]: new Player(profil, clientId, this) }
     this._nbPlayer++
   }
 
   removePlayer(clientId) {
-    this._listPlayers[clientId] = undefined
+    if (this._owner === clientId) {
+      this._arrivalOrder.shift()
+      this._owner = this._arrivalOrder[0]
+      this._listPlayers[this._owner]._profil.owner = true
+    }
+    delete this._listPlayers[clientId]
     this._nbPlayer--
   }
 
@@ -123,11 +139,19 @@ exports.Room = class Room {
     roomInfo.inGame = this._inGame
     roomInfo.nbPlayer = this._nbPlayer
     roomInfo.rules = this._rules
-    roomInfo.listPlayers = utils.getArrayFromObject(this._listPlayers)
+    roomInfo.listPlayers = this._listPlayers // alors ici ca envoie les clientId et c'est dangereux niveau secu (peut-etre ?)
+    // roomInfo.listPlayers = utils.getArrayFromObject(this._listPlayers)
+    console.log(roomInfo.listPlayers)
     if (cb !== undefined)
       cb(roomInfo)
     else
-      return roomInfo
+      return (roomInfo)
+  }
+
+  isOwner(id) {
+    if (this._owner === id)
+      return (true)
+    return (false)
   }
 
   launchGame(sio) {
@@ -197,17 +221,17 @@ exports.Room = class Room {
 
   emitAll(message, except, obj, spec) {
     let clientList = this.getSio()
-  
+
     for (let [key, value] of Object.entries(clientList)) {
       if (key !== except) {
         value.emit(message, obj, spec) // ici ca pete la stack, a cause de parent enfin j'imagine
       }
     }
   }
-  
+
   emitOnly(message, only, obj, spec) {
     let clientList = this.getSio()
-  
+
     for (let [key, value] of Object.entries(clientList)) {
       if (key === only)
         value.emit(message, obj, spec) // ici ca pete la stack, a cause de parent enfin j'imagine

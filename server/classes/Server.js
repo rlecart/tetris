@@ -38,6 +38,7 @@ exports.Server = class Server {
             })
             client.on('createRoom', (clientId, profil, cb) => { master.createRoom(clientId, profil, cb) })
             client.on('joinRoom', (clientId, profil, url, cb) => { master.joinRoom(clientId, profil, url, cb) })
+            client.on('leaveRoom', (clientId, profil, url) => { master.leaveRoom(clientId, profil, url) })
             client.on('getRoomInfo', (url, cb) => { master.getRoom(url).getRoomInfo(cb) })
             client.on('askToStartGame', (clientId, profil, url, cb) => { master.askToStartGame(clientId, profil, url, cb) })
             client.on('readyToStart', (clientId, url) => { master.readyToStart(clientId, url) })
