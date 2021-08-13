@@ -3,17 +3,17 @@ const http = require('http')
 const socketio = require('socket.io')
 
 exports.Server = class Server {
-    constructor(parent) {
-        this._parent = parent
+    constructor() {
+        // this._parent = parent
 
         this._port = config.back.port
         this._server = {}
         this._io = {}
     }
 
-    getParent() {
-        return (this._parent)
-    }
+    // getParent() {
+    //     return (this._parent)
+    // }
 
     startServer() {
         this._server = http.createServer();
@@ -27,8 +27,8 @@ exports.Server = class Server {
         });
     }
 
-    listenSio() {
-        const master = this.getParent()
+    listenSio(master) {
+        // const Master = this.getParent()
 
         this._io.on('connection', (client) => {
             master.addNewSio(client)

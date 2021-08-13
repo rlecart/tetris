@@ -1,10 +1,9 @@
 const { refresh } = require('../refresh.js')
-
 const { Game } = require('./Game')
 
 exports.Player = class Player {
-  constructor(profil, clientId, parent) {
-    this._parent = parent
+  constructor(profil, clientId) {
+    // this._parent = parent
 
     this._clientId = clientId
     this._profil = profil
@@ -18,6 +17,10 @@ exports.Player = class Player {
   getProfil() {
     return (this._profil)
   }
+
+  getRoomUrl() {
+    return (this._profil.url)
+  }
   
   getName() {
     return (this._profil.name)
@@ -27,9 +30,9 @@ exports.Player = class Player {
     return (this._game)
   }
 
-  getParent() {
-    return (this._parent)
-  }
+  // getParent() {
+  //   return (this._parent)
+  // }
 
   deleteGame() {
     this._game = undefined
@@ -43,9 +46,8 @@ exports.Player = class Player {
     this._game = newGame
   }
 
-  move(dir) {
+  move(dir, room) {
     let reponse = -1
-    let room = this.getParent()
   
     if (dir === 'right')
       reponse = refresh.moveTetri(this.getGame(), 1, 0)

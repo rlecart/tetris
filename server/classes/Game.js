@@ -2,8 +2,8 @@ const clonedeep = require('lodash.clonedeep')
 const { defaultGame } = require('../../src/ressources/game')
 
 exports.Game = class Game {
-  constructor(shapes, shapesId, parent) {
-    this._parent = parent
+  constructor(shapes, shapesId) {
+    // this._parent = parent
 
     this._lines = clonedeep(defaultGame.lines)
     this._tetri = clonedeep(defaultGame.tetri)

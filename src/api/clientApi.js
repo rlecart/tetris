@@ -18,8 +18,8 @@ const joinRoom = (socket, profil, url, cb) => {
   socket.emit('joinRoom', socket.id, profil, url, cb)
 }
 
-const askToMove = (socket, profil, url, cb) => {
-  socket.emit('askToMove', socket.id, profil, url, cb)
+const askToStartGame = (socket, profil, url, cb) => {
+  socket.emit('askToStartGame', socket.id, profil, url, cb)
 }
 
-export { anotherOnePlease, move, createRoom, joinRoom, getRoomInfo, askToMove }
+export { anotherOnePlease, move, createRoom, joinRoom, getRoomInfo, askToStartGame }

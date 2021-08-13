@@ -7,8 +7,8 @@ const _ = require('lodash')
 const { refresh, initShapes } = require('../refresh.js')
 
 exports.Room = class Room {
-  constructor(parent) {
-    this._parent = parent
+  constructor() {
+    // this._parent = parent
     
     this._url = ''
     this._inGame = false
@@ -21,10 +21,26 @@ exports.Room = class Room {
     this._shapesId = []
 
     this._readyToStart = {}
+
+    this._sioList = {}
   }
 
-  getParent() {
-    return (this._parent)
+  // getParent() {
+  //   return (this._parent)
+  // }
+
+  addSio(sio) {
+    this._sioList = { ...this._sioList, [sio.id]: sio }
+  }
+
+  removeSio(id) {
+    this._sioList = { ...this._sioList, [id]: undefined }
+  }
+
+  getSio(id) {
+    if (id !== undefined)
+      return (this._sioList[id])
+    return (this._sioList)
   }
 
   setUrl(url) {
@@ -186,22 +202,18 @@ exports.Room = class Room {
     }
   }
 
-  getSioFromParent() {
-    return (this.getParent().getSioListFromRoom(this.getUrl()))
-  }
-
   emitAll(message, except, obj, spec) {
-    let clientList = this.getSioFromParent()
+    let clientList = this.getSio()
   
     for (let [key, value] of Object.entries(clientList)) {
       if (key !== except) {
-        value.emit(message, _.omit(obj, ['_parent', '_parent']), spec) // ici ca pete la stack, a cause de parent enfin j'imagine
+        value.emit(message, _.omit(obj, ['_parent', 'parent']), spec) // ici ca pete la stack, a cause de parent enfin j'imagine
       }
     }
   }
   
   emitOnly(message, only, obj, spec) {
-    let clientList = this.getSioFromParent()
+    let clientList = this.getSio()
   
     for (let [key, value] of Object.entries(clientList)) {
       if (key === only)

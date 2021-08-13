@@ -12,7 +12,7 @@ exports.Master = class Master {
     startServer() {
         this._server = new Server(this)
         this._server.startServer()
-        this._server.listenSio()
+        this._server.listenSio(this)
     }
 
     addNewRoom(room) {
@@ -59,7 +59,9 @@ exports.Master = class Master {
       let room = {}
   
       if (profil.name && (room = this.getRoom(url)) && !room.isInGame() && !room.getListPlayers(clientId) && room.getNbPlayer() < 8) {
+        profil = { ...profil, url:[url] }
         room.addNewPlayer(clientId, profil)
+        room.addSio(this.getSioList(clientId))
         console.log(clientId + ' joinroom ' + url)
         cb(`/#${url}[${profil.name}]`) // ca faut que je le tej
         room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
@@ -127,6 +129,6 @@ exports.Master = class Master {
       let player = {}
 
       if ((room = this.getRoom(url)) && (player = room.getListPlayers(clientId)))
-        player.move(dir)
+        player.move(dir, room)
     }
-  }  
+  }
