@@ -276,12 +276,13 @@ const checkFilledLine = (game) => {
 
 const endGame = (room, id) => { // gameover
   // console.log(room)
+  room.endGame()
   room.emitAll('endGame') // ici emitOnly plutot pour faire continuer les autres
-  room.getParent().closeRoom(room)
+  // room.getParent().closeRoom(room)
 }
 
 function addFilledLine(room, exception, amount) {
-  let players = room.getSioFromParent()
+  let players = room.getSio()
 
   for (let [key, value] of Object.entries(players)) {
     // console.log('haha = ', ++haha)

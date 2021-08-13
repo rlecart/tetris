@@ -114,12 +114,12 @@ exports.Master = class Master {
   
     readyToStart(clientId, url) {
       let res
-      const room = {}
+      let room = {}
 
       if (url && clientId && (room = this.getRoom(url)) && room.getListPlayers(clientId)) {
         room.addReadyToStart(clientId)
         if (res = this.tryToStart(room.getReadyToStart(), room.getNbPlayer())) {
-          room.launchGame(this.getSioListFromRoom(url))
+          room.launchGame(this.getSioListFromRoom(url, true))
         }
       }
     }

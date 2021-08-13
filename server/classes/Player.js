@@ -1,4 +1,4 @@
-const { refresh } = require('../refresh.js')
+const { moveTetri } = require('../refresh.js')
 const { Game } = require('./Game')
 
 exports.Player = class Player {
@@ -50,14 +50,14 @@ exports.Player = class Player {
     let reponse = -1
   
     if (dir === 'right')
-      reponse = refresh.moveTetri(this.getGame(), 1, 0)
+      reponse = moveTetri(this.getGame(), 1, 0)
     else if (dir === 'left')
-      reponse = refresh.moveTetri(this.getGame(), -1, 0)
+      reponse = moveTetri(this.getGame(), -1, 0)
     else if (dir === 'down')
-      reponse = refresh.moveTetri(this.getGame(), 0, 1)
+      reponse = moveTetri(this.getGame(), 0, 1)
     else if (dir === 'turn')
-      reponse = refresh.moveTetri(this.getGame(), 0, 0)
+      reponse = moveTetri(this.getGame(), 0, 0)
     if (reponse !== 0)
-      room.emitOnly('refreshVue', clientId, this.getGame(), room.createSpecList(this))
+      room.emitOnly('refreshVue', this.getId(), this.getGame(), room.createSpecList(this))
   }
 }
