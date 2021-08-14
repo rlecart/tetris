@@ -119,7 +119,7 @@ class Game extends Component {
     // console.log('bonjoru', this.props)
     // fonction pour set toutes les reponses serv
     this.socket.on('refreshVue', (game, spec) => { this.refreshGame(game, spec, this) })
-    this.socket.on('endGame', (roomInfo) => { nav(this.props.history, `/${this.props.match.params.room}`) }) // ici gestion gamover
+    this.socket.on('endGame', (roomInfo) => { this.props.history.replace(`/${this.props.match.params.room}`) }) // ici gestion gamover
     if (this.props.socketConnector.areGameEventsLoaded === false) {
       console.log('gameEventsLoaded')
       // window.addEventListener("keypress", this.eventDispatcher.bind(this))
