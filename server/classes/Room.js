@@ -69,9 +69,11 @@ exports.Room = class Room {
   endGame() {
     clearInterval(this._interval)
     this._interval = undefined
-    this._shapes = []
-    this._shapesId = []
     this.setInGame(false)
+    setTimeout(() => {
+      this._shapes = []
+      this._shapesId = []
+    }, 1500)
   }
 
   resetUrl() {
@@ -195,7 +197,7 @@ exports.Room = class Room {
     let ret = []
 
     for (let [key, value] of Object.entries(this.getListPlayers())) {
-      if (key !== exception && value && value.lines) {
+      if (key !== exception && value && value.getGame() && value.getGame().getLines()) {
         ret.push({
           lines: value.getGame().getLines(),
           name: value.getName(),
@@ -214,14 +216,17 @@ exports.Room = class Room {
   gameLoop(socketClients, url) {
     let gamesTmp = this.getAllGames() // parce qu'on a besoin que tout soit actualise en meme temps a la fin
     // ici need un deepclone ?? (pas sur que ce soit une copie quoi)
-
     for (let [key, value] of Object.entries(socketClients)) {
-      gamesTmp[key] = refresh(gamesTmp[key], this, key)
+      if (this.isInGame() === true) {
+        gamesTmp[key] = refresh(gamesTmp[key], this, key)
+      }
     }
     if (this.isInGame() === true) {
       this.setAllGames(gamesTmp)
-      for (let [key, value] of Object.entries(socketClients))
-        value.emit('refreshVue', this.getAllGames(key), this.createSpecList(this.getAllGames(), key, url))
+      for (let [key, value] of Object.entries(socketClients)) {
+        if (this.isInGame() === true)
+          value.emit('refreshVue', this.getAllGames(key), this.createSpecList(key))
+      }
     }
   }
 
@@ -230,7 +235,7 @@ exports.Room = class Room {
 
     for (let [key, value] of Object.entries(clientList)) {
       if (key !== except) {
-        value.emit(message, obj, spec) // ici ca pete la stack, a cause de parent enfin j'imagine
+        value.emit(message, obj, spec)
       }
     }
   }
@@ -240,7 +245,7 @@ exports.Room = class Room {
 
     for (let [key, value] of Object.entries(clientList)) {
       if (key === only)
-        value.emit(message, obj, spec) // ici ca pete la stack, a cause de parent enfin j'imagine
+        value.emit(message, obj, spec)
     }
   }
 }

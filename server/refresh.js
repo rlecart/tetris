@@ -68,7 +68,7 @@ const checkTetri = (game, truePos) => {
     return (-1)
   while (++i < actual.length) {
     while (++j < actual[i].length) {
-      if (actual[i][j] === 1 && game.getLines(y, x) !== 0) {
+      if (actual[i][j] === 1 && game.getLines(y, x) !== undefined && game.getLines(y, x) !== 0) {
         return (-1)
       }
       x++
@@ -219,19 +219,20 @@ const checkIfOk = (game, x, y, truePos) => {
 }
 
 const moveTetri = (game, x, y) => {
-  let truePos = parseTruePos(game.getActualShape())
-  let errors = checkIfOk(game, x, y, truePos)
-  if (x === 0 && y === 0) {
-    // console.log(truePos)
-    // console.log(game.tetri)
-  }
-  // console.log(game.tetri.x, game.tetri.y, truePos)
-  if (errors !== 'ok') {
-    // console.log(truePos)
-    // console.log(game.getTetri())
-    // console.log('errors = ', errors)
+  let truePos
+  let errors
+
+  if (x === 0 && y === 0)
+    turnTetri(game, true)
+  truePos = parseTruePos(game.getActualShape())
+  errors = checkIfOk(game, x, y, truePos)
+  if (errors !== 'ok' || errors === 1) {
+    if (x === 0 && y === 0)
+      turnTetri(game, false)
     return (errors)
   }
+  if (x === 0 && y === 0)
+    turnTetri(game, false)
   if (game.getY() !== -1 || (y === 0 && x !== 0))
     removeTetri(game)
   if (x === 0 && y === 0)

@@ -29,8 +29,8 @@ exports.Game = class Game {
   }
 
   getLines(i, j) {
-    if (i !== undefined) {
-      if (j !== undefined)
+    if (this._lines && i !== undefined) {
+      if (this._lines[i] && j !== undefined)
         return (this._lines[i][j])
       return (this._lines[i])
     }
@@ -40,13 +40,6 @@ exports.Game = class Game {
   setLines(i, j, value) {
     if (i !== undefined) {
       if (j !== undefined) {
-        // console.log('\n\n\n')
-        // console.log(this._lines)
-        // console.log(this._lines[i])
-        // console.log(this._lines[i][j])
-        // console.log(i, j)
-        // console.log(value)
-        // console.log('\n\n\n')
         this._lines[i][j] = value
       }
       else
@@ -57,13 +50,13 @@ exports.Game = class Game {
   }
 
   getActualShape(i, j) {
-    if (i !== undefined) {
-      // console.log('wegwgwe')
-      if (j !== undefined) {
-        // console.log('wegwgwe')
-        return (this._tetri.actualShape[i][j])
+    if (this._tetri) {
+      if (this._tetri.actualShape && i !== undefined) {
+        if (this._tetri.actualShape[i] && j !== undefined) {
+          return (this._tetri.actualShape[i][j])
+        }
+        return (this._tetri.actualShape[i])
       }
-      return (this._tetri.actualShape[i])
     }
     return (this._tetri.actualShape)
   }

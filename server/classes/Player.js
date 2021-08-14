@@ -57,6 +57,6 @@ exports.Player = class Player {
         reponse = moveTetri(this.getGame(), 0, 1)
     }
     if (reponse !== 0)
-      room.emitOnly('refreshVue', this.getId(), this.getGame(), room.createSpecList(this))
+      room.emitOnly('refreshVue', this.getId(), this.getGame(), room.createSpecList(this.getId()))
   }
 }
