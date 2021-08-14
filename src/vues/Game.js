@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import openSocket from 'socket.io-client'
+import React, { Component, useCallback } from 'react'
 import { connect } from "react-redux";
 
 import colors from '../ressources/colors.js'
@@ -76,7 +75,7 @@ class Game extends Component {
     this.setState(state)
   }
 
-  eventDispatcher(event) {
+  eventDispatcher = (event) => {
     const state = this.state
     const socket = this.socket
     const url = this.props.roomReducer.roomInfo.url
@@ -122,8 +121,9 @@ class Game extends Component {
     this.socket.on('refreshVue', (game, spec) => { this.refreshGame(game, spec, this) })
     this.socket.on('endGame', (roomInfo) => { nav(this.props.history, `/${this.props.match.params.room}`) }) // ici gestion gamover
     if (this.props.socketConnector.areGameEventsLoaded === false) {
+      console.log('gameEventsLoaded')
       // window.addEventListener("keypress", this.eventDispatcher.bind(this))
-      window.addEventListener("keydown", this.eventDispatcher.bind(this))
+      window.addEventListener("keydown", this.eventDispatcher)
       const action = { type: 'GAME_EVENTS_LOADED' }
       this.props.dispatch(action)
     }
@@ -132,6 +132,11 @@ class Game extends Component {
 
   componentWillUnmount() {
     this.socket.removeAllListeners()
+    if (this.props.socketConnector.areGameEventsLoaded === true) {
+      window.removeEventListener('keydown', this.eventDispatcher)
+      const action = { type: 'GAME_EVENTS_UNLOADED' } // a voir | en gros tu peux pas restart visiblement y'a .isInGame() qui s'est pas reset
+      this.props.dispatch(action)
+    }
   }
 
   createSpec(players) {

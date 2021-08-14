@@ -89,18 +89,22 @@ exports.Master = class Master {
 
     if ((room = this.getRoom(url)) && room.getListPlayers(clientId)) {
       room.removePlayer(clientId)
-      room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
+      if (room.getNbPlayer() <= 0) {
+        this.closeRoom(room)
+      }
     }
   }
 
   closeRoom(room) {
-    let clientsRoom = this.getSioListFromRoom(room.getUrl(), true)
+    let url = room.getUrl()
+    let clientsRoom = this.getSioListFromRoom(url, true)
 
     for (let [key, value] of Object.entries(clientsRoom)) {
       room.removePlayer(key)
     }
     room.resetUrl()
-    console.log(`room ${room.getUrl()} closed`)
+    delete this._roomsList[url]
+    console.log(`room ${url} closed`)
   }
 
   askToStartGame(clientId, profil, url, cb) {
@@ -145,6 +149,7 @@ exports.Master = class Master {
     let room = {}
     let player = {}
 
+    console.log(clientId)
     if ((room = this.getRoom(url)) && (player = room.getListPlayers(clientId)))
       player.move(dir, room)
   }

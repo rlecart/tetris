@@ -80,7 +80,10 @@ class Room extends Component {
 
   leaveRoom() {
     api.leaveRoom(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl)
-    this.state.history.goBack() // ici bah ca back bien mais j'ai l'impression que ca ecrase le socket avec un nouveau lors du componentDidMount() et y'en aura 2 qui se succederont quoi
+    // this.state.history.goBack() // ici bah ca back bien mais j'ai l'impression que ca ecrase le socket avec un nouveau lors du componentDidMount() et y'en aura 2 qui se succederont quoi
+    // this.state.history.goBack().bind(this)
+    this.state.history.replace('/')
+    // this.state.history.push('/')
   }
 
   render() {

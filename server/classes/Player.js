@@ -20,7 +20,7 @@ exports.Player = class Player {
   getRoomUrl() {
     return (this._profil.url)
   }
-  
+
   getName() {
     return (this._profil.name)
   }
@@ -42,8 +42,8 @@ exports.Player = class Player {
   }
 
   move(dir, room) {
-    let reponse = -1
-  
+    let reponse = -2
+
     if (dir === 'right')
       reponse = moveTetri(this.getGame(), 1, 0)
     else if (dir === 'left')
@@ -52,6 +52,10 @@ exports.Player = class Player {
       reponse = moveTetri(this.getGame(), 0, 1)
     else if (dir === 'turn')
       reponse = moveTetri(this.getGame(), 0, 0)
+    else if (dir === 'stash') {
+      while (reponse === 2 || reponse === -2)
+        reponse = moveTetri(this.getGame(), 0, 1)
+    }
     if (reponse !== 0)
       room.emitOnly('refreshVue', this.getId(), this.getGame(), room.createSpecList(this))
   }

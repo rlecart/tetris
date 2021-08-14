@@ -26,7 +26,8 @@ exports.Room = class Room {
   }
 
   addSio(sio) {
-    this._sioList = { ...this._sioList, [sio.id]: sio }
+    if (sio && sio.id)
+      this._sioList = { ...this._sioList, [sio.id]: sio }
   }
 
   removeSio(id) {
@@ -91,13 +92,16 @@ exports.Room = class Room {
   }
 
   removePlayer(clientId) {
+    this._nbPlayer--
     if (this._owner === clientId) {
       this._arrivalOrder.shift()
-      this._owner = this._arrivalOrder[0]
-      this._listPlayers[this._owner]._profil.owner = true
+      if (this._nbPlayer > 0) {
+        this._owner = this._arrivalOrder[0]
+        this._listPlayers[this._owner]._profil.owner = true
+      }
     }
     delete this._listPlayers[clientId]
-    this._nbPlayer--
+    this.emitAll('refreshRoomInfo', clientId, this.getRoomInfo())
   }
 
   addReadyToStart(clientId) {
