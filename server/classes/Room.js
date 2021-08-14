@@ -193,17 +193,37 @@ exports.Room = class Room {
       value.setGame(games[key])
   }
 
+  hiddenSpec(ret) {
+    let hiddenCols = new Array(ret[0].lines[0].length).fill(false)
+
+    console.log(ret)
+    for (let player of ret) {
+      for (let line of player.lines) {
+        for (let i in line) {
+          if (hiddenCols[i] === false && line[i] !== 0 && line[i] !== 1)
+            hiddenCols[i] = true
+          else if (hiddenCols[i] === true)
+            line[i] = 1
+        }
+      }
+    }
+    return (ret)
+  }
+
   createSpecList(exception) {
+    let hidden = true
     let ret = []
 
     for (let [key, value] of Object.entries(this.getListPlayers())) {
       if (key !== exception && value && value.getGame() && value.getGame().getLines()) {
         ret.push({
-          lines: value.getGame().getLines(),
+          lines: _.cloneDeep(value.getGame().getLines()),
           name: value.getName(),
         })
       }
     }
+    if (hidden && ret)
+      return (this.hiddenSpec(ret))
     return ret
   }
 
