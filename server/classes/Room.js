@@ -140,7 +140,7 @@ exports.Room = class Room {
     return (this._readyToStart)
   }
 
-  getRoomInfo(cb) {
+  getRoomInfo() {
     let roomInfo = {}
 
     roomInfo.url = this._url
@@ -150,10 +150,7 @@ exports.Room = class Room {
     roomInfo.listPlayers = this._listPlayers // alors ici ca envoie les clientId et c'est dangereux niveau secu (peut-etre ?)
     // roomInfo.listPlayers = utils.getArrayFromObject(this._listPlayers)
     console.log(roomInfo.listPlayers)
-    if (cb !== undefined)
-      cb(roomInfo)
-    else
-      return (roomInfo)
+    return (roomInfo)
   }
 
   isOwner(id) {

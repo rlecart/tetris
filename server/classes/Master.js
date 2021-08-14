@@ -47,16 +47,16 @@ exports.Master = class Master {
     this._sioClientList = { ...this._sioClientList, [client.id]: client }
   }
 
-  createRoom(clientId, profil, cb) { // faut que j'enleve la cb pour redirect au front apres la reponse server
+  createRoom(clientId, profil) {
     if (profil.name) {
       let room = new Room(this)
       room.setUrl(createNewUrl(this.getRoomsList()))
       this.addNewRoom(room)
-      this.joinRoom(clientId, profil, room.getUrl(), cb)
+      this.joinRoom(clientId, profil, room.getUrl())
     }
   }
 
-  joinRoom(clientId, profil, url, cb) { // pareil tej la cb
+  joinRoom(clientId, profil, url) {
     let room = {}
 
     if (profil.name && (room = this.getRoom(url)) && !room.isInGame() && !room.getListPlayers(clientId) && room.getNbPlayer() < 8) {
@@ -64,8 +64,8 @@ exports.Master = class Master {
       room.addNewPlayer(clientId, profil)
       room.addSio(this.getSioList(clientId))
       console.log(clientId + ' joinroom ' + url)
-      cb(`/#${url}[${profil.name}]`) // ca faut que je le tej
       room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
+      room.emitOnly('goToRoom', clientId)
     }
   }
 
@@ -84,7 +84,7 @@ exports.Master = class Master {
     return ret
   }
 
-  leaveRoom(clientId, profil, url, cb) {
+  leaveRoom(clientId, profil, url) {
     let room = {}
 
     if ((room = this.getRoom(url)) && room.getListPlayers(clientId)) {
@@ -107,7 +107,7 @@ exports.Master = class Master {
     console.log(`room ${url} closed`)
   }
 
-  askToStartGame(clientId, profil, url, cb) {
+  askToStartGame(clientId, profil, url) {
     let room = {}
 
     if ((room = this.getRoom(url)) && room.isOwner(clientId)) {
