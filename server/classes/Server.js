@@ -42,6 +42,7 @@ exports.Server = class Server {
             client.on('getRoomInfo', (url, cb) => { master.getRoom(url).getRoomInfo(cb) })
             client.on('askToStartGame', (clientId, profil, url, cb) => { master.askToStartGame(clientId, profil, url, cb) })
             client.on('readyToStart', (clientId, url) => { master.readyToStart(clientId, url) })
+            client.on('askToEndGame', (clientId, url) => { master.askToEndGame(clientId, url) })
             client.conn.on('heartbeat', () => {
               console.log('heartbeat called!');
               master.setSioHbeat(client.id, Date.now())

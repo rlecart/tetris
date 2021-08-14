@@ -68,6 +68,8 @@ exports.Room = class Room {
   endGame() {
     clearInterval(this._interval)
     this._interval = undefined
+    this._shapes = []
+    this._shapesId = []
     this.setInGame(false)
   }
 

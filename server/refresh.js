@@ -349,3 +349,4 @@ function refresh(game, room, id) {
 exports.refresh = refresh
 exports.moveTetri = moveTetri
 exports.initShapes = initShapes
+exports.endGame = endGame

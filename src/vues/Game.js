@@ -3,7 +3,7 @@ import openSocket from 'socket.io-client'
 import { connect } from "react-redux";
 
 import colors from '../ressources/colors.js'
-import { move } from '../api/clientApi.js'
+import api from '../api/clientApi.js'
 import nav from "../misc/nav";
 
 class Game extends Component {
@@ -82,20 +82,24 @@ class Game extends Component {
     const url = this.props.roomReducer.roomInfo.url
 
     console.log(url)
+    console.log(event.key)
 
     console.log('AH')
     if (event.key === "z")
       this.acidMode(event, state)
-    else if (event.key === '.')
-      move('right', url, socket)
-    else if (event.key === ',')
-      move('left', url, socket)
+    else if (event.key === 'ArrowRight')
+      api.move('right', url, socket)
+    else if (event.key === 'ArrowLeft')
+      api.move('left', url, socket)
     else if (event.key === ' ')
-      move('down', url, socket)
-    else if (event.key === '/')
-      move('turn', url, socket)
-    else if (event.key === 'c')
-      socket.emit('endGame')
+      api.move('down', url, socket)
+    else if (event.key === 'ArrowUp')
+      api.move('turn', url, socket)
+    else if (event.key === 'ArrowDown')
+      api.move('stash', url, socket)
+    else if (event.key == 'c') {
+      api.askToEndGame(socket, url)
+    }
   }
 
   refreshGame(game, spec, context) {
@@ -118,7 +122,8 @@ class Game extends Component {
     this.socket.on('refreshVue', (game, spec) => { this.refreshGame(game, spec, this) })
     this.socket.on('endGame', (roomInfo) => { nav(this.props.history, `/${this.props.match.params.room}`) }) // ici gestion gamover
     if (this.props.socketConnector.areGameEventsLoaded === false) {
-      window.addEventListener("keypress", this.eventDispatcher.bind(this))
+      // window.addEventListener("keypress", this.eventDispatcher.bind(this))
+      window.addEventListener("keydown", this.eventDispatcher.bind(this))
       const action = { type: 'GAME_EVENTS_LOADED' }
       this.props.dispatch(action)
     }
@@ -147,10 +152,10 @@ class Game extends Component {
 
   render() {
     console.log(this.state)
-      let spec = (this.state.spec.length !== 0) ? [
-        this.state.spec.slice(0, this.state.spec.length / 2),
-        this.state.spec.slice(this.state.spec.length / 2)
-      ] : undefined
+    let spec = (this.state.spec.length !== 0) ? [
+      this.state.spec.slice(0, this.state.spec.length / 2),
+      this.state.spec.slice(this.state.spec.length / 2)
+    ] : undefined
     return (
       <div className='display'>
         <div className="game" id="spec">

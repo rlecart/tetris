@@ -26,4 +26,7 @@ module.exports = {
   leaveRoom: (socket, profil, url) => {
     socket.emit('leaveRoom', socket.id, profil, url)
   },
+  askToEndGame: (socket, url) => {
+    socket.emit('askToEndGame', socket.id, url)
+  }
 }
