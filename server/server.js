@@ -1,18 +1,8 @@
-const http = require('http')
-const server = http.createServer();
-const socketio = require('socket.io')
-const io = socketio(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-    credentials: true
-  },
-  'pingInterval': 5000,
-});
-const refresh = require('./refresh.js')
+const { Master } = require('./classes/Master')
 
-const utils = require('./utils.js')
+let master = new Master()
 
+<<<<<<< HEAD
 
 let sioClientList = {}
 
@@ -194,3 +184,6 @@ exports.closeRoom = closeRoom
 exports.emitAll = emitAll
 exports.emitOnly = emitOnly
 exports.getSocketClientListFromRoom = getSocketClientListFromRoom
+=======
+master.startServer()
+>>>>>>> d1ec61fa95fd18b49233dbb9300bf69030a70b88

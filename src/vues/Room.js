@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect, Link } from 'react-router-dom'
-import { getRoomInfo, startGame } from '../api/clientApi'
+import api from '../api/clientApi'
 import { connect } from "react-redux";
 import nav from "../misc/nav";
 
@@ -9,18 +9,19 @@ class Room extends Component {
   state = {
     profil: {
       name: '',
+      owner: false,
     },
     roomUrl: '',
     roomInfo: undefined,
+    history: this.props.history,
   }
 
   createList() {
     let ret = []
 
-    console.log('createlist', this.state)
     if (this.state.roomInfo && this.state.roomInfo.listPlayers) {
-      for (let player of this.state.roomInfo.listPlayers) {
-        ret.push(<div className="player">{player.name}</div>)
+      for (let [key, value] of Object.entries(this.state.roomInfo.listPlayers)) {
+        ret.push(<div className="player">{value._profil.name}</div>)
       }
     }
     return ret
@@ -32,9 +33,14 @@ class Room extends Component {
       type: 'SYNC_ROOM_DATA',
       value: roomInfo,
     }
+    let id = this.props.socketConnector.socket.id
+
     console.log('sync', this.props)
     console.log(roomInfo)
     state.roomInfo = roomInfo
+    state.profil.owner = roomInfo.listPlayers[id]._profil.owner
+    console.log('awoqigjqew')
+    console.log(this.state)
     this.setState(state)
     this.props.dispatch(action)
   }
@@ -50,7 +56,7 @@ class Room extends Component {
     console.log('propsmount', this.props)
     if (!state.roomInfo) {
       console.log('init')
-      getRoomInfo(this.props.socketConnector.socket, state.roomUrl, this.syncRoomData.bind(this))
+      api.getRoomInfo(this.props.socketConnector.socket, state.roomUrl, this.syncRoomData.bind(this))
     }
     else {
       console.log('hahah')
@@ -63,8 +69,26 @@ class Room extends Component {
     this.props.socketConnector.socket.removeAllListeners()
   }
 
+  isOwner() {
+    if (this.state.profil.owner)
+      return (
+        <button className="roomButton" id="leaveLaunch" onClick={() => { api.askToStartGame(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl, undefined) }}>
+          <span className="textButton">Lancer la partie</span>
+        </button>
+      )
+  }
+
+  leaveRoom() {
+    api.leaveRoom(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl)
+    // this.state.history.goBack() // ici bah ca back bien mais j'ai l'impression que ca ecrase le socket avec un nouveau lors du componentDidMount() et y'en aura 2 qui se succederont quoi
+    // this.state.history.goBack().bind(this)
+    this.state.history.replace('/')
+    // this.state.history.push('/')
+  }
+
   render() {
     let players = this.createList()
+    let startGame = this.isOwner()
     console.log('players', players)
     return (
       <div className="display">
@@ -79,9 +103,12 @@ class Room extends Component {
               <div className="playerList">
                 {players}
               </div>
-              <button className="roomButton" id="launchGame" onClick={() => { startGame(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl, undefined) }}>
-                <span className="textButton">Lancer la partie</span>
-              </button>
+              <div className="bottomButtons">
+                <button className="roomButton" id="leaveLaunch" onClick={() => { this.leaveRoom() }}>
+                  <span className="textButton">Quitter</span>
+                </button>
+                {startGame}
+              </div>
             </div>
           </div>
         </div>

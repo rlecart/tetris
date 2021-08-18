@@ -1,9 +1,8 @@
-import React, { Component } from 'react'
-import openSocket from 'socket.io-client'
+import React, { Component, useCallback } from 'react'
 import { connect } from "react-redux";
 
 import colors from '../ressources/colors.js'
-import { move } from '../api/clientApi.js'
+import api from '../api/clientApi.js'
 import nav from "../misc/nav";
 
 class Game extends Component {
@@ -76,26 +75,30 @@ class Game extends Component {
     this.setState(state)
   }
 
-  eventDispatcher(event) {
+  eventDispatcher = (event) => {
     const state = this.state
     const socket = this.socket
     const url = this.props.roomReducer.roomInfo.url
 
     console.log(url)
+    console.log(event.key)
 
     console.log('AH')
     if (event.key === "z")
       this.acidMode(event, state)
-    else if (event.key === '.')
-      move('right', url, socket)
-    else if (event.key === ',')
-      move('left', url, socket)
+    else if (event.key === 'ArrowRight')
+      api.move('right', url, socket)
+    else if (event.key === 'ArrowLeft')
+      api.move('left', url, socket)
     else if (event.key === ' ')
-      move('down', url, socket)
-    else if (event.key === '/')
-      move('turn', url, socket)
-    else if (event.key === 'c')
-      socket.emit('endGame')
+      api.move('down', url, socket)
+    else if (event.key === 'ArrowUp')
+      api.move('turn', url, socket)
+    else if (event.key === 'ArrowDown')
+      api.move('stash', url, socket)
+    else if (event.key == 'c') {
+      api.askToEndGame(socket, url)
+    }
   }
 
   refreshGame(game, spec, context) {
@@ -116,9 +119,11 @@ class Game extends Component {
     // console.log('bonjoru', this.props)
     // fonction pour set toutes les reponses serv
     this.socket.on('refreshVue', (game, spec) => { this.refreshGame(game, spec, this) })
-    this.socket.on('endGame', (roomInfo) => { nav(this.props.history, `/${this.props.match.params.room}`) }) // ici gestion gamover
+    this.socket.on('endGame', () => { this.props.history.replace(`/${this.props.match.params.room}`) }) // ici gestion gamover
     if (this.props.socketConnector.areGameEventsLoaded === false) {
-      window.addEventListener("keypress", this.eventDispatcher.bind(this))
+      console.log('gameEventsLoaded')
+      // window.addEventListener("keypress", this.eventDispatcher.bind(this))
+      window.addEventListener("keydown", this.eventDispatcher)
       const action = { type: 'GAME_EVENTS_LOADED' }
       this.props.dispatch(action)
     }
@@ -127,6 +132,11 @@ class Game extends Component {
 
   componentWillUnmount() {
     this.socket.removeAllListeners()
+    if (this.props.socketConnector.areGameEventsLoaded === true) {
+      window.removeEventListener('keydown', this.eventDispatcher)
+      const action = { type: 'GAME_EVENTS_UNLOADED' } // a voir | en gros tu peux pas restart visiblement y'a .isInGame() qui s'est pas reset
+      this.props.dispatch(action)
+    }
   }
 
   createSpec(players) {
@@ -147,10 +157,11 @@ class Game extends Component {
 
   render() {
     console.log(this.state)
-      let spec = (this.state.spec.length !== 0) ? [
-        this.state.spec.slice(0, this.state.spec.length / 2),
-        this.state.spec.slice(this.state.spec.length / 2)
-      ] : undefined
+    let spec = (this.state.spec.length !== 0) ? [
+      this.state.spec.slice(0, this.state.spec.length / 2),
+      this.state.spec.slice(this.state.spec.length / 2)
+    ] : undefined
+    console.log(spec)
     return (
       <div className='display'>
         <div className="game" id="spec">

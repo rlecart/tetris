@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect, Link, useHistory } from 'react-router-dom'
-import { redirectTo } from '../api/serverApi'
 import { connect } from 'react-redux'
-import { createRoom, joinRoom } from "../api/clientApi";
+import api from "../api/clientApi";
 import nav from '../misc/nav'
 
 
@@ -16,6 +15,7 @@ class Accueil extends Component {
 
   handleChange(event) {
     let state = this.state
+
     console.log(event)
     if (event.target.name === 'name')
       state.profil.name = event.target.value
@@ -24,6 +24,11 @@ class Accueil extends Component {
     this.setState(state)
   }
 
+  componentDidMount() {
+    console.log(this.props)
+    while (this.props.socketConnector.isSocketConnected === false)
+      this.props.socketConnector.socket.on('goToRoom', () => { nav(this.props.history, `/#${this.state.roomUrl}[${this.state.profil.name}]`) })
+  }
 
   render() {
     console.log(this.props)
@@ -44,10 +49,10 @@ class Accueil extends Component {
             </div>
             <div className="blocMenu" id="home">
               <input className='roomUrl' type="text" name="roomUrl" required onChange={(event) => this.handleChange(event)} placeHolder='http://abcdef.com/absfaskfew?abc=oui' />
-              <button className="roomButton" onClick={() => { joinRoom(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl, (path) => { nav(this.props.history, path) }) }}>
+              <button className="roomButton" onClick={() => { api.joinRoom(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl) }}>
                 <span className="textButton">Join room</span>
               </button>
-              <button className="roomButton" onClick={() => { createRoom(this.props.socketConnector.socket, this.state.profil, (path) => { nav(this.props.history, path) }) }}>
+              <button className="roomButton" onClick={() => { api.createRoom(this.props.socketConnector.socket, this.state.profil) }}>
                 <span className="textButton">Create Room</span>
               </button>
             </div>

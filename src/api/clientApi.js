@@ -1,25 +1,28 @@
-const anotherOnePlease = (socket, cb) => {
-  socket.emit('anotherOnePlease', cb)
-}
+module.exports = {
+  move: (dir, idRoom, socket) => {
+    socket.emit('move', socket.id, idRoom, dir, () => { console.log('move envoye') })
+  },
 
-const move = (dir, idRoom, socket) => {
-  socket.emit('move', socket.id, idRoom, dir, () => { console.log('move envoye') })
-}
+  getRoomInfo: (socket, idRoom) => {
+    socket.emit('getRoomInfo', idRoom)
+  },
 
-const getRoomInfo = (socket, idRoom, cb) => {
-  socket.emit('getRoomInfo', idRoom, cb)
-}
+  createRoom: (socket, profil) => {
+    socket.emit('createRoom', socket.id, profil)
+  },
 
-const createRoom = (socket, profil, cb) => {
-  socket.emit('createRoom', socket.id, profil, cb)
-}
+  joinRoom: (socket, profil, url) => {
+    socket.emit('joinRoom', socket.id, profil, url)
+  },
 
-const joinRoom = (socket, profil, url, cb) => {
-  socket.emit('joinRoom', socket.id, profil, url, cb)
-}
+  askToStartGame: (socket, profil, url) => {
+    socket.emit('askToStartGame', socket.id, profil, url)
+  },
 
-const startGame = (socket, profil, url, cb) => {
-  socket.emit('startGame', socket.id, profil, url, cb)
+  leaveRoom: (socket, profil, url) => {
+    socket.emit('leaveRoom', socket.id, profil, url)
+  },
+  askToEndGame: (socket, url) => {
+    socket.emit('askToEndGame', socket.id, url)
+  }
 }
-
-export { anotherOnePlease, move, createRoom, joinRoom, getRoomInfo, startGame }

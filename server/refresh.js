@@ -1,6 +1,5 @@
 // const { anotherOnePlease } = require('../src/api.js')
 const tetriminos = require('../src/ressources/tetriminos.js')
-const server = require('./server.js')
 
 const newRand = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -69,7 +68,7 @@ const checkTetri = (game, truePos) => {
     return (-1)
   while (++i < actual.length) {
     while (++j < actual[i].length) {
-      if (actual[i][j] === 1 && game.getLines(y, x) !== 0) {
+      if (actual[i][j] === 1 && game.getLines(y, x) !== undefined && game.getLines(y, x) !== 0) {
         return (-1)
       }
       x++
@@ -220,19 +219,20 @@ const checkIfOk = (game, x, y, truePos) => {
 }
 
 const moveTetri = (game, x, y) => {
-  let truePos = parseTruePos(game.getActualShape())
-  let errors = checkIfOk(game, x, y, truePos)
-  if (x === 0 && y === 0) {
-    // console.log(truePos)
-    // console.log(game.tetri)
-  }
-  // console.log(game.tetri.x, game.tetri.y, truePos)
-  if (errors !== 'ok') {
-    // console.log(truePos)
-    // console.log(game.getTetri())
-    // console.log('errors = ', errors)
+  let truePos
+  let errors
+
+  if (x === 0 && y === 0)
+    turnTetri(game, true)
+  truePos = parseTruePos(game.getActualShape())
+  errors = checkIfOk(game, x, y, truePos)
+  if (errors !== 'ok' || errors === 1) {
+    if (x === 0 && y === 0)
+      turnTetri(game, false)
     return (errors)
   }
+  if (x === 0 && y === 0)
+    turnTetri(game, false)
   if (game.getY() !== -1 || (y === 0 && x !== 0))
     removeTetri(game)
   if (x === 0 && y === 0)
@@ -275,15 +275,15 @@ const checkFilledLine = (game) => {
   return (count)
 }
 
-const endGame = (room, id) => {
+const endGame = (room, id) => { // gameover
   // console.log(room)
-  server.emitAll('endGame', room.getUrl(), undefined, room)
-  // server.emitOnly('endGame', room.url, id, server.getRoomInfo(room.url))
-  server.closeRoom(room)
+  room.endGame()
+  room.emitAll('endGame') // ici emitOnly plutot pour faire continuer les autres
+  // room.getParent().closeRoom(room)
 }
 
 function addFilledLine(room, exception, amount) {
-  let players = server.getSocketClientListFromRoom(room.getUrl(), true)
+  let players = room.getSio()
 
   for (let [key, value] of Object.entries(players)) {
     // console.log('haha = ', ++haha)
@@ -294,7 +294,7 @@ function addFilledLine(room, exception, amount) {
         // console.log('getlistplayers = ', room.getListPlayers(key))
         // console.log('getlistplayers = ', room.getListPlayers(key))
         if (room.getListPlayers(key).getGame().getLines(0).find((elem) => { elem !== 0 })) { // ca check si y'avait deja un bloc en [0;X] avant d'ajouter la ligne car si oui alors ca veut dire que le joueur en question a perdu donc fin de game, sinon bah ca continue
-          server.emitOnly('endGame', room.getUrl(), key, server.getRoomInfo(room.getUrl()))
+          endGame(room, key)
           break;
         }
         else {
@@ -308,15 +308,8 @@ function addFilledLine(room, exception, amount) {
           // console.log('apres fillLine')
           refresh(room.getListPlayers(key).getGame(), room, key)
           // console.log('apres refresh')
-            console.log('avant refreshvue')
-            server.emitOnly('refreshVue', room.getUrl(), key, room.getListPlayers(key).getGame(), () => {
-            console.log('avant createspec')
-            let ret = room.createSpecList(room.getListPlayers(), key, room.getUrl())
-            console.log('createSpecList = ')
-            console.log(ret)
-            console.log('fin')
-            return (ret)
-          })
+          // console.log('avant refreshvue')
+          room.emitOnly('refreshVue', key, room.getListPlayers(key).getGame(), room.createSpecList(key))
         }
       }
     }
@@ -328,17 +321,17 @@ function refresh(game, room, id) {
   let filledLines = 0
 
   // console.log(game)
-    //console.log('debut refresh')
-    if (game.getPlaced() === -1)
+  //console.log('debut refresh')
+  if (game.getPlaced() === -1)
     createNewTetri(game, room)
-    //console.log('avant move')
-    hasMoved = moveTetri(game, 0, 1)
-    //console.log('apres move')
-    if (hasMoved == -1) {
-      //console.log('avant endgamee')
-      endGame(room, id)
-      //console.log('apres endgamee')
-    }
+  //console.log('avant move')
+  hasMoved = moveTetri(game, 0, 1)
+  //console.log('apres move')
+  if (hasMoved == -1) {
+    //console.log('avant endgamee')
+    endGame(room, id)
+    //console.log('apres endgamee')
+  }
   else if (hasMoved == 1) {
     //console.log('avant moved=1')
     if ((filledLines = checkFilledLine(game)) > 0)
@@ -348,7 +341,7 @@ function refresh(game, room, id) {
     //console.log('apres createnewtetri')
     //console.log('avant de relaunch refresh')
     refresh(game, room, id)
-}
+  }
   //console.log('refresh finish')
   return (game)
 }
@@ -357,3 +350,4 @@ function refresh(game, room, id) {
 exports.refresh = refresh
 exports.moveTetri = moveTetri
 exports.initShapes = initShapes
+exports.endGame = endGame

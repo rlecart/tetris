@@ -71,7 +71,7 @@
 }
 
 .playerList {
-	border: 1px solid;
+	border-bottom: 1px solid;
 	flex: 5;
 	width: 100%;
 	display: flex;
@@ -80,6 +80,8 @@
 	justify-content: center;
 	flex-wrap: wrap;
 	flex-direction: row;
+	-ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .player {
@@ -280,9 +282,20 @@
 	margin-left: 40px;
 }
 
-.roomButton#launchGame {
+.roomButton#leaveLaunch {
 	flex: 1;
 	margin: 15px;
+	max-width: 200px;
+}
+
+.bottomButtons {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.playerList::-webkit-scrollbar {
+  display: none;
 }
 
 .blocMenu#home {
