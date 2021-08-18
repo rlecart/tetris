@@ -8,7 +8,7 @@ const newShape = (room, rand) => {
   const i = rand % 6
 
   room.addShapesId(i + 2)
-  return (tetriminos.tetriminos[i]) // deep clone ?
+  return (tetriminos[i]) // deep clone ?
 }
 
 function initShapes(room) {

@@ -54,7 +54,7 @@ class Room extends Component {
     this.props.socketConnector.socket.on('refreshRoomInfo', (roomInfo) => { this.syncRoomData(roomInfo) })
     console.log('mount', state.roomInfo)
     console.log('propsmount', this.props)
-    if (!state.roomInfo) {
+    if (state.roomInfo === undefined) {
       console.log('init')
       api.getRoomInfo(this.props.socketConnector.socket, state.roomUrl, this.syncRoomData.bind(this))
     }

@@ -2,16 +2,16 @@
     socket.emit('move', socket.id, idRoom, dir, () => { console.log('move envoye') })
   }
 
-  const getRoomInfo = (socket, idRoom) => {
-    socket.emit('getRoomInfo', idRoom)
+  const getRoomInfo = (socket, idRoom, cb) => {
+    socket.emit('getRoomInfo', idRoom, cb)
   }
 
-  const createRoom = (socket, profil) => {
-    socket.emit('createRoom', socket.id, profil)
+  const createRoom = (socket, profil, cb) => {
+    socket.emit('createRoom', socket.id, profil, cb)
   }
 
-  const joinRoom = (socket, profil, url) => {
-    socket.emit('joinRoom', socket.id, profil, url)
+  const joinRoom = (socket, profil, url, cb) => {
+    socket.emit('joinRoom', socket.id, profil, url, cb)
   }
 
   const askToStartGame = (socket, profil, url) => {
@@ -25,4 +25,4 @@
     socket.emit('askToEndGame', socket.id, url)
   }
 
-  export { move, getRoomInfo, createRoom, joinRoom, askToEndGame, askToStartGame, leaveRoom }
+  export default { move, getRoomInfo, createRoom, joinRoom, askToEndGame, askToStartGame, leaveRoom }

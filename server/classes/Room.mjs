@@ -189,6 +189,7 @@ export default class Room {
   }
 
   hiddenSpec(ret) {
+    console.log(ret)
     let hiddenCols = new Array(ret[0].lines[0].length).fill(false)
 
     console.log(ret)
@@ -217,7 +218,7 @@ export default class Room {
         })
       }
     }
-    if (hidden && ret)
+    if (this.getNbPlayer() > 1 && hidden && ret)
       return (this.hiddenSpec(ret))
     return ret
   }

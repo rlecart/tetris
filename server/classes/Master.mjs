@@ -47,16 +47,16 @@ export default class Master {
     this._sioClientList = { ...this._sioClientList, [client.id]: client }
   }
 
-  createRoom(clientId, profil) {
+  createRoom(clientId, profil, cb) {
     if (profil.name) {
       let room = new Room(this)
       room.setUrl(createNewUrl(this.getRoomsList()))
       this.addNewRoom(room)
-      this.joinRoom(clientId, profil, room.getUrl())
+      this.joinRoom(clientId, profil, room.getUrl(), cb)
     }
   }
 
-  joinRoom(clientId, profil, url) {
+  joinRoom(clientId, profil, url, cb) {
     let room = {}
 
     if (profil.name && (room = this.getRoom(url)) && !room.isInGame() && !room.getListPlayers(clientId) && room.getNbPlayer() < 8) {
@@ -66,6 +66,7 @@ export default class Master {
       console.log(clientId + ' joinroom ' + url)
       room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
       room.emitOnly('goToRoom', clientId)
+      cb(`/#${room.getUrl()}[${profil.name}]`)
     }
   }
 
