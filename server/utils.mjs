@@ -17,6 +17,4 @@ const getArrayFromObject = (obj) => {
   return ret
 }
 
-exports.generateUrl = generateUrl
-exports.createNewUrl = createNewUrl
-exports.getArrayFromObject = getArrayFromObject
+export { generateUrl, createNewUrl, getArrayFromObject }

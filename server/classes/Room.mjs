@@ -1,11 +1,9 @@
-const { defaultRules } = require('../../src/ressources/rules')
-const utils = require('../utils')
-const { Player } = require('./Player')
-const server = require('../server.js')
-const _ = require('lodash')
-const { refresh, initShapes } = require('../refresh.js')
+import {defaultRules} from '../../src/ressources/rules.mjs'
+import Player from './Player.mjs'
+import _ from 'lodash'
+import {refresh, initShapes} from '../refresh.mjs'
 
-exports.Room = class Room {
+export default class Room {
   constructor() {
     this._url = ''
     this._inGame = false
@@ -149,7 +147,7 @@ exports.Room = class Room {
     roomInfo.rules = this._rules
     roomInfo.listPlayers = this._listPlayers // alors ici ca envoie les clientId et c'est dangereux niveau secu (peut-etre ?)
     // roomInfo.listPlayers = utils.getArrayFromObject(this._listPlayers)
-    console.log(roomInfo.listPlayers)
+    //console.log(roomInfo.listPlayers)
     return (roomInfo)
   }
 
@@ -167,7 +165,7 @@ exports.Room = class Room {
     this.setInGame(true)
     this._interval = setInterval(this.gameLoop.bind(this), 1000, sio, this.getUrl())
     this._readyToStart = undefined
-    console.log(`interval ${this.getUrl()} init`)
+    //console.log(`interval ${this.getUrl()} init`)
   }
 
   getAllGames(only, exception) {
@@ -193,7 +191,7 @@ exports.Room = class Room {
   hiddenSpec(ret) {
     let hiddenCols = new Array(ret[0].lines[0].length).fill(false)
 
-    console.log(ret)
+    //console.log(ret)
     for (let player of ret) {
       for (let line of player.lines) {
         for (let i in line) {

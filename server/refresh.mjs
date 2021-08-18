@@ -1,5 +1,4 @@
-// const { anotherOnePlease } = require('../src/api.js')
-const tetriminos = require('../src/ressources/tetriminos.js')
+import tetriminos from '../src/ressources/tetriminos.mjs'
 
 const newRand = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -347,7 +346,4 @@ function refresh(game, room, id) {
 }
 
 
-exports.refresh = refresh
-exports.moveTetri = moveTetri
-exports.initShapes = initShapes
-exports.endGame = endGame
+export {refresh, moveTetri, initShapes, endGame}

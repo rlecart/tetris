@@ -1,9 +1,9 @@
-const { Room } = require('./Room')
-const { Server } = require('./Server')
-const { createNewUrl } = require('../utils')
-const refresh = require('../refresh')
+import Room from './Room.mjs'
+import mainServer from './Server.mjs'
+import {createNewUrl} from '../utils.mjs'
+import {refresh} from '../refresh.mjs'
 
-exports.Master = class Master {
+export default class Master {
   constructor() {
     this._roomsList = {}
     this._sioClientList = {}
@@ -11,7 +11,7 @@ exports.Master = class Master {
   }
 
   startServer() {
-    this._server = new Server(this)
+    this._server = new mainServer(this)
     this._server.startServer()
     this._server.listenSio(this)
   }
@@ -63,13 +63,13 @@ exports.Master = class Master {
       profil = { ...profil, url: [url] }
       room.addNewPlayer(clientId, profil)
       room.addSio(this.getSioList(clientId))
-      console.log(clientId + ' joinroom ' + url)
+      //console.log(clientId + ' joinroom ' + url)
       room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
       room.emitOnly('goToRoom', clientId)
     }
   }
 
-  getSioListFromRoom(url, objVersion) { // pour choper les sockets des clients d'une room uniquement 
+  getSioListFromRoom(url, objVersion) { // pour choper les sockets des clients d'une room uniquement
     let ret = objVersion ? {} : [] // est-ce que finalement c'est pas osef mtn car besoin d'un tableau des fois dans une ancienne version ?
     let room = {}
 
@@ -104,7 +104,7 @@ exports.Master = class Master {
     }
     room.resetUrl()
     delete this._roomsList[url]
-    console.log(`room ${url} closed`)
+    //console.log(`room ${url} closed`)
   }
 
   askToStartGame(clientId, profil, url) {
@@ -149,7 +149,7 @@ exports.Master = class Master {
     let room = {}
     let player = {}
 
-    console.log(clientId)
+    //console.log(clientId)
     if ((room = this.getRoom(url)) && (player = room.getListPlayers(clientId)))
       player.move(dir, room)
   }

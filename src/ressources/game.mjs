@@ -33,4 +33,4 @@ const defaultGame = {
   placed: -1,
 }
 
-exports.defaultGame = defaultGame
+export default defaultGame
