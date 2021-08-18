@@ -60,7 +60,7 @@ export default class Master {
     let room = {}
 
     if (profil.name && (room = this.getRoom(url)) && !room.isInGame() && !room.getListPlayers(clientId) && room.getNbPlayer() < 8) {
-      profil = { ...profil, url: [url] }
+      profil = { ...profil, url: url }
       room.addNewPlayer(clientId, profil)
       room.addSio(this.getSioList(clientId))
       //console.log(clientId + ' joinroom ' + url)

@@ -138,6 +138,22 @@ export default class Room {
     return (this._readyToStart)
   }
 
+  getRules() {
+    return (this._rules)
+  }
+
+  getInterval() {
+    return (this._interval)
+  }
+
+  getOwner() {
+    return (this._owner)
+  }
+
+  getArrivalOrder() {
+    return (this._arrivalOrder)
+  }
+
   getRoomInfo() {
     let roomInfo = {}
 
