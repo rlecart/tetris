@@ -1,11 +1,9 @@
-const { defaultRules } = require('../../src/ressources/rules')
-const utils = require('../utils')
-const { Player } = require('./Player')
-const server = require('../server.js')
-const _ = require('lodash')
-const { refresh, initShapes } = require('../refresh.js')
+import {defaultRules} from '../../src/ressources/rules.mjs'
+import Player from './Player.mjs'
+import _ from 'lodash'
+import {refresh, initShapes} from '../refresh.mjs'
 
-exports.Room = class Room {
+export default class Room {
   constructor() {
     this._url = ''
     this._inGame = false

@@ -1,9 +1,9 @@
-const { Room } = require('./Room')
-const { Server } = require('./Server')
-const { createNewUrl } = require('../utils')
-const refresh = require('../refresh')
+import Room from './Room.mjs'
+import mainServer from './Server.mjs'
+import {createNewUrl} from '../utils.mjs'
+import {refresh} from '../refresh.mjs'
 
-exports.Master = class Master {
+export default class Master {
   constructor() {
     this._roomsList = {}
     this._sioClientList = {}
@@ -11,7 +11,7 @@ exports.Master = class Master {
   }
 
   startServer() {
-    this._server = new Server(this)
+    this._server = new mainServer(this)
     this._server.startServer()
     this._server.listenSio(this)
   }

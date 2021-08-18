@@ -9,4 +9,4 @@ const config = {
     },
 }
 
-exports.config = config
+export {config}

@@ -1,4 +1,4 @@
-tetriminos = [
+const tetriminos = [
     [
         [0, 0, 0, 0],
         [1, 1, 1, 1],
@@ -37,4 +37,4 @@ tetriminos = [
     ],
 ]
 
-exports.tetriminos = tetriminos
+export default tetriminos

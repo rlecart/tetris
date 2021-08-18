@@ -1,7 +1,7 @@
-const { moveTetri } = require('../refresh.js')
-const { Game } = require('./Game')
+import {moveTetri} from '../refresh.mjs'
+import Game from './Game.mjs'
 
-exports.Player = class Player {
+export default class Player {
   constructor(profil, clientId) {
 
     this._clientId = clientId

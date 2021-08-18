@@ -1,8 +1,8 @@
-const { config } = require('../../config')
-const http = require('http')
-const socketio = require('socket.io')
+import {config} from '../../config.mjs'
+import http from 'http'
+import {Server} from 'socket.io'
 
-exports.Server = class Server {
+export default class mainServer {
     constructor() {
         // this._parent = parent
 
@@ -17,7 +17,7 @@ exports.Server = class Server {
 
     startServer() {
         this._server = http.createServer();
-        this._io = socketio(this._server, {
+        this._io = new Server(this._server, {
             cors: {
             origin: config.front.url + ':' + config.front.port,
             methods: ["GET", "POST"],
