@@ -54,6 +54,7 @@ const getSocketClientListFromRoom = (url, objVersion) => {
 const emitAll = (message, target, except, obj, spec) => {
   let clientList = target ? getSocketClientListFromRoom(target, true) : sioClientList
 
+  console.log(clientList)
   for (let [key, value] of Object.entries(clientList)) {
     if (key !== except) {
       value.emit(message, obj, spec)
@@ -75,7 +76,7 @@ const joinRoom = (clientId, profil, url, cb) => {
     // console.log('joinroom')
     roomsList[url].addNewPlayer(clientId, profil)
     cb(`/#${url}[${profil.name}]`)
-    emitAll('refreshRoomInfo', url, clientId, roomsList[url].getRoomInfo())
+    //emitAll('refreshRoomInfo', url, clientId, roomsList[url].getRoomInfo())
   }
 }
 
@@ -188,6 +189,7 @@ const stopserver = () => { process.exit() }
 
 exports.stopserver = stopserver
 exports.createRoom = createRoom
+exports.joinRoom = joinRoom
 exports.closeRoom = closeRoom
 exports.emitAll = emitAll
 exports.emitOnly = emitOnly

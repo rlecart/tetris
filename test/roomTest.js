@@ -10,12 +10,16 @@ var ftImported = require('../' + filePath + fileName)
 //l'objets attendu
 var expect = require('chai').expect
 
+//import openSocket from 'socket.io-client'
+var openSocket = require('socket.io-client')
 //Nom du fichier dans lequel se trouves les fonctions testé
 describe('Test de ' + filePath + fileName, function(){
+
+  var cb = () => { }
+  //let sock = openSocket('http://localhost:8000')
   //Nom de la fonction a tester
   describe('[createRoom] création d\'un nouveau Tétriminos', function(){
 
-    var cb = () => { }
     //Explication de se que devrait retournner la fonction
     it('Devrait créer le Tétriminos', function(){
 
@@ -40,6 +44,19 @@ describe('Test de ' + filePath + fileName, function(){
       expect(ftImported.createRoom(472, { pseudo: "Jean" }, cb)).to.exist
       expect(ftImported.createRoom(472, null, cb)).to.exist
     })
+
+  })
+
+  describe('[joinRoom] connection à la room crée', function(){
+
+     //création de la "room" à laquel le joueur va essayer de se connecter
+     let room = ftImported.createRoom(667, { name: "Hector" }, cb)
+
+     it('Devrait se connecter à la room', function(){
+       ftImported.joinRoom(1, { name: "PasHector2" }, room.getUrl(), cb)
+       expect(room._listPlayers[667]._clientId).to.equal(667)
+
+     })
 
   })
 
