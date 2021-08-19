@@ -1,5 +1,6 @@
-import Master from '../server/classes/Master.mjs';
-var master = new Master();
+// import Master from '../server/classes/Master.mjs';
+import master from '../server/server.mjs'
+// var master = new Master();
 //var expect = require('chai').expect
 import { getGameFromPlayerId } from './utils.mjs';
 import { expect } from 'chai';
@@ -10,6 +11,7 @@ describe('!! ', () => {
 	var cb = () => {
 		console.log('Callback');
 	};
+	// master.startServer()
 	//let sock = openSocket('http://localhost:8000')
 	//Nom de la fonction a tester
 	describe('[ROOM TESTS]', () => {
@@ -91,4 +93,5 @@ describe('!! ', () => {
 	//    })
 	//
 	// })
+	master.stopServer()
 });
