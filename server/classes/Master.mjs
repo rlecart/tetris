@@ -16,6 +16,13 @@ export default class Master {
     this._server.listenSio(this)
   }
 
+  stopServer() {
+    this._server.stopListenSio(this._sioClientList)
+    this._server.stopServer()
+    this._server = undefined
+    // delete this._server
+  }
+
   addNewRoom(room) {
     this._roomsList = { ...this._roomsList, [room.getUrl()]: room }
   }

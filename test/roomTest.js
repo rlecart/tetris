@@ -1,6 +1,8 @@
-import Master from '../server/classes/Master.mjs';
-var master = new Master();
-
+// import Master from '../server/classes/Master.mjs';
+import master from '../server/server.mjs'
+// var master = new Master();
+//var expect = require('chai').expect
+import { getGameFromPlayerId } from './utils.mjs';
 import { expect } from 'chai';
 
 import { expectNewRoom, expectJoinRoom, getGameFromPlayerId } from './utils.mjs';
@@ -102,4 +104,5 @@ describe('Server Tests', () => {
 	//    })
 	//
 	// })
+	master.stopServer()
 });
