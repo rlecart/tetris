@@ -94,12 +94,14 @@ export default class Room {
   removePlayer(clientId) {
     this._nbPlayer--
     if (this._owner === clientId) {
-      this._arrivalOrder.shift()
+      // this._arrivalOrder.shift()
       if (this._nbPlayer > 0) {
-        this._owner = this._arrivalOrder[0]
+        this._owner = this._arrivalOrder[1]
         this._listPlayers[this._owner]._profil.owner = true
       }
     }
+    this._arrivalOrder.splice(this._arrivalOrder.indexOf(clientId), 1)
+
     delete this._listPlayers[clientId]
     this.emitAll('refreshRoomInfo', clientId, this.getRoomInfo())
   }
@@ -172,7 +174,7 @@ export default class Room {
       return (true)
     return (false)
   }
-
+ari
   launchGame(sio) {
     // let socketClients = server.getSioListFromRoom(this.getUrl(), true)
 

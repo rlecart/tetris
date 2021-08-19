@@ -1,9 +1,7 @@
-// import Master from '../server/classes/Master.mjs';
 import master from '../server/server.mjs'
-// var master = new Master();
-//var expect = require('chai').expect
-import { getGameFromPlayerId } from './utils.mjs';
+
 import { expect } from 'chai';
+import _ from 'lodash'
 
 import { expectNewRoom, expectJoinRoom, getGameFromPlayerId } from './utils.mjs';
 import { defaultRules } from '../src/ressources/rules.mjs'
@@ -63,46 +61,49 @@ describe('Server Tests', () => {
 			//Player 2 rejoint la game crée par le joueur 0
 			master.joinRoom(playersId[2], players[2], room.getUrl(), cb);
 			expectJoinRoom(room, playersId[2], players[2], 3);
+
 		});
 
+		var mainId = 2100
+		var nbPlayer = 1
+
 		it('Ne devrait pas join la room (8 jooueurs déja présent)', () => {
-			var nbPlayer = 1
 			//crée une nouvelle game pour la remplir de joueur
-			master.createRoom(2100 + nbPlayer, { name: 'admin' }, cb);
-			room = getGameFromPlayerId(2100, master);
+			master.createRoom(mainId + nbPlayer, { name: 'joueur' + nbPlayer }, cb);
+			room = getGameFromPlayerId(mainId + nbPlayer, master);
 			while (++nbPlayer <= 8) {
-				master.joinRoom(2100 + nbPlayer, { name: 'joueur' + nbPlayer }, room.getUrl(), cb);
+				master.joinRoom(mainId + nbPlayer, { name: 'joueur' + nbPlayer }, room.getUrl(), cb);
 			}
-			var fullRoom = room;
+			var fullRoom = _.cloneDeep(room);
 			//Essaye d'ajouter un joueur qui n'a pas de place dans la room
 			master.joinRoom(667, "joueur2trop", room.getUrl(), cb);
 			expect(getGameFromPlayerId(667, master)).to.be.undefined;
 			expect(room).to.be.eql(fullRoom);
 		});
 
-		it('Supprime 7 des 8 joueurs', () => {
-			//leaveRoom
+		it('Supprime 7 des 8 joueurs et transfert les droits d\'admin', () => {
+			nbPlayer = 8
+			//retire tout les joueurs sauf  l'admin et le dernier à rejoindre la partie
+			while (--nbPlayer > 0) {
+				master.leaveRoom(mainId + nbPlayer, { name: 'joueur' + nbPlayer }, room.getUrl(), cb);
+			}
+			expect(room.getNbPlayer()).to.be.eql(1);
+			expect(room.getOwner()).to.be.eql(mainId + 8);
 
-		}
+			//Supprime un joueur qui n'existe pas
+			var fullRoom = _.cloneDeep(room);
+			master.leaveRoom(8566, { name: 'Home invisible' }, room.getUrl(), cb);
+			expect(room).to.be.eql(fullRoom);
+		});
 
-
-
-
-
+		it('Supprime le dernier joueur (donc la game)', () => {
+			//console.log(room.getUrl())
+			master.leaveRoom(mainId + 8, { name: 'joueur' + 8 }, room.getUrl(), cb);
+			room = getGameFromPlayerId(mainId + 8, master)
+			expect(room).to.be.undefined
+		})
 
 	});
 
-	// describe('[joinRoom] connection à la room crée', function(){
-	//
-	//    //création de la "room" à laquel le joueur va essayer de se connecter
-	//    let room = master.createRoom(667, { name: "Hector" }, cb)
-	//
-	//    it('Devrait se connecter à la room', function(){
-	//      master.joinRoom(1, { name: "PasHector2" }, room.getUrl(), cb)
-	//      expect(room._listPlayers[667]._clientId).to.equal(667)
-	//
-	//    })
-	//
-	// })
 	master.stopServer()
 });
