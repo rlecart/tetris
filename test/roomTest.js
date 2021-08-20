@@ -111,7 +111,7 @@ describe('Server Tests', () => {
 	});
 
 	after(() => {
-		master.getServer().getIoServer().disconnect()
+		// master.getServer().getIoServer()
 		master.stopServer()
 	})
 });

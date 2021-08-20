@@ -51,13 +51,11 @@ module.exports = class mainServer {
   }
 
   listenSio(master) {
-    // const Master = this.getParent()
-
     this._io.on('connection', (client) => {
       console.log('coooooooneeeectioooon')
-      console.log(master.getSioList())
+      // console.log(master.getSioList())
       master.addNewSio(client)
-      console.log(master.getSioList())
+      // console.log(master.getSioList())
       console.log('aaa\n\naaa')
       client.on('move', (clientId, url, dir) => {
         if (master.getRoom(url).isInGame())
@@ -96,6 +94,6 @@ module.exports = class mainServer {
       console.log('connected')
     })
     this._io.listen(this._port);
-    console.log('listening on port ', this._port);
+    console.log('listening on port', this._port);
   }
 }
