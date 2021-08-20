@@ -9,11 +9,9 @@ let { expectNewRoom, expectJoinRoom, getGameFromPlayerId } = require('./utils.js
 let { defaultRules } = require('../src/ressources/rules.js')
 
 //Nom du fichier dans lequel se trouves les fonctions testé
-describe('Server Tests', () => {
+describe('Room Tests', () => {
 
-	var cb = () => {
-		console.log('Callback');
-	};
+	var cb = () => { console.log('Callback') };
 	const playersId = [475, 307, 18446744073709551615];
 	const players = [{ name: 'Hector' }, { name: '\t\n\r\v\f' }, { name: 'pouayayay' }];
 	let room = {};
