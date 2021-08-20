@@ -59,7 +59,7 @@ export default class Master {
   }
 
   createRoom(clientId, profil) {
-    if (profil.name) {
+    if (profil.name && clientId !== undefined) {
       let room = new Room(this)
       room.setUrl(createNewUrl(this.getRoomsList()))
       this.addNewRoom(room)
@@ -114,6 +114,7 @@ export default class Master {
       room.removePlayer(key)
     }
     room.resetUrl()
+    this._roomsList[url] = undefined
     delete this._roomsList[url]
     //console.log(`room ${url} closed`)
   }
