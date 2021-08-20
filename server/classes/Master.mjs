@@ -1,5 +1,5 @@
 import Room from './Room.mjs'
-import mainServer from './Server.mjs'
+import mainServer from './Servers.mjs'
 import {createNewUrl} from '../utils.mjs'
 import {refresh} from '../refresh.mjs'
 
@@ -25,6 +25,10 @@ export default class Master {
 
   addNewRoom(room) {
     this._roomsList = { ...this._roomsList, [room.getUrl()]: room }
+  }
+
+  getServer() {
+    return (this._server)
   }
 
   getRoomsList() {

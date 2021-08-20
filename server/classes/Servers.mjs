@@ -25,10 +25,19 @@ export default class mainServer {
       },
       'pingInterval': 5000
     });
+    console.log('http server started')
   }
 
   stopServer() {
     this._server.close()
+  }
+
+  getHttpServer() {
+    return (this._server)
+  }
+
+  getIoServer() {
+    return (this._io)
   }
 
   stopListenSio(sioList) {
@@ -45,7 +54,11 @@ export default class mainServer {
     // const Master = this.getParent()
 
     this._io.on('connection', (client) => {
+      console.log('coooooooneeeectioooon')
+      console.log(master.getSioList())
       master.addNewSio(client)
+      console.log(master.getSioList())
+      console.log('aaa\n\naaa')
       client.on('move', (clientId, url, dir) => {
         if (master.getRoom(url).isInGame())
           master.askToMove(clientId, url, dir)
