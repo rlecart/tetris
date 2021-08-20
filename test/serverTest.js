@@ -1,13 +1,13 @@
-import Master from '../server/classes/Master.mjs'
-import { expect, assert } from 'chai';
-import openSocket from 'socket.io-client'
+// let Master = require('../server/classes/Master.js')
+let master = require('../server/server')
+let { expect, assert } = require('chai')
+let openSocket = require('socket.io-client')
 
 describe('Server tests', () => {
-  let master
   let server
   before(() => {
-    master = new Master()
-    master.startServer()
+    // master = new Master()
+    // master.startServer()
     server = master.getServer()
   })
 
@@ -42,6 +42,7 @@ describe('Server tests', () => {
   })
 
   after(() => {
-    setTimeout(() => { master.stopServer() }, 5000)
+    master.stopServer()
+    // setTimeout(() => { master.stopServer() }, 5000)
   })
 })

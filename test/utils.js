@@ -1,6 +1,6 @@
-import Master from "../server/classes/Master.mjs"
-import { expect } from 'chai';
-import { defaultRules } from '../src/ressources/rules.mjs'
+let Master = require("../server/classes/Master.js")
+let { expect } = require('chai')
+let { defaultRules } = require('../src/ressources/rules.js')
 
 const expectNewRoom = (room, playerId) => {
   expect(room.isInGame()).to.be.eql(false);
@@ -37,4 +37,4 @@ const getGameFromPlayerId = (playerId, master) => {
   return(undefined)
 }
 
-export { expectNewRoom, expectJoinRoom, getGameFromPlayerId }
+module.exports = { expectNewRoom, expectJoinRoom, getGameFromPlayerId }

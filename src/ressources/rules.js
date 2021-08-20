@@ -2,4 +2,4 @@ const defaultRules = {
     mode: 'normal',
 }
 
-export {defaultRules}
+module.exports = {defaultRules}

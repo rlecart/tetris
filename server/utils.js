@@ -17,4 +17,4 @@ const getArrayFromObject = (obj) => {
   return ret
 }
 
-export { generateUrl, createNewUrl, getArrayFromObject }
+module.exports = { generateUrl, createNewUrl, getArrayFromObject }

@@ -33,4 +33,4 @@ const defaultGame = {
   placed: -1,
 }
 
-export default defaultGame
+module.exports = defaultGame

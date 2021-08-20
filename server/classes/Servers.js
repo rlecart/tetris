@@ -1,8 +1,8 @@
-import { config } from '../../config.mjs'
-import http from 'http'
-import { Server } from 'socket.io'
+let { config } = require('../../config.js')
+let http = require('http')
+let { Server } = require('socket.io')
 
-export default class mainServer {
+module.exports = class mainServer {
   constructor() {
     // this._parent = parent
 

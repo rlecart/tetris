@@ -25,4 +25,4 @@
     socket.emit('askToEndGame', socket.id, url)
   }
 
-  export default { move, getRoomInfo, createRoom, joinRoom, askToEndGame, askToStartGame, leaveRoom }
+  module.exports = { move, getRoomInfo, createRoom, joinRoom, askToEndGame, askToStartGame, leaveRoom }

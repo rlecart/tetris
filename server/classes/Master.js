@@ -1,9 +1,9 @@
-import Room from './Room.mjs'
-import mainServer from './Servers.mjs'
-import {createNewUrl} from '../utils.mjs'
-import {refresh} from '../refresh.mjs'
+let Room = require('./Room.js')
+let mainServer = require('./Servers.js')
+let {createNewUrl} = require('../utils.js')
+let {refresh} = require('../refresh.js')
 
-export default class Master {
+module.exports = class Master {
   constructor() {
     this._roomsList = {}
     this._sioClientList = {}

@@ -1,19 +1,15 @@
-<<<<<<< HEAD
-import Master from '../server/classes/Master.mjs'
-var master = new Master();
+// let Master = require('../server/classes/Master.js')
+// var master = new Master();
+let master = require('../server/server')
 //var expect = require('chai').expect
-=======
-import master from '../server/server.mjs'
+let { expect } = require('chai')
+let _ = require('lodash')
 
->>>>>>> d27ab9b69027e375d9a700dc763223ce65ad7c2d
-import { expect } from 'chai';
-import _ from 'lodash'
-
-import { expectNewRoom, expectJoinRoom, getGameFromPlayerId } from './utils.mjs';
-import { defaultRules } from '../src/ressources/rules.mjs'
+let { expectNewRoom, expectJoinRoom, getGameFromPlayerId } = require('./utils.js');
+let { defaultRules } = require('../src/ressources/rules.js')
 
 //Nom du fichier dans lequel se trouves les fonctions testé
-describe.skip('Server Tests', () => {
+describe('Server Tests', () => {
 
 	var cb = () => {
 		console.log('Callback');
@@ -24,6 +20,9 @@ describe.skip('Server Tests', () => {
 	let badRoom = {}
 	//let sock = openSocket('http://localhost:8000')
 
+	before(() => {
+		// master.startServer()
+	})
 	//Nom de la fonction a tester
 	describe('[ROOM TESTS]', () => {
 		//Explication de se que devrait retournner la fonction
@@ -87,15 +86,6 @@ describe.skip('Server Tests', () => {
 			expect(room).to.be.eql(fullRoom);
 		});
 
-<<<<<<< HEAD
-		it('Supprime 7 des 8 joueurs', () => {
-			//leaveRoom
-
-		})
-
-
-
-=======
 		it('Supprime 7 des 8 joueurs et transfert les droits d\'admin', () => {
 			nbPlayer = 8
 			//retire tout les joueurs sauf  l'admin et le dernier à rejoindre la partie
@@ -104,7 +94,6 @@ describe.skip('Server Tests', () => {
 			}
 			expect(room.getNbPlayer()).to.be.eql(1);
 			expect(room.getOwner()).to.be.eql(mainId + 8);
->>>>>>> d27ab9b69027e375d9a700dc763223ce65ad7c2d
 
 			//Supprime un joueur qui n'existe pas
 			var fullRoom = _.cloneDeep(room);
@@ -121,21 +110,8 @@ describe.skip('Server Tests', () => {
 
 	});
 
-<<<<<<< HEAD
-	// describe('[joinRoom] connection à la room crée', function(){
-	//
-	//    //création de la "room" à laquel le joueur va essayer de se connecter
-	//    let room = master.createRoom(667, { name: "Hector" }, cb)
-	//
-	//    it('Devrait se connecter à la room', function(){
-	//      master.joinRoom(1, { name: "PasHector2" }, room.getUrl(), cb)
-	//      expect(room._listPlayers[667]._clientId).to.equal(667)
-	//
-	//    })
-	//
-	// })
-	// master.stopServer()
-=======
-	master.stopServer()
->>>>>>> d27ab9b69027e375d9a700dc763223ce65ad7c2d
+	after(() => {
+		master.getServer().getIoServer().disconnect()
+		master.stopServer()
+	})
 });

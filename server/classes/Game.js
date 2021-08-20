@@ -1,7 +1,7 @@
-import clonedeep from 'lodash.clonedeep'
-import defaultGame from '../../src/ressources/game.mjs'
+let clonedeep = require('lodash.clonedeep')
+let defaultGame = require('../../src/ressources/game.js')
 
-export default class Game {
+module.exports = class Game {
   constructor(shapes, shapesId) {
     // this._parent = parent
 

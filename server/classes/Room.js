@@ -1,9 +1,9 @@
-import {defaultRules} from '../../src/ressources/rules.mjs'
-import Player from './Player.mjs'
-import _ from 'lodash'
-import {refresh, initShapes} from '../refresh.mjs'
+let {defaultRules} = require('../../src/ressources/rules.js')
+let Player = require('./Player.js')
+let _ = require('lodash')
+let {refresh, initShapes} = require('../refresh.js')
 
-export default class Room {
+module.exports = class Room {
   constructor() {
     this._url = ''
     this._inGame = false
