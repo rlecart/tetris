@@ -45,6 +45,6 @@ describe('Server tests', () => {
   })
 
   after(() => {
-    // master.stopServer()
+    master.stopServer()
   })
 })

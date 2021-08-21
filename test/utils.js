@@ -26,7 +26,7 @@ const expectJoinRoom = (room, playerId, playerName, NbPlayer) =>  {
   expect(room.getNbPlayer()).to.be.eql(NbPlayer);
 }
 
-const getGameFromPlayerId = (playerId, master) => {
+const getRoomFromPlayerId = (playerId, master) => {
   var allRooms = master.getRoomsList()
   for (var roomUrl in allRooms){
     var room = master.getRoom(roomUrl)
@@ -37,4 +37,4 @@ const getGameFromPlayerId = (playerId, master) => {
   return(undefined)
 }
 
-module.exports = { expectNewRoom, expectJoinRoom, getGameFromPlayerId }
+module.exports = { expectNewRoom, expectJoinRoom, getRoomFromPlayerId }

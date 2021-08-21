@@ -161,7 +161,7 @@ module.exports = class Master {
     let room = {}
     let player = {}
 
-    //console.log(clientId)
+    console.log(clientId)
     if ((room = this.getRoom(url)) && (player = room.getListPlayers(clientId)))
       player.move(dir, room)
   }

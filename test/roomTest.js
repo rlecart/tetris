@@ -4,7 +4,7 @@
 let { expect } = require('chai')
 let _ = require('lodash')
 
-let { expectNewRoom, expectJoinRoom, getGameFromPlayerId } = require('./utils.js');
+let { expectNewRoom, expectJoinRoom, getRoomFromPlayerId } = require('./utils.js');
 let { defaultRules } = require('../src/ressources/rules.js')
 
 //Nom du fichier dans lequel se trouves les fonctions testé
@@ -16,7 +16,6 @@ describe('Room Tests', () => {
 	const players = [{ name: 'Hector' }, { name: '\t\n\r\v\f' }, { name: 'pouayayay' }];
 	let room = {};
 	let badRoom = {}
-	let master
 	//let sock = openSocket('http://localhost:8000')
 
 	before(() => {
@@ -29,33 +28,33 @@ describe('Room Tests', () => {
 		it('Devrait créer la room', () => {
 			//Nom: normal | Id: normal
 			master.createRoom(playersId[0], players[0], cb);
-			room = getGameFromPlayerId(playersId[0], master);
+			room = getRoomFromPlayerId(playersId[0], master);
 			expectNewRoom(room, playersId[0])
 			//Nom: tnrvf | Id: normal
 			master.createRoom(playersId[1], players[1], cb);
-			expectNewRoom(getGameFromPlayerId(playersId[1], master), playersId[1]);
+			expectNewRoom(getRoomFromPlayerId(playersId[1], master), playersId[1]);
 			//Nom: normal | Id: long
 			master.createRoom(playersId[2], players[2], cb);
-			expectNewRoom(getGameFromPlayerId(playersId[2], master), playersId[2]);
+			expectNewRoom(getRoomFromPlayerId(playersId[2], master), playersId[2]);
 		});
 
 		it('Ne Devrait pas créer la room (Mauvais clientId)', function () {
 			var badPlayerId = undefined
 			master.createRoom(badPlayerId, { name: 'badId' }, cb);
-			badRoom = getGameFromPlayerId(badPlayerId, master)
+			badRoom = getRoomFromPlayerId(badPlayerId, master)
 			expect(badRoom).to.be.undefined
 		})
 
 		it('Ne Devrait pas créer la room (Mauvais profil)', function () {
 			//Nom: empty name
 			master.createRoom(playersId[0], { name: "" }, cb);
-			expectNewRoom(getGameFromPlayerId(playersId[0], master), playersId[0]);
+			expectNewRoom(getRoomFromPlayerId(playersId[0], master), playersId[0]);
 			//Nom: name null
 			master.createRoom(playersId[0], { name: null }, cb);
-			expectNewRoom(getGameFromPlayerId(playersId[0], master), playersId[0]);
+			expectNewRoom(getRoomFromPlayerId(playersId[0], master), playersId[0]);
 			//Bad profil object (missing 'name')
 			master.createRoom(playersId[0], { pseudo: "Jean" }, cb);
-			expectNewRoom(getGameFromPlayerId(playersId[0], master), playersId[0]);
+			expectNewRoom(getRoomFromPlayerId(playersId[0], master), playersId[0]);
 
 		})
 
@@ -79,14 +78,14 @@ describe('Room Tests', () => {
 		it('Ne devrait pas join la room (8 jooueurs déja présent)', () => {
 			//crée une nouvelle game pour la remplir de joueur
 			master.createRoom(mainId + nbPlayer, { name: 'joueur' + nbPlayer }, cb);
-			room = getGameFromPlayerId(mainId + nbPlayer, master);
+			room = getRoomFromPlayerId(mainId + nbPlayer, master);
 			while (++nbPlayer <= 8) {
 				master.joinRoom(mainId + nbPlayer, { name: 'joueur' + nbPlayer }, room.getUrl(), cb);
 			}
 			var fullRoom = _.cloneDeep(room);
 			//Essaye d'ajouter un joueur qui n'a pas de place dans la room
 			master.joinRoom(667, "joueur2trop", room.getUrl(), cb);
-			expect(getGameFromPlayerId(667, master)).to.be.undefined;
+			expect(getRoomFromPlayerId(667, master)).to.be.undefined;
 			expect(room).to.be.eql(fullRoom);
 		});
 
@@ -112,7 +111,7 @@ describe('Room Tests', () => {
 		it('Supprime le dernier joueur (donc la game)', () => {
 			//console.log(room.getUrl())
 			master.leaveRoom(mainId + 8, { name: 'joueur' + 8 }, room.getUrl(), cb);
-			room = getGameFromPlayerId(mainId + 8, master)
+			room = getRoomFromPlayerId(mainId + 8, master)
 			expect(room).to.be.undefined
 		})
 

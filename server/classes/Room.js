@@ -68,7 +68,7 @@ module.exports = class Room {
     clearInterval(this._interval)
     this._interval = undefined
     this.setInGame(false)
-    setTimeout(() => {
+    setTimeout(() => { // laisser du temps a la derniere interval des players encore en cours
       this._shapes = []
       this._shapesId = []
     }, 1500)
