@@ -34,7 +34,9 @@ describe('Server tests', () => {
     })
 
     it('Socket connection ok', () => {
-      //console.log(master.getSioList())
+      assert.exists(master.getSioList())
+      // console.log(socket.id)
+      // console.log(server.getIoServer().sockets.sockets)
     })
 
     after(() => {
@@ -43,6 +45,6 @@ describe('Server tests', () => {
   })
 
   after(() => {
-    master.stopServer()
+    // master.stopServer()
   })
 })

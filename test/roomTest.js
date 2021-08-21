@@ -16,6 +16,7 @@ describe('Room Tests', () => {
 	const players = [{ name: 'Hector' }, { name: '\t\n\r\v\f' }, { name: 'pouayayay' }];
 	let room = {};
 	let badRoom = {}
+	let master
 	//let sock = openSocket('http://localhost:8000')
 
 	before(() => {

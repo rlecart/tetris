@@ -41,7 +41,7 @@ describe('Game Tests', () => {
 
   after(() => {
 		//master.getServer().getIoServer().disconnect()
-		socket.disconnect()
-	})
+	///	socket.disconnect()
 
+	})
 })
