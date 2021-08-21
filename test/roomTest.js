@@ -1,6 +1,5 @@
 // let Master = require('../server/classes/Master.js')
 // var master = new Master();
-let master = require('../server/server')
 //var expect = require('chai').expect
 let { expect } = require('chai')
 let _ = require('lodash')
@@ -11,6 +10,7 @@ let { defaultRules } = require('../src/ressources/rules.js')
 //Nom du fichier dans lequel se trouves les fonctions testé
 describe('Room Tests', () => {
 
+	let master
 	var cb = () => { console.log('Callback') };
 	const playersId = [475, 307, 18446744073709551615];
 	const players = [{ name: 'Hector' }, { name: '\t\n\r\v\f' }, { name: 'pouayayay' }];
@@ -19,10 +19,11 @@ describe('Room Tests', () => {
 	//let sock = openSocket('http://localhost:8000')
 
 	before(() => {
+		master = require('../server/server')
 		// master.startServer()
 	})
 	//Nom de la fonction a tester
-	describe('[ROOM TESTS]', () => {
+	describe('[ROOM CREATE]', () => {
 		//Explication de se que devrait retournner la fonction
 		it('Devrait créer la room', () => {
 			//Nom: normal | Id: normal
@@ -57,6 +58,13 @@ describe('Room Tests', () => {
 
 		})
 
+	})
+
+	var mainId = 2100
+	var nbPlayer = 1
+
+	describe('[ROOM JOINED]', () => {
+
 		it('Devrait join la room ', () => {
 			//Player 1 rejoint la game crée par le joueur 0
 			master.joinRoom(playersId[1], players[1], room.getUrl(), cb);
@@ -66,9 +74,6 @@ describe('Room Tests', () => {
 			expectJoinRoom(room, playersId[2], players[2], 3);
 
 		});
-
-		var mainId = 2100
-		var nbPlayer = 1
 
 		it('Ne devrait pas join la room (8 jooueurs déja présent)', () => {
 			//crée une nouvelle game pour la remplir de joueur
@@ -83,6 +88,10 @@ describe('Room Tests', () => {
 			expect(getGameFromPlayerId(667, master)).to.be.undefined;
 			expect(room).to.be.eql(fullRoom);
 		});
+
+	})
+
+	describe('[ROOM DELETE]', () => {
 
 		it('Supprime 7 des 8 joueurs et transfert les droits d\'admin', () => {
 			nbPlayer = 8
@@ -110,6 +119,7 @@ describe('Room Tests', () => {
 
 	after(() => {
 		// master.getServer().getIoServer()
-		master.stopServer()
+		//socket.disconnect()
+		// master.stopServer()
 	})
 });

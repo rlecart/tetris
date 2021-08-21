@@ -7,15 +7,20 @@ const newRand = (min, max) => {
 const newShape = (room, rand) => {
   const i = rand % 6
 
+  //console.log(i)
+  //console.log(room)
+  //console.log(tetriminos.tetriminos)
   room.addShapesId(i + 2)
-  return (tetriminos.tetriminos[i]) // deep clone ?
+  return (tetriminos[i]) // deep clone ?
 }
 
 function initShapes(room) {
   // room.shapes = []
   // room.shapesId = []
+  // console.log(room)
   room.addNewShape(newShape(room, newRand(1, 6)))
   room.addNewShape(newShape(room, newRand(1, 6)))
+  // console.log(room)
   // room.shapes.push(newShape(room, newRand(1, 6)))
   // room.shapes.push(newShape(room, newRand(1, 6)))
 }
@@ -136,7 +141,7 @@ const turnTetri = (game, dir) => {
   //   21 10
   //   22 20
 
-  //   x 1 1 
+  //   x 1 1
   //   1 1 x
   //   x x x
 }

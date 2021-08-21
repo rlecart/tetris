@@ -129,6 +129,7 @@ module.exports = class Room {
   addNewShape(shape) { // a checker comment ca recupere les shapes et shapeId
     // for (let shape of shapes)
     this._shapes.push(shape)
+    //console.log(this._shapes)
     // this._shapesId = shapes._shapesId
   }
 
@@ -174,7 +175,7 @@ module.exports = class Room {
       return (true)
     return (false)
   }
-ari
+
   launchGame(sio) {
     // let socketClients = server.getSioListFromRoom(this.getUrl(), true)
 
@@ -207,9 +208,10 @@ ari
   }
 
   hiddenSpec(ret) {
+    console.log(ret)
     let hiddenCols = new Array(ret[0].lines[0].length).fill(false)
 
-    //console.log(ret)
+
     for (let player of ret) {
       for (let line of player.lines) {
         for (let i in line) {
@@ -235,12 +237,13 @@ ari
         })
       }
     }
-    if (hidden && ret)
+    if (this.getNbPlayer() > 1 && hidden && ret)
       return (this.hiddenSpec(ret))
     return ret
   }
 
   initGames() {
+
     for (let [key, value] of Object.entries(this.getListPlayers())) {
       value.setNewGame(this.getShapes(), this.getShapesId())
     }
@@ -261,6 +264,7 @@ ari
           value.emit('refreshVue', this.getAllGames(key), this.createSpecList(key))
       }
     }
+    // console.log(this.getAllGames())
   }
 
   emitAll(message, except, obj, spec) {
