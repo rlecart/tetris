@@ -10,7 +10,6 @@ let { defaultRules } = require('../src/ressources/rules.js')
 //Nom du fichier dans lequel se trouves les fonctions testé
 describe('Room Tests', () => {
 
-	let master
 	var cb = () => { console.log('Callback') };
 	const playersId = [475, 307, 18446744073709551615];
 	const players = [{ name: 'Hector' }, { name: '\t\n\r\v\f' }, { name: 'pouayayay' }];
