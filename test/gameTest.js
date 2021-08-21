@@ -12,15 +12,9 @@ describe('Game Tests', () => {
   let room = {};
   let sock = undefined;
 
-  before((done) => {
-    return (new Promise((resolve) => {
-      sock = openSocket('http://localhost:8000')
-      setTimeout(() => {
-        resolve();
-
-      }, 3000)
-    }))
-	})
+  before(() => {
+    
+  })
 
   describe('[??? ???]', () => {
 

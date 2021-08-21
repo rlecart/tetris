@@ -1,18 +1,13 @@
-// let Master = require('../server/classes/Master.js')
 let { expect, assert } = require('chai')
 let openSocket = require('socket.io-client')
 
-describe('Server tests', () => {
+describe.only('Server tests', () => {
   let server
+  let master
+
   before(() => {
-    let master = require('../server/server')
-    // master = new Master()
-    // master.startServer()
-    master.startServer()
+    master = require('../server/server')
     server = master.getServer()
-  })
-  beforeEach(() => {
-    this.props.master = master
   })
 
   describe('Server init', () => {
@@ -30,16 +25,16 @@ describe('Server tests', () => {
   describe('With client', () => {
     let socket
 
-    before(() => {
-      socket = openSocket.connect('http://localhost:8000')
-      console.log(this.props)
-      // console.log(master.getSioList())
+    before((done) => {
+      socket = new openSocket('http://localhost:8000')
+      server.getIoServer().on('connection', (socketnique) => {
+        socket = socketnique
+      })
+      socket.on('connect', done)
     })
 
     it('Socket connection ok', () => {
-      // console.log('bwoenbowei\n\n')
-      // console.log(master.getSioList())
-      // console.log('bwoenbowei\n\n')
+      console.log(master.getSioList())
     })
 
     after(() => {
@@ -49,6 +44,5 @@ describe('Server tests', () => {
 
   after(() => {
     master.stopServer()
-    // setTimeout(() => { master.stopServer() }, 5000)
   })
 })
