@@ -1,7 +1,7 @@
 let { expect, assert } = require('chai')
 let openSocket = require('socket.io-client')
 
-describe.only('Server tests', () => {
+describe('Server tests', () => {
   let server
   let master
 
@@ -34,7 +34,9 @@ describe.only('Server tests', () => {
     })
 
     it('Socket connection ok', () => {
-      console.log(master.getSioList())
+      assert.exists(master.getSioList())
+      // console.log(socket.id)
+      // console.log(server.getIoServer().sockets.sockets)
     })
 
     after(() => {
@@ -43,6 +45,6 @@ describe.only('Server tests', () => {
   })
 
   after(() => {
-    master.stopServer()
+    // master.stopServer()
   })
 })

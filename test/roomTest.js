@@ -1,6 +1,5 @@
 // let Master = require('../server/classes/Master.js')
 // var master = new Master();
-let master = require('../server/server')
 //var expect = require('chai').expect
 let { expect } = require('chai')
 let _ = require('lodash')
@@ -16,9 +15,12 @@ describe('Room Tests', () => {
 	const players = [{ name: 'Hector' }, { name: '\t\n\r\v\f' }, { name: 'pouayayay' }];
 	let room = {};
 	let badRoom = {}
+	let master
 	//let sock = openSocket('http://localhost:8000')
 
 	before(() => {
+		master = require('../server/server')
+
 		// master.startServer()
 	})
 	//Nom de la fonction a tester
@@ -110,6 +112,6 @@ describe('Room Tests', () => {
 
 	after(() => {
 		// master.getServer().getIoServer()
-		master.stopServer()
+		// master.stopServer()
 	})
 });

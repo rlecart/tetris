@@ -4,16 +4,10 @@ let { Server } = require('socket.io')
 
 module.exports = class mainServer {
   constructor() {
-    // this._parent = parent
-
     this._port = config.back.port
     this._server = {}
     this._io = {}
   }
-
-  // getParent() {
-  //     return (this._parent)
-  // }
 
   startServer() {
     this._server = http.createServer();
@@ -41,7 +35,6 @@ module.exports = class mainServer {
   }
 
   stopListenSio(sioList) {
-    // console.log(sioList)
     if (Object.entries(sioList).length !== 0) {
       for (let [key, value] of Object.entries(sioList)) {
         value.disconnect()
@@ -52,11 +45,7 @@ module.exports = class mainServer {
 
   listenSio(master) {
     this._io.on('connection', (client) => {
-      console.log('coooooooneeeectioooon')
-      // console.log(master.getSioList())
       master.addNewSio(client)
-      // console.log(master.getSioList())
-      console.log('aaa\n\naaa')
       client.on('move', (clientId, url, dir) => {
         if (master.getRoom(url).isInGame())
           master.askToMove(clientId, url, dir)
