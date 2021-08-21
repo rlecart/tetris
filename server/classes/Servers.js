@@ -45,15 +45,7 @@ module.exports = class mainServer {
 
   listenSio(master) {
     this._io.on('connection', (client) => {
-<<<<<<< HEAD
-      // console.log('coooooooneeeectioooon')
-      // console.log(master.getSioList())
       master.addNewSio(client)
-      // console.log(master.getSioList())
-      // console.log('aaa\n\naaa')
-=======
-      master.addNewSio(client)
->>>>>>> 083b36c38bc2ab5454298385ca3b787a9ce9c415
       client.on('move', (clientId, url, dir) => {
         if (master.getRoom(url).isInGame())
           master.askToMove(clientId, url, dir)
