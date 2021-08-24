@@ -26,7 +26,7 @@ class Accueil extends Component {
 
   componentDidMount() {
     console.log(this.props)
-    // while (this.props.socketConnector.isSocketConnected === false)
+    if (this.props.socketConnector.isSocketConnected === true)
       this.props.socketConnector.socket.on('goToRoom', () => { nav(this.props.history, `/#${this.state.roomUrl}[${this.state.profil.name}]`) })
   }
 

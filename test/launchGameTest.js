@@ -1,7 +1,7 @@
 let { expect } = require('chai')
 
 let askToStartGame = require('../server/classes/Master.js')
-let { getGameFromPlayerId } = require('./utils.js');
+let { getRoomFromPlayerId } = require('./utils.js');
 let openSocket = require('socket.io-client');
 
 describe('Launch Game Tests', () => {
@@ -45,7 +45,7 @@ describe('Launch Game Tests', () => {
     it('Devrait lancer la partie (1 joueur)', () => {
       var player = { name : 'Belle partie' }
       master.createRoom(sockets[0].id, player, cb);
-      room = getGameFromPlayerId(sockets[0].id, master)
+      room = getRoomFromPlayerId(sockets[0].id, master)
       master.readyToStart(sockets[0].id, room.getUrl())
       clearInterval(room.getInterval())
       room.gameLoop(master.getSioListFromRoom(room.getUrl(), true), room.getUrl())
@@ -55,7 +55,7 @@ describe('Launch Game Tests', () => {
     it('Devrait finir la partie (4 joueurs)', () => {
       var players = [ { name : 'j1' }, { name : 'j2' }, { name : 'j3' }, { name : 'j4' } ]
       master.createRoom(sockets[0].id, players[0], cb);
-      room = getGameFromPlayerId(sockets[0].id, master);
+      room = getRoomFromPlayerId(sockets[0].id, master);
       master.joinRoom(sockets[1], players[1], room.getUrl());
       master.joinRoom(sockets[2], players[2], room.getUrl());
       master.joinRoom(sockets[3], players[3], room.getUrl());

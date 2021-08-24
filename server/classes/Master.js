@@ -1,13 +1,19 @@
 let Room = require('./Room.js')
 let mainServer = require('./Servers.js')
-let {createNewUrl} = require('../utils.js')
-let {refresh} = require('../refresh.js')
+let { createNewUrl } = require('../utils.js')
+let { refresh } = require('../refresh.js')
+let _ = require('lodash')
 
 module.exports = class Master {
   constructor() {
     this._roomsList = {}
     this._sioClientList = {}
     this._server = {}
+    this._nique = {}
+  }
+
+  getNique() {
+    return (this._nique)
   }
 
   startServer() {
@@ -55,7 +61,25 @@ module.exports = class Master {
   }
 
   addNewSio(client) {
+    // this._sioClientList = { ...this._sioClientList, [client.id]: client }
+    // let ret
+
+    // if (this._sioClientList[client.id] !== undefined)
+    //   this._sioClientList[client.id].push(client)
+    // else {
+    //   ret = new Array(client)
+    // this._sioClientList = { ...this._sioClientList, [client.id]: ret }
+    // }
+    if (_.isEmpty(this._sioClientList))
+    {
+      console.log('une fois')
+      this._nique = client.id
+    }
     this._sioClientList = { ...this._sioClientList, [client.id]: client }
+    
+    // console.log('whaaaaaa')
+    // console.log(client)
+    // console.log('whaaaaaa fin')
   }
 
   createRoom(clientId, profil) {
