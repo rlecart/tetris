@@ -16,16 +16,20 @@ module.exports = class Master {
     return (this._nique)
   }
 
-  startServer() {
+  startServer(cb) {
     this._server = new mainServer(this)
     this._server.startServer()
     this._server.listenSio(this)
+    if (cb !== undefined)
+      cb()
   }
 
-  stopServer() {
+  stopServer(cb) {
     this._server.stopListenSio(this._sioClientList)
     this._server.stopServer()
     this._server = undefined
+    if (cb !== undefined)
+      cb()
     // delete this._server
   }
 

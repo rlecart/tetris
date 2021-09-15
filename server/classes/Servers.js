@@ -81,6 +81,7 @@ module.exports = class mainServer {
       //   }, 6000);
       });
 
+      client.emit('setupDone') // setupDone qui doit pas etre envoye au bon endroit
       console.log('connected')
     })
     this._io.listen(this._port);
