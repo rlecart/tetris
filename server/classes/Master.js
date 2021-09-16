@@ -16,21 +16,16 @@ module.exports = class Master {
     return (this._nique)
   }
 
-  startServer(cb) {
+  startServer() {
     this._server = new mainServer(this)
     this._server.startServer()
     this._server.listenSio(this)
-    if (cb !== undefined)
-      cb()
   }
 
-  stopServer(cb) {
+  stopServer() {
     this._server.stopListenSio(this._sioClientList)
     this._server.stopServer()
     this._server = undefined
-    if (cb !== undefined)
-      cb()
-    // delete this._server
   }
 
   addNewRoom(room) {
@@ -74,13 +69,12 @@ module.exports = class Master {
     //   ret = new Array(client)
     // this._sioClientList = { ...this._sioClientList, [client.id]: ret }
     // }
-    if (_.isEmpty(this._sioClientList))
-    {
+    if (_.isEmpty(this._sioClientList)) {
       console.log('une fois')
       this._nique = client.id
     }
     this._sioClientList = { ...this._sioClientList, [client.id]: client }
-    
+
     // console.log('whaaaaaa')
     // console.log(client)
     // console.log('whaaaaaa fin')

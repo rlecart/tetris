@@ -1,26 +1,26 @@
 let { expect, assert } = require('chai')
 let openSocket = require('socket.io-client')
+let Master = require('../server/classes/Master.js')
 
-describe('Server tests', () => {
+describe.only('Server tests', () => {
   let server
   let master
-  let socket
 
-  before(() => {
-    master = require('../server/server')
+  before((done) => {
+    master = new Master()
+    master.startServer()
     server = master.getServer()
+    done()
   })
 
-  beforeEach((done) => {
-    if (master.getServer() === undefined)
-      master.startServer()
-    socket = new openSocket('http://localhost:8000')
-    socket.on('setupDone', () => { console.log('cest cooooooo'); done() })
+  after((done) => {
+    master.stopServer()
+    done()
   })
 
-  afterEach((done) => {
-    master.stopServer(done)
-  })
+  // beforeEach(() => {
+  //   socket = new openSocket('http://localhost:8000')
+  // })
 
   describe('Server init', () => {
     it('Server obj should exists', () => {
@@ -35,28 +35,22 @@ describe('Server tests', () => {
   })
 
   describe('With client', () => {
+    let sockets = []
 
-    // before((done) => {
-    //   socket = new openSocket('http://localhost:8000')
-    //   server.getIoServer().on('connection', (socketnique) => {
-    //     socket = socketnique
-    //   })
-    //   socket.on('connect', done)
-    // })
+    before((done) => {
+      sockets.push(new openSocket('http://localhost:8000'))
+      done()
+    })
+
+    after((done) => {
+      sockets.forEach(socket => socket.disconnect())
+      done()
+    })
 
     it('Socket connection ok', () => {
       assert.exists(master.getSioList())
-      // console.log(socket.id)
-      // console.log(server.getIoServer().sockets.sockets)
     })
 
-    after(() => {
-    })
   })
 
-  after((done) => {
-    if (master.getServer() !== undefined) {
-      master.stopServer(done)
-    }
-  })
 })
