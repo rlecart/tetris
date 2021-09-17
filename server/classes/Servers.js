@@ -19,7 +19,7 @@ module.exports = class mainServer {
       },
       'pingInterval': 5000
     });
-    console.log('http server started')
+    // console.log('[HTTP server started]')
   }
 
   stopServer() {
@@ -58,6 +58,8 @@ module.exports = class mainServer {
       client.on('askToStartGame', (clientId, profil, url) => { master.askToStartGame(clientId, profil, url) })
       client.on('readyToStart', (clientId, url) => { master.readyToStart(clientId, url) })
       client.on('askToEndGame', (clientId, url) => { master.askToEndGame(clientId, url) })
+      client.on('ping', () => { client.emit('pong') })
+      // client.on('hahabjr', () => { console.log('ahmais quoiiiii') })
       client.conn.on('heartbeat', () => {
         console.log('heartbeat called!');
         master.setSioHbeat(client.id, Date.now())
@@ -81,10 +83,9 @@ module.exports = class mainServer {
       //   }, 6000);
       });
 
-      client.emit('setupDone') // setupDone qui doit pas etre envoye au bon endroit
-      console.log('connected')
+      // console.log('connected')
     })
     this._io.listen(this._port);
-    console.log('listening on port', this._port);
+    // console.log(`[Io listening on port ${this._port}]`);
   }
 }

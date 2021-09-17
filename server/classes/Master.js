@@ -9,23 +9,20 @@ module.exports = class Master {
     this._roomsList = {}
     this._sioClientList = {}
     this._server = {}
-    this._nique = {}
-  }
-
-  getNique() {
-    return (this._nique)
   }
 
   startServer() {
     this._server = new mainServer(this)
     this._server.startServer()
     this._server.listenSio(this)
+    // console.log('[Server completely started]')
   }
 
   stopServer() {
     this._server.stopListenSio(this._sioClientList)
     this._server.stopServer()
     this._server = undefined
+    // console.log('[Server completely stopped]')
   }
 
   addNewRoom(room) {
@@ -69,15 +66,18 @@ module.exports = class Master {
     //   ret = new Array(client)
     // this._sioClientList = { ...this._sioClientList, [client.id]: ret }
     // }
-    if (_.isEmpty(this._sioClientList)) {
-      console.log('une fois')
-      this._nique = client.id
-    }
     this._sioClientList = { ...this._sioClientList, [client.id]: client }
 
     // console.log('whaaaaaa')
     // console.log(client)
     // console.log('whaaaaaa fin')
+  }
+
+  removeSio(client) {
+    if (this._sioClientList[client]) {
+      this._sioClientList[client].disconnect()
+      delete this._sioClientList[client]
+    }
   }
 
   createRoom(clientId, profil) {

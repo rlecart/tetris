@@ -3,16 +3,26 @@ let { expect } = require('chai')
 let askToStartGame = require('../server/classes/Master.js')
 let { getRoomFromPlayerId } = require('./utils.js');
 let openSocket = require('socket.io-client');
+let Master = require('../server/classes/Master.js')
 
 describe('Launch Game Tests', () => {
+  let master;
+  let server;
 
   before(() => {
-    master = require('../server/server')
+    master = new Master()
+    master.startServer()
     server = master.getServer()
 
     let room = {};
     let sock = undefined;
   })
+
+  after(() => {
+    master.stopServer()
+		//master.getServer().getIoServer().disconnect()
+
+	})
 
   var cb = () => { console.log('Callback') };
   var i = 0
@@ -73,11 +83,4 @@ describe('Launch Game Tests', () => {
 
   });
 
-  after(() => {
-    while (i >= 0) {
-      sockets[i--].disconnect()
-    }
-		//master.getServer().getIoServer().disconnect()
-
-	})
 })
