@@ -74,7 +74,7 @@ module.exports = class Master {
   }
 
   removeSio(client) {
-    if (this._sioClientList[client]) {
+    if (this._sioClientList[client] !== undefined) {
       this._sioClientList[client].disconnect()
       delete this._sioClientList[client]
     }

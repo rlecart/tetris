@@ -56,13 +56,9 @@ const addNewClients = (nb, done) => {
 }
 
 const removeEveryClients = (master) => { // faut que je trouve un truc pour qu'il await bien ce chien de mocha
-  return (new Promise(res => {
     for (let client in master.getSioList()) {
-      master.removeSio(client.id);
+      master.removeSio(client);
     }
-    console.log(master.getSioList());
-    res();
-  }));
 }
 
 module.exports = { expectNewRoom, expectJoinRoom, getRoomFromPlayerId, addNewClients, removeEveryClients }

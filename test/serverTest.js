@@ -67,7 +67,7 @@ describe('Server tests', () => {
 
     after(() => {
       removeEveryClients(master)
-      // sockets.forEach(socket => master.removeSio(socket.id))
+      expect(Object.keys(master.getSioList()).length).to.be.eql(0)
     })
 
     it('Socket list nicely filled', () => {
@@ -86,11 +86,8 @@ describe('Server tests', () => {
       }
     })
     it('Remove 50 clients', () => {
-      removeEveryClients(master).then(() => { // ca veut pas await ce chien
-        console.log(master.getSioList())
-        console.log('mais quoi')
-      })
-      // expect(Object.keys(master.getSioList()).length).to.be.eql(1)
+      removeEveryClients(master)
+      expect(Object.keys(master.getSioList()).length).to.be.eql(0)
     })
   })
 
