@@ -208,7 +208,7 @@ module.exports = class Room {
   }
 
   hiddenSpec(ret) {
-    console.log(ret)
+    // console.log(ret)
     let hiddenCols = new Array(ret[0].lines[0].length).fill(false)
 
 

@@ -117,7 +117,7 @@ module.exports = class Master {
     return ret
   }
 
-  leaveRoom(clientId, profil, url) {
+  leaveRoom(clientId, url) {
     let room = {}
 
     if ((room = this.getRoom(url)) && room.getListPlayers(clientId)) {
@@ -141,7 +141,7 @@ module.exports = class Master {
     //console.log(`room ${url} closed`)
   }
 
-  askToStartGame(clientId, profil, url) {
+  askToStartGame(clientId, url) {
     let room = {}
 
     if ((room = this.getRoom(url)) && room.isOwner(clientId)) {
@@ -183,7 +183,7 @@ module.exports = class Master {
     let room = {}
     let player = {}
 
-    console.log(clientId)
+    // console.log(clientId)
     if ((room = this.getRoom(url)) && (player = room.getListPlayers(clientId)))
       player.move(dir, room)
   }

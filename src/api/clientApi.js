@@ -14,8 +14,8 @@
     socket.emit('joinRoom', socket.id, profil, url)
   }
 
-  const askToStartGame = (socket, profil, url) => {
-    socket.emit('askToStartGame', socket.id, profil, url)
+  const askToStartGame = (socket, url) => {
+    socket.emit('askToStartGame', socket.id, url)
   }
 
   const leaveRoom = (socket, profil, url) => {

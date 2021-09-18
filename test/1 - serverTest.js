@@ -37,8 +37,9 @@ describe('Server tests', () => {
       sockets = addNewClients(1, done)
     })
 
-    after(() => {
-      removeEveryClients(master)
+    after(async () => {
+      await removeEveryClients(master)
+      expect(Object.keys(master.getSioList()).length).to.be.eql(0)
       // sockets.forEach(socket => master.removeSio(socket.id))
     })
 
@@ -65,8 +66,8 @@ describe('Server tests', () => {
       sockets = addNewClients(50, done)
     })
 
-    after(() => {
-      removeEveryClients(master)
+    after(async () => {
+      await removeEveryClients(master)
       expect(Object.keys(master.getSioList()).length).to.be.eql(0)
     })
 

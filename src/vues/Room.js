@@ -72,7 +72,7 @@ class Room extends Component {
   isOwner() {
     if (this.state.profil.owner)
       return (
-        <button className="roomButton" id="leaveLaunch" onClick={() => { api.askToStartGame(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl, undefined) }}>
+        <button className="roomButton" id="leaveLaunch" onClick={() => { api.askToStartGame(this.props.socketConnector.socket, this.state.roomUrl) }}>
           <span className="textButton">Lancer la partie</span>
         </button>
       )

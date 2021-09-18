@@ -17,14 +17,14 @@ const expectNewRoom = (room, playerId) => {
   expect(room.getArrivalOrder()).to.be.eql([playerId]);
 }
 
-const expectJoinRoom = (room, playerId, playerName, NbPlayer) => {
+const expectJoinRoom = (room, playerId, playerName, nbPlayer) => {
   var player = room.getListPlayers(playerId)
 
   expect(player.getId()).to.be.eql(playerId);
   expect(player.getProfil()).to.eql({
     ...playerName, url: room.getUrl(), owner: false
   });
-  expect(room.getNbPlayer()).to.be.eql(NbPlayer);
+  expect(room.getNbPlayer()).to.be.eql(nbPlayer);
 }
 
 const getRoomFromPlayerId = (playerId, master) => {
@@ -38,7 +38,7 @@ const getRoomFromPlayerId = (playerId, master) => {
   return (undefined)
 }
 
-const addNewClients = (nb, done) => {
+const addNewClients = (nb, done, addOn) => {
   let clients = []
   let socket
   let doneAlready = 0
@@ -47,6 +47,10 @@ const addNewClients = (nb, done) => {
     socket = new openSocket('http://localhost:8000')
     clients.push(socket)
     socket.on('connect', () => {
+      if (addOn !== undefined) {
+        for (let [key, value] of Object.entries(addOn))
+          socket.on(key, value)
+      }
       doneAlready++;
       if (doneAlready === nb)
         done();
@@ -56,9 +60,18 @@ const addNewClients = (nb, done) => {
 }
 
 const removeEveryClients = (master) => { // faut que je trouve un truc pour qu'il await bien ce chien de mocha
+  return (new Promise(res => {
     for (let client in master.getSioList()) {
       master.removeSio(client);
     }
+    res()
+  }))
 }
 
-module.exports = { expectNewRoom, expectJoinRoom, getRoomFromPlayerId, addNewClients, removeEveryClients }
+const waitAMinute = (ms) => {
+  return (new Promise(res => {
+    setTimeout(() => res(), ms)
+  }))
+}
+
+module.exports = { expectNewRoom, expectJoinRoom, getRoomFromPlayerId, addNewClients, removeEveryClients, waitAMinute }
