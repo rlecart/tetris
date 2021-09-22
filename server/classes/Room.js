@@ -1,7 +1,7 @@
-let {defaultRules} = require('../../src/ressources/rules.js')
+let { defaultRules } = require('../../src/ressources/rules.js')
 let Player = require('./Player.js')
 let _ = require('lodash')
-let {refresh, initShapes} = require('../refresh.js')
+let { refresh, initShapes } = require('../refresh.js')
 
 module.exports = class Room {
   constructor() {
@@ -228,19 +228,23 @@ module.exports = class Room {
 
   createSpecList(exception) {
     let hidden = true
+    let retHidden = []
     let ret = []
 
     for (let [key, value] of Object.entries(this.getListPlayers())) {
-      if (key !== exception && value && value.getGame() && value.getGame().getLines()) {
+      if (key !== exception && value && value.getGame() && value.getGame().getSpec()) {
         ret.push({
-          lines: _.cloneDeep(value.getGame().getLines()),
+          lines: _.cloneDeep(value.getGame().getSpec()),
           name: value.getName(),
         })
       }
     }
-    if (this.getNbPlayer() > 1 && hidden && ret)
-      return (this.hiddenSpec(ret))
-    return ret
+    if (this.getNbPlayer() > 1 && ret) {
+      if (hidden)
+        retHidden = this.hiddenSpec(ret)
+        return (retHidden)
+    }
+    return (ret)
   }
 
   initGames() {

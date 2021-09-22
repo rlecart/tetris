@@ -38,10 +38,6 @@ module.exports = class Master {
   }
 
   getRoom(url) {
-    console.log('getRoom')
-    console.log(url)
-    console.log(this._roomsList)
-    console.log(this._roomsList[url])
     if (url !== undefined && this._roomsList !== undefined && this._roomsList[url] !== undefined)
       return (this._roomsList[url])
   }

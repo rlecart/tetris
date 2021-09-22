@@ -38,6 +38,10 @@ module.exports = class Game {
     return (this._lines)
   }
 
+  getSpec() {
+    return (this._spec)
+  }
+
   setLines(i, j, value) {
     if (i !== undefined) {
       if (j !== undefined) {
@@ -130,5 +134,9 @@ module.exports = class Game {
   fillLine() {
     this._lines.push(new Array(this.getLines(0).length).fill(1))
     this._lines.shift()
+  }
+
+  refreshSpec(lines) {
+    this._spec = clonedeep(lines)
   }
 }
