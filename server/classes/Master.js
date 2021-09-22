@@ -1,7 +1,7 @@
 let Room = require('./Room.js')
 let mainServer = require('./Servers.js')
 let { createNewUrl } = require('../utils.js')
-let { refresh } = require('../refresh.js')
+let { refresh, endGame } = require('../refresh.js')
 let _ = require('lodash')
 
 module.exports = class Master {
@@ -15,14 +15,14 @@ module.exports = class Master {
     this._server = new mainServer(this)
     this._server.startServer()
     this._server.listenSio(this)
-    // console.log('[Server completely started]')
+    console.log('[Server completely started]')
   }
 
   stopServer() {
     this._server.stopListenSio(this._sioClientList)
     this._server.stopServer()
     this._server = undefined
-    // console.log('[Server completely stopped]')
+    console.log('[Server completely stopped]')
   }
 
   addNewRoom(room) {
@@ -38,7 +38,11 @@ module.exports = class Master {
   }
 
   getRoom(url) {
-    if (url !== undefined && this._roomsList !== undefined && this._roomsList[url])
+    console.log('getRoom')
+    console.log(url)
+    console.log(this._roomsList)
+    console.log(this._roomsList[url])
+    if (url !== undefined && this._roomsList !== undefined && this._roomsList[url] !== undefined)
       return (this._roomsList[url])
   }
 
@@ -98,7 +102,8 @@ module.exports = class Master {
       room.addSio(this.getSioList(clientId))
       //console.log(clientId + ' joinroom ' + url)
       room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
-      room.emitOnly('goToRoom', clientId)
+      room.emitOnly('goToRoom', clientId, url)
+      console.log('room joined')
     }
   }
 
@@ -153,7 +158,7 @@ module.exports = class Master {
     let room = {}
 
     if ((room = this.getRoom(url)) && room.isOwner(clientId)) {
-      refresh.endGame(room, clientId)
+      endGame(room, clientId)
     }
   }
 

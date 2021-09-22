@@ -167,6 +167,7 @@ module.exports = class Room {
     roomInfo.listPlayers = this._listPlayers // alors ici ca envoie les clientId et c'est dangereux niveau secu (peut-etre ?)
     // roomInfo.listPlayers = utils.getArrayFromObject(this._listPlayers)
     //console.log(roomInfo.listPlayers)
+    console.log('cuicui')
     return (roomInfo)
   }
 

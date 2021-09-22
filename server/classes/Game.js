@@ -6,6 +6,7 @@ module.exports = class Game {
     // this._parent = parent
 
     this._lines = clonedeep(defaultGame.lines)
+    this._spec = clonedeep(defaultGame.lines)
     this._tetri = clonedeep(defaultGame.tetri)
     this._tetri.id = shapesId[0]
     this._tetri.nextId = shapesId[1]

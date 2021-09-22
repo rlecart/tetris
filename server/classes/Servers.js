@@ -19,7 +19,7 @@ module.exports = class mainServer {
       },
       'pingInterval': 5000
     });
-    // console.log('[HTTP server started]')
+    console.log('[HTTP server started]')
   }
 
   stopServer() {
@@ -54,7 +54,9 @@ module.exports = class mainServer {
       client.on('createRoom', (clientId, profil) => { master.createRoom(clientId, profil) })
       client.on('joinRoom', (clientId, profil, url) => { master.joinRoom(clientId, profil, url) })
       client.on('leaveRoom', (clientId, profil, url) => { master.leaveRoom(clientId, profil, url) })
-      client.on('getRoomInfo', (url) => { master.getRoom(url).getRoomInfo() })
+      client.on('getRoomInfo', (url, cb) => {
+        cb(master.getRoom(url).getRoomInfo())
+      })
       client.on('askToStartGame', (clientId, url) => { master.askToStartGame(clientId, url) })
       client.on('readyToStart', (clientId, url) => { master.readyToStart(clientId, url) })
       client.on('askToEndGame', (clientId, url) => { master.askToEndGame(clientId, url) })
@@ -63,29 +65,29 @@ module.exports = class mainServer {
       client.conn.on('heartbeat', () => {
         console.log('heartbeat called!');
         master.setSioHbeat(client.id, Date.now())
-      //   setTimeout(function () {
-      //     var now = Date.now();
-      //     if (now - master.getSioHbeat(client.id) > 5000) {
-      //       console.log('this client id will be closed ' + client.id);
-      //       if (1) {
-      //         // removeFromLobby(client.id);
+        //   setTimeout(function () {
+        //     var now = Date.now();
+        //     if (now - master.getSioHbeat(client.id) > 5000) {
+        //       console.log('this client id will be closed ' + client.id);
+        //       if (1) {
+        //         // removeFromLobby(client.id);
 
-      //         try {
-      //           // this is the most important part
-      //           console.log(this._io.clients, '\n')
-      //           this._io.clients.connected[client.id].disconnect();
-      //         } catch (error) {
-      //           console.log(error)
-      //         }
-      //       }
-      //     }
-      //     now = null;
-      //   }, 6000);
+        //         try {
+        //           // this is the most important part
+        //           console.log(this._io.clients, '\n')
+        //           this._io.clients.connected[client.id].disconnect();
+        //         } catch (error) {
+        //           console.log(error)
+        //         }
+        //       }
+        //     }
+        //     now = null;
+        //   }, 6000);
       });
 
-      // console.log('connected')
+      console.log('connected')
     })
     this._io.listen(this._port);
-    // console.log(`[Io listening on port ${this._port}]`);
+    console.log(`[Io listening on port ${this._port}]`);
   }
 }

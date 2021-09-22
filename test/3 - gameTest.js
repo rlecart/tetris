@@ -72,22 +72,20 @@ describe('Game Tests', () => {
   });
 
   describe('GameLoop/Refresh', () => {
-    it('Should gameLoop refresh values x1', () => {
-      let gamesCpy = _.cloneDeep(room.getAllGames())
+    let gamesCpy
 
-      console.log(room.getAllGames())
-      room.gameLoop(master.getSioListFromRoom(room.getUrl(), true), room.getUrl())
-      console.log(room.getAllGames())
-      expect(room.getAllGames()).to.not.be.eql(gamesCpy)
-      expect(room)
+    before(() => {
+      gamesCpy = _.cloneDeep(room.getAllGames())
     })
-    const expectGameLoopToBeRefreshed = (gamesCpy, games, room) => {
-      for (let [key, value] of Object.entries(games)) {
-        if (value.getTetri().id !== gamesCpy[key].getTetri().id) // ici faire toutes les verifs d'actualisation de refresh (mettre sur papier pour meilleure visu ?)
-        ;
-      }
-      return (true)
-    }
+
+    it('Should gameLoop refresh values x1 (different values)', () => {
+      room.gameLoop(master.getSioListFromRoom(room.getUrl(), true), room.getUrl())
+      expect(room.getAllGames()).to.not.be.eql(gamesCpy)
+    })
+
+    it('Y should be -1 or reseted if placed', () => {
+      console.log(room.getAllGames())
+    })
 
     // it('Should gameLoop ')
   })

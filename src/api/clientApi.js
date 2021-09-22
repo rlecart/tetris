@@ -2,8 +2,8 @@
     socket.emit('move', socket.id, idRoom, dir, () => { console.log('move envoye') })
   }
 
-  const getRoomInfo = (socket, idRoom) => {
-    socket.emit('getRoomInfo', idRoom)
+  const getRoomInfo = (socket, idRoom, cb) => {
+    socket.emit('getRoomInfo', idRoom, cb)
   }
 
   const createRoom = (socket, profil) => {

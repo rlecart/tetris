@@ -24,10 +24,15 @@ class Accueil extends Component {
     this.setState(state)
   }
 
+  componentDidUpdate() {
+    if (this.props.socketConnector.isSocketConnected === true) {
+      console.log('normalement le socket')
+      this.props.socketConnector.socket.on('goToRoom', (url) => { nav(this.props.history, `/#${url}[${this.state.profil.name}]`); })
+    }
+  }
+
   componentDidMount() {
     console.log(this.props)
-    if (this.props.socketConnector.isSocketConnected === true)
-      this.props.socketConnector.socket.on('goToRoom', () => { nav(this.props.history, `/#${this.state.roomUrl}[${this.state.profil.name}]`) })
   }
 
   render() {
