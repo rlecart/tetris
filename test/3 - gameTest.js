@@ -83,8 +83,8 @@ describe('Game Tests', () => {
       expect(room.getAllGames()).to.not.be.eql(gamesCpy)
     })
 
-    it('Y should be -1 or reseted if placed', () => {
-      console.log(room.getAllGames())
+    it('Y should be +1 or reseted if placed', () => {
+      // expect(room.getAllGames())
     })
 
     // it('Should gameLoop ')
