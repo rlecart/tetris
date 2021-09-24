@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import colors from '../ressources/colors.js'
 import api from '../api/clientApi.js'
+import { canIStayHere, isEmpty } from './utils.js'
 import nav from "../misc/nav";
 
 class Game extends Component {
@@ -118,20 +119,29 @@ class Game extends Component {
   componentDidMount() {
     // console.log('bonjoru', this.props)
     // fonction pour set toutes les reponses serv
-    this.socket.on('refreshVue', (game, spec) => { this.refreshGame(game, spec, this) })
-    this.socket.on('endGame', () => { this.props.history.replace(`/${this.props.match.params.room}`) }) // ici gestion gamover
-    if (this.props.socketConnector.areGameEventsLoaded === false) {
-      console.log('gameEventsLoaded')
-      // window.addEventListener("keypress", this.eventDispatcher.bind(this))
-      window.addEventListener("keydown", this.eventDispatcher)
-      const action = { type: 'GAME_EVENTS_LOADED' }
-      this.props.dispatch(action)
-    }
-    api.readyToStart(this.socket, this.props.roomReducer.roomInfo.url)
+    canIStayHere('game', this)
+      .then(
+        () => {
+          this.socket.on('disconnect', () => nav(this.props.history, '/'))
+          this.socket.on('refreshVue', (game, spec) => { this.refreshGame(game, spec, this) })
+          this.socket.on('endGame', () => { this.props.history.replace(`/${this.props.match.params.room}`) }) // ici gestion gamover
+          if (this.props.socketConnector.areGameEventsLoaded === false) {
+            console.log('gameEventsLoaded')
+            // window.addEventListener("keypress", this.eventDispatcher.bind(this))
+            window.addEventListener("keydown", this.eventDispatcher)
+            const action = { type: 'GAME_EVENTS_LOADED' }
+            this.props.dispatch(action)
+          }
+          api.readyToStart(this.socket, this.props.roomReducer.roomInfo.url)
+        },
+        () => {
+          nav(this.props.history, '/')
+        })
   }
 
   componentWillUnmount() {
-    this.socket.removeAllListeners()
+    if (!isEmpty(this.props.socketConnector) && !isEmpty(this.props.socketConnector.socket))
+      this.props.socketConnector.socket.removeAllListeners()
     if (this.props.socketConnector.areGameEventsLoaded === true) {
       window.removeEventListener('keydown', this.eventDispatcher)
       const action = { type: 'GAME_EVENTS_UNLOADED' } // a voir | en gros tu peux pas restart visiblement y'a .isInGame() qui s'est pas reset

@@ -19,6 +19,11 @@ class Accueil extends Component {
       state.profil.name = event.target.value
     else if (event.target.name === 'roomUrl')
       state.roomUrl = event.target.value
+    let action = {
+      type: 'SYNC_HOME_DATA',
+      value: state,
+    }
+    this.props.dispatch(action)
     this.setState(state)
   }
 

@@ -176,7 +176,7 @@ module.exports = class Master {
     let result
     let room = {}
 
-    if (url && clientId && (room = this.getRoom(url)) && room.getListPlayers(clientId)) {
+    if (url && clientId && (room = this.getRoom(url)) && room.getListPlayers(clientId) && room.isInGame() === false) {
       room.addReadyToStart(clientId)
       if (result = this.tryToStart(room.getReadyToStart(), room.getNbPlayer())) {
         room.launchGame(this.getSioListFromRoom(url, true))

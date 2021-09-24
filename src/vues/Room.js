@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import api from '../api/clientApi'
 import { connect } from "react-redux";
 import nav from "../misc/nav";
-
+import { canIStayHere, isEmpty } from './utils.js'
 
 class Room extends Component {
   state = {
@@ -27,6 +27,11 @@ class Room extends Component {
   }
 
   syncRoomData(roomInfo) {
+    console.log('\n\n\n\n')
+    console.log(roomInfo)
+    console.log('\n\n\n\n')
+    if (!roomInfo || isEmpty(roomInfo))
+      return (-1);
     let state = this.state
     let action = {
       type: 'SYNC_ROOM_DATA',
@@ -45,27 +50,36 @@ class Room extends Component {
   }
 
   componentDidMount() {
-    let state = this.state
-    let url = this.props.match.url
-    state.profil.name = url.substring(url.search(/\[[0-9a-zA-Z]+\]/) + 1, url.length - 1)
-    state.roomUrl = url.substring(1, url.search(/\[/))
-    this.props.socketConnector.socket.on('goToGame', () => { nav(this.props.history, `${this.props.location.pathname}/game`) })
-    this.props.socketConnector.socket.on('refreshRoomInfo', (roomInfo) => { this.syncRoomData(roomInfo) })
-    console.log('mount', state.roomInfo)
-    console.log('propsmount', this.props)
-    if (!state.roomInfo) {
-      console.log('init')
-      api.getRoomInfo(this.props.socketConnector.socket, state.roomUrl).then((roomInfo) => this.syncRoomData(roomInfo))
-    }
-    else {
-      console.log('hahah')
-      state.roomInfo = this.props.roomReducer.roomInfo
-    }
-    this.setState(state)
+    canIStayHere('room', this)
+      .then(
+        () => {
+          let state = this.state
+          let url = this.props.match.url
+          state.profil.name = url.substring(url.search(/\[[0-9a-zA-Z]+\]/) + 1, url.length - 1)
+          state.roomUrl = url.substring(1, url.search(/\[/))
+          this.props.socketConnector.socket.on('disconnect', () => nav(this.props.history, '/'))
+          this.props.socketConnector.socket.on('goToGame', () => { nav(this.props.history, `${this.props.location.pathname}/game`) })
+          this.props.socketConnector.socket.on('refreshRoomInfo', (roomInfo) => { this.syncRoomData(roomInfo) })
+          console.log('mount', state.roomInfo)
+          console.log('propsmount', this.props)
+          if (!state.roomInfo) {
+            console.log('init')
+            api.getRoomInfo(this.props.socketConnector.socket, state.roomUrl).then((roomInfo) => this.syncRoomData(roomInfo))
+          }
+          else {
+            console.log('hahah')
+            state.roomInfo = this.props.roomReducer.roomInfo
+          }
+          this.setState(state)
+        },
+        () => {
+          nav(this.props.history, '/')
+        })
   }
 
   componentWillUnmount() {
-    this.props.socketConnector.socket.removeAllListeners()
+    if (Object.keys(this.props.socketConnector).length !== 0 && Object.keys(this.props.socketConnector.socket).length !== 0)
+      this.props.socketConnector.socket.removeAllListeners()
   }
 
   isOwner() {

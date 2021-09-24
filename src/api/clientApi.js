@@ -11,13 +11,17 @@ const getRoomInfo = (socket, idRoom) => {
 }
 
 const createRoom = (socket, profil) => {
-  return (new Promise((res) => {
+  return (new Promise((res, rej) => {
+    if (!socket || !socket.id)
+      rej()
     socket.emit('createRoom', socket.id, profil, res)
   }))
 }
 
 const joinRoom = (socket, profil, idRoom) => {
-  return (new Promise((res) => {
+  return (new Promise((res, rej) => {
+    if (!socket || !socket.id)
+      rej()
     socket.emit('joinRoom', socket.id, profil, idRoom, res)
   }))
 }

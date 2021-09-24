@@ -73,9 +73,9 @@ module.exports = class mainServer {
           if (now - master.getSioHbeat(client.id) > 5000) {
             console.log('this client id will be closed ' + client.id);
             let room = getRoomFromPlayerId(client.id, master)
-            if (room !== undefined)
-              master.leaveRoom(client.id, room.getUrl(), () => {})
-            master.removeSio(client)
+            // if (room !== undefined)
+            //   master.leaveRoom(client.id, room.getUrl(), () => {})
+            setTimeout(() => master.removeSio(client), 500)
           }
           now = null;
         }, 6000);
