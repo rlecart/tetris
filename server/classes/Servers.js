@@ -1,6 +1,7 @@
 let { config } = require('../../config.js')
 let http = require('http')
 let { Server } = require('socket.io')
+const { getRoomFromPlayerId } = require('../../test/utils.js')
 
 module.exports = class mainServer {
   constructor() {
@@ -66,24 +67,18 @@ module.exports = class mainServer {
       client.conn.on('heartbeat', () => {
         console.log('heartbeat called!');
         master.setSioHbeat(client.id, Date.now())
-        //   setTimeout(function () {
-        //     var now = Date.now();
-        //     if (now - master.getSioHbeat(client.id) > 5000) {
-        //       console.log('this client id will be closed ' + client.id);
-        //       if (1) {
-        //         // removeFromLobby(client.id);
+        setTimeout(() => {
+          let now = Date.now();
 
-        //         try {
-        //           // this is the most important part
-        //           console.log(this._io.clients, '\n')
-        //           this._io.clients.connected[client.id].disconnect();
-        //         } catch (error) {
-        //           console.log(error)
-        //         }
-        //       }
-        //     }
-        //     now = null;
-        //   }, 6000);
+          if (now - master.getSioHbeat(client.id) > 5000) {
+            console.log('this client id will be closed ' + client.id);
+            let room = getRoomFromPlayerId(client.id, master)
+            if (room !== undefined)
+              master.leaveRoom(client.id, room.getUrl(), () => {})
+            master.removeSio(client)
+          }
+          now = null;
+        }, 6000);
       });
 
       console.log('connected')

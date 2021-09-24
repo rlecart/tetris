@@ -17,7 +17,7 @@ const expectNewRoom = (room, playerId) => {
 }
 
 const expectJoinRoom = (room, playerId, playerName, nbPlayer) => {
-  var player = room.getListPlayers(playerId)
+  let player = room.getListPlayers(playerId)
 
   expect(player.getId()).to.be.eql(playerId);
   expect(player.getProfil()).to.eql({
@@ -27,9 +27,10 @@ const expectJoinRoom = (room, playerId, playerName, nbPlayer) => {
 }
 
 const getRoomFromPlayerId = (playerId, master) => {
-  var allRooms = master.getRoomsList()
-  for (var roomUrl in allRooms) {
-    var room = master.getRoom(roomUrl)
+  let allRooms = master.getRoomsList()
+
+  for (let roomUrl in allRooms) {
+    let room = master.getRoom(roomUrl)
     if (room._listPlayers[playerId]) {
       return (room)
     }
