@@ -71,7 +71,8 @@ module.exports = class Room {
     setTimeout(() => { // laisser du temps a la derniere interval des players encore en cours
       this._shapes = []
       this._shapesId = []
-      res()
+      if (res !== undefined)
+        res()
     }, 1500)
   }
 
@@ -243,7 +244,7 @@ module.exports = class Room {
     if (this.getNbPlayer() > 1 && ret) {
       if (hidden)
         retHidden = this.hiddenSpec(ret)
-        return (retHidden)
+      return (retHidden)
     }
     return (ret)
   }
