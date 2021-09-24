@@ -279,9 +279,9 @@ const checkFilledLine = (game) => {
   return (count)
 }
 
-const endGame = (room, id) => { // gameover
+const endGame = (room, id, res) => { // gameover
   // console.log(room)
-  room.endGame()
+  room.endGame(res)
   room.emitAll('endGame') // ici emitOnly plutot pour faire continuer les autres
   // room.getParent().closeRoom(room)
 }

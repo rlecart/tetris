@@ -127,7 +127,7 @@ class Game extends Component {
       const action = { type: 'GAME_EVENTS_LOADED' }
       this.props.dispatch(action)
     }
-    this.socket.emit('readyToStart', this.socket.id, this.props.roomReducer.roomInfo.url)
+    api.readyToStart(this.socket, this.props.roomReducer.roomInfo.url)
   }
 
   componentWillUnmount() {

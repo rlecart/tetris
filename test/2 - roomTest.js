@@ -8,7 +8,7 @@ let { defaultRules } = require('../src/ressources/rules.js')
 describe('Room Tests', () => {
 	const playersId = [475, 307, 184467440737615];
 	const players = [{ name: 'Hector' }, { name: '\t\n\r\v\f' }, { name: 'pouayayay' }];
-	let cb = () => { console.log('Callback') };
+	let cb = () => {  };
 	let master;
 	let room = {};
 	let mainId = 2100;
@@ -77,7 +77,7 @@ describe('Room Tests', () => {
 
 		it('Shouldn\'t join room (no more space available)', () => {
 			//crée une nouvelle game pour la remplir de joueur
-			master.createRoom(mainId + nbPlayer, cb);
+			master.createRoom(mainId + nbPlayer, { name: 'joueur' + nbPlayer }, cb);
 			room = getRoomFromPlayerId(mainId + nbPlayer, master);
 			while (++nbPlayer <= 8)
 				master.joinRoom(mainId + nbPlayer, { name: 'joueur' + nbPlayer }, room.getUrl(), cb);
@@ -92,8 +92,10 @@ describe('Room Tests', () => {
 	describe('Leave/delete room', () => {
 		it('1 player leave room', () => {
 			let roomCpy = _.cloneDeep(room);
+			// console.log(roomCpy)
 			nbPlayer = 8;
 			master.leaveRoom(mainId + nbPlayer, room.getUrl(), cb);
+			// console.log(room)
 			expect(room).to.not.be.eql(roomCpy);
 			expect(room.getNbPlayer()).eql(7);
 			expect(getRoomFromPlayerId(mainId + nbPlayer, master)).to.be.undefined;

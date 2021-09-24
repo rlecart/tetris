@@ -136,7 +136,7 @@ module.exports = class Master {
     let url = room.getUrl()
     let clientsRoom = this.getSioListFromRoom(url, true)
 
-    for (let [key, value] of Object.entries(clientsRoom)) {
+    for (let key of Object.keys(clientsRoom)) {
       room.removePlayer(key)
     }
     room.resetUrl()
@@ -145,19 +145,20 @@ module.exports = class Master {
     //console.log(`room ${url} closed`)
   }
 
-  askToStartGame(clientId, url) {
+  askToStartGame(clientId, url, res) {
     let room = {}
 
     if ((room = this.getRoom(url)) && room.isOwner(clientId)) {
       room.emitAll('goToGame')
     }
+    res()
   }
 
-  askToEndGame(clientId, url) {
+  askToEndGame(clientId, url, res) {
     let room = {}
 
     if ((room = this.getRoom(url)) && room.isOwner(clientId)) {
-      endGame(room, clientId)
+      endGame(room, clientId, res)
     }
   }
 
@@ -171,24 +172,29 @@ module.exports = class Master {
     return false
   }
 
-  readyToStart(clientId, url) {
-    let res
+  readyToStart(clientId, url, res) {
+    let result
     let room = {}
 
     if (url && clientId && (room = this.getRoom(url)) && room.getListPlayers(clientId)) {
       room.addReadyToStart(clientId)
-      if (res = this.tryToStart(room.getReadyToStart(), room.getNbPlayer())) {
+      if (result = this.tryToStart(room.getReadyToStart(), room.getNbPlayer())) {
         room.launchGame(this.getSioListFromRoom(url, true))
       }
+      res()
     }
   }
 
-  askToMove(clientId, url, dir) {
+  askToMove(clientId, url, dir, res, rej) {
     let room = {}
     let player = {}
 
     // console.log(clientId)
-    if ((room = this.getRoom(url)) && (player = room.getListPlayers(clientId)))
+    if ((room = this.getRoom(url)) && (player = room.getListPlayers(clientId))) {
       player.move(dir, room)
+      res()
+    }
+    else
+      rej('[MOVE] Cant\'t find room or player')
   }
 }

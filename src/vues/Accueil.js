@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import { Redirect, Link, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import api from "../api/clientApi";
 import nav from '../misc/nav'
-
 
 class Accueil extends Component {
   state = {

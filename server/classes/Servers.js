@@ -50,7 +50,7 @@ module.exports = class mainServer {
         if (master.getRoom(url).isInGame())
           master.askToMove(clientId, url, dir, res)
         else
-          rej()
+          rej('[MOVE] Cant\'t find room with url')
       })
       client.on('createRoom', (clientId, profil, res) => { master.createRoom(clientId, profil, res) })
       client.on('joinRoom', (clientId, profil, url, res) => { master.joinRoom(clientId, profil, url, res) })
