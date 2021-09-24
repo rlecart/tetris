@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Redirect, Link } from 'react-router-dom'
 import api from '../api/clientApi'
 import { connect } from "react-redux";
 import nav from "../misc/nav";
@@ -56,7 +55,7 @@ class Room extends Component {
     console.log('propsmount', this.props)
     if (!state.roomInfo) {
       console.log('init')
-      api.getRoomInfo(this.props.socketConnector.socket, state.roomUrl, this.syncRoomData.bind(this))
+      api.getRoomInfo(this.props.socketConnector.socket, state.roomUrl).then((roomInfo) => this.syncRoomData(roomInfo))
     }
     else {
       console.log('hahah')
@@ -78,14 +77,6 @@ class Room extends Component {
       )
   }
 
-  leaveRoom() {
-    api.leaveRoom(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl)
-    // this.state.history.goBack() // ici bah ca back bien mais j'ai l'impression que ca ecrase le socket avec un nouveau lors du componentDidMount() et y'en aura 2 qui se succederont quoi
-    // this.state.history.goBack().bind(this)
-    this.state.history.replace('/')
-    // this.state.history.push('/')
-  }
-
   render() {
     let players = this.createList()
     let startGame = this.isOwner()
@@ -104,7 +95,10 @@ class Room extends Component {
                 {players}
               </div>
               <div className="bottomButtons">
-                <button className="roomButton" id="leaveLaunch" onClick={() => { this.leaveRoom() }}>
+                <button className="roomButton" id="leaveLaunch" onClick={() => {
+                  api.leaveRoom(this.props.socketConnector.socket, this.state.roomUrl)
+                    .then(() => this.state.history.replace('/'))
+                }}>
                   <span className="textButton">Quitter</span>
                 </button>
                 {startGame}

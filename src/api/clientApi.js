@@ -1,28 +1,42 @@
-  const move = (dir, idRoom, socket) => {
-    socket.emit('move', socket.id, idRoom, dir)
-  }
+const move = (dir, idRoom, socket) => {
+  return (new Promise((res) => {
+    socket.emit('move', socket.id, idRoom, dir, res)
+  }))
+}
 
-  const getRoomInfo = (socket, idRoom, cb) => {
-    socket.emit('getRoomInfo', idRoom, cb)
-  }
+const getRoomInfo = (socket, idRoom) => {
+  return (new Promise((res) => {
+    socket.emit('getRoomInfo', idRoom, res)
+  }))
+}
 
-  const createRoom = (socket, profil) => {
-    socket.emit('createRoom', socket.id, profil)
-  }
+const createRoom = (socket, profil) => {
+  return (new Promise((res) => {
+    socket.emit('createRoom', socket.id, profil, res)
+  }))
+}
 
-  const joinRoom = (socket, profil, url) => {
-    socket.emit('joinRoom', socket.id, profil, url)
-  }
+const joinRoom = (socket, profil, url) => {
+  return (new Promise((res) => {
+    socket.emit('joinRoom', socket.id, profil, url, res)
+  }))
+}
 
-  const askToStartGame = (socket, url) => {
-    socket.emit('askToStartGame', socket.id, url)
-  }
+const askToStartGame = (socket, url) => {
+  return (new Promise((res) => {
+    socket.emit('askToStartGame', socket.id, url, res)
+  }))
+}
 
-  const leaveRoom = (socket, profil, url) => {
-    socket.emit('leaveRoom', socket.id, profil, url)
-  }
-  const askToEndGame = (socket, url) => {
-    socket.emit('askToEndGame', socket.id, url)
-  }
+const leaveRoom = (socket, url) => {
+  return (new Promise((res) => {
+    socket.emit('leaveRoom', socket.id, url, res)
+  }))
+}
+const askToEndGame = (socket, url) => {
+  return (new Promise((res) => {
+    socket.emit('askToEndGame', socket.id, url, res)
+  }))
+}
 
-  module.exports = { move, getRoomInfo, createRoom, joinRoom, askToEndGame, askToStartGame, leaveRoom }
+module.exports = { move, getRoomInfo, createRoom, joinRoom, askToEndGame, askToStartGame, leaveRoom }

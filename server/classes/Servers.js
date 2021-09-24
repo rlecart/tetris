@@ -46,19 +46,21 @@ module.exports = class mainServer {
   listenSio(master) {
     this._io.on('connection', (client) => {
       master.addNewSio(client)
-      client.on('move', (clientId, url, dir) => {
+      client.on('move', (clientId, url, dir, res, rej) => {
         if (master.getRoom(url).isInGame())
-          master.askToMove(clientId, url, dir)
+          master.askToMove(clientId, url, dir, res)
+        else
+          rej()
       })
-      client.on('createRoom', (clientId, profil) => { master.createRoom(clientId, profil) })
-      client.on('joinRoom', (clientId, profil, url) => { master.joinRoom(clientId, profil, url) })
-      client.on('leaveRoom', (clientId, profil, url) => { master.leaveRoom(clientId, profil, url) })
-      client.on('getRoomInfo', (url, cb) => {
-        cb(master.getRoom(url).getRoomInfo())
+      client.on('createRoom', (clientId, profil, res) => { master.createRoom(clientId, profil, res) })
+      client.on('joinRoom', (clientId, profil, url, res) => { master.joinRoom(clientId, profil, url, res) })
+      client.on('leaveRoom', (clientId, url, res) => { master.leaveRoom(clientId, url, res) })
+      client.on('getRoomInfo', (url, res) => {
+        res(master.getRoom(url).getRoomInfo())
       })
-      client.on('askToStartGame', (clientId, url) => { master.askToStartGame(clientId, url) })
-      client.on('readyToStart', (clientId, url) => { master.readyToStart(clientId, url) })
-      client.on('askToEndGame', (clientId, url) => { master.askToEndGame(clientId, url) })
+      client.on('askToStartGame', (clientId, url, res) => { master.askToStartGame(clientId, url, res) })
+      client.on('readyToStart', (clientId, url, res) => { master.readyToStart(clientId, url, res) })
+      client.on('askToEndGame', (clientId, url, res) => { master.askToEndGame(clientId, url, res) })
       client.on('ping', () => { client.emit('pong') })
       // client.on('hahabjr', () => { console.log('ahmais quoiiiii') })
       client.conn.on('heartbeat', () => {
@@ -84,7 +86,7 @@ module.exports = class mainServer {
         //   }, 6000);
       });
 
-      // console.log('connected')
+      console.log('connected')
     })
     this._io.listen(this._port);
     // console.log(`[Io listening on port ${this._port}]`);

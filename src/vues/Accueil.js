@@ -25,10 +25,10 @@ class Accueil extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.socketConnector.isSocketConnected === true) {
-      console.log('normalement le socket')
-      this.props.socketConnector.socket.on('goToRoom', (url) => { nav(this.props.history, `/#${url}[${this.state.profil.name}]`); })
-    }
+    // if (this.props.socketConnector.isSocketConnected === true) {
+    //   console.log('normalement le socket')
+    //   this.props.socketConnector.socket.on('goToRoom', (url) => { nav(this.props.history, `/#${url}[${this.state.profil.name}]`); })
+    // }
   }
 
   componentDidMount() {
@@ -54,10 +54,16 @@ class Accueil extends Component {
             </div>
             <div className="blocMenu" id="home">
               <input className='roomUrl' type="text" name="roomUrl" required onChange={(event) => this.handleChange(event)} placeHolder='http://abcdef.com/absfaskfew?abc=oui' />
-              <button className="roomButton" onClick={() => { api.joinRoom(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl) }}>
+              <button className="roomButton" onClick={() => {
+                api.joinRoom(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl)
+                  .then((url) => { nav(this.props.history, `/#${url}[${this.state.profil.name}]`); })
+              }}>
                 <span className="textButton">Join room</span>
               </button>
-              <button className="roomButton" onClick={() => { api.createRoom(this.props.socketConnector.socket, this.state.profil) }}>
+              <button className="roomButton" onClick={() => {
+                api.createRoom(this.props.socketConnector.socket, this.state.profil)
+                  .then((url) => { nav(this.props.history, `/#${url}[${this.state.profil.name}]`); })
+              }}>
                 <span className="textButton">Create Room</span>
               </button>
             </div>

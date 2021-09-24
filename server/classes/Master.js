@@ -80,16 +80,16 @@ module.exports = class Master {
     }
   }
 
-  createRoom(clientId, profil) {
+  createRoom(clientId, profil, res) {
     if (profil.name && clientId !== undefined) {
       let room = new Room(this)
       room.setUrl(createNewUrl(this.getRoomsList()))
       this.addNewRoom(room)
-      this.joinRoom(clientId, profil, room.getUrl())
+      this.joinRoom(clientId, profil, room.getUrl(), res)
     }
   }
 
-  joinRoom(clientId, profil, url) {
+  joinRoom(clientId, profil, url, res) {
     let room = {}
 
     if (profil.name && (room = this.getRoom(url)) && !room.isInGame() && !room.getListPlayers(clientId) && room.getNbPlayer() < 8) {
@@ -98,7 +98,8 @@ module.exports = class Master {
       room.addSio(this.getSioList(clientId))
       //console.log(clientId + ' joinroom ' + url)
       room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
-      room.emitOnly('goToRoom', clientId, url)
+      res(url)
+      // room.emitOnly('goToRoom', clientId, url)
       // console.log('room joined')
     }
   }
@@ -118,7 +119,7 @@ module.exports = class Master {
     return ret
   }
 
-  leaveRoom(clientId, url) {
+  leaveRoom(clientId, url, res) {
     let room = {}
 
     if ((room = this.getRoom(url)) && room.getListPlayers(clientId)) {
@@ -126,6 +127,8 @@ module.exports = class Master {
       if (room.getNbPlayer() <= 0) {
         this.closeRoom(room)
       }
+      room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
+      res()
     }
   }
 
