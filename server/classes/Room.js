@@ -10,6 +10,7 @@ module.exports = class Room {
     this._nbPlayer = 0
     this._listPlayers = {}
     this._rules = _.cloneDeep(defaultRules)
+    this._isOut = {}
 
 
     this._interval = undefined
@@ -50,6 +51,18 @@ module.exports = class Room {
     if (player !== undefined)
       return (this._listPlayers[player])
     return (this._listPlayers)
+  }
+
+  isOut(id) {
+    return (this._isOut[id])
+  }
+
+  addOut(id) {
+    this._isOut = { ...this._isOut, [id]: id }
+    if (Object.keys(this._isOut).length === this._nbPlayer) {
+      this.emitAll('theEnd', undefined, this.getListPlayers(id).getName())
+      this.endGame()
+    }
   }
 
   isInGame() {
@@ -167,6 +180,7 @@ module.exports = class Room {
     roomInfo.nbPlayer = this._nbPlayer
     roomInfo.rules = this._rules
     roomInfo.listPlayers = this._listPlayers // alors ici ca envoie les clientId et c'est dangereux niveau secu (peut-etre ?)
+    roomInfo.owner = this._owner
     // roomInfo.listPlayers = utils.getArrayFromObject(this._listPlayers)
     //console.log(roomInfo.listPlayers)
     // console.log('cuicui')
@@ -260,7 +274,7 @@ module.exports = class Room {
     let gamesTmp = this.getAllGames() // parce qu'on a besoin que tout soit actualise en meme temps a la fin
     // ici need un deepclone ?? (pas sur que ce soit une copie quoi)
     for (let [key, value] of Object.entries(socketClients)) {
-      if (this.isInGame() === true) {
+      if (this.isInGame() === true && !this.isOut(key)) {
         gamesTmp[key] = refresh(gamesTmp[key], this, key)
       }
     }

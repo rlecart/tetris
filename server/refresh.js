@@ -281,8 +281,10 @@ const checkFilledLine = (game) => {
 
 const endGame = (room, id, res) => { // gameover
   // console.log(room)
-  room.endGame(res)
-  room.emitAll('endGame') // ici emitOnly plutot pour faire continuer les autres
+  // room.endGame(id, res)
+  room.addOut(id)
+  console.log(id)
+  room.emitOnly('endGame') // ici emitOnly plutot pour faire continuer les autres
   // room.getParent().closeRoom(room)
 }
 
@@ -291,7 +293,7 @@ function addFilledLine(room, exception, amount) {
 
   for (let [key, value] of Object.entries(players)) {
     // console.log('haha = ', ++haha)
-    if (key !== exception) {
+    if (key !== exception && !room.isOut(key)) {
       for (let i = 0; i < amount; i++) {
         // console.log('i = ', i)
         // console.log('room = ', room)

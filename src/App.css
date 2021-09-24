@@ -81,7 +81,7 @@
 	flex-wrap: wrap;
 	flex-direction: row;
 	-ms-overflow-style: none;
-  scrollbar-width: none;
+	scrollbar-width: none;
 }
 
 .player {
@@ -257,7 +257,6 @@
 }
 
 .textButton {
-	font-family: Roboto;
 	font-size: 18px;
 	margin: 10px 20px 10px 20px;
 }
@@ -295,7 +294,7 @@
 }
 
 .playerList::-webkit-scrollbar {
-  display: none;
+	display: none;
 }
 
 .blocMenu#home {
@@ -341,4 +340,57 @@
 
 .nicknameSpec {
 	margin-bottom: 10px;
+}
+
+.gameOverDisplay {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	flex-wrap: nowrap;
+	align-items: center;
+	z-index: 2;
+	position: absolute;
+	background-color: #00000080;
+}
+
+.gameOverLayout {
+	display: flex;
+	min-width: 490px;
+	background: #c4c4c4;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	flex-direction: column;
+	align-items: center;
+	align-content: center;
+}
+
+.gameOverTitle {
+	display: flex;
+	min-width: 490px;
+	min-height: 42px;
+	background: #4c4c4c85;
+	flex-wrap: nowrap;
+	justify-content: center;
+	text-align: center;
+	align-items: center;
+	margin: 20px 30px 20px 30px;
+	flex-direction: column;
+	padding: 20px;
+}
+
+span#gameOverText {
+	font-size: 35px;
+	margin: 0;
+}
+
+span#gameOverTextReveal {
+	font-size: 17px;
+	margin: 0;
+}
+
+button#leaveGame {
+	flex: 1 1;
+	margin: 0px 15px 15px 15px;
+	max-width: 200px;
 }

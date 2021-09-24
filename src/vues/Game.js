@@ -1,4 +1,4 @@
-import React, { Component, useCallback } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from "react-redux";
 
 import colors from '../ressources/colors.js'
@@ -32,6 +32,9 @@ class Game extends Component {
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ],
     spec: [],
+    winner: undefined,
+    isOut: false,
+    isOwner: false,
   }
 
   createbloc(bloc, blocClass, id, idTetri) {
@@ -97,7 +100,7 @@ class Game extends Component {
       api.move('turn', url, socket)
     else if (event.key === 'ArrowDown')
       api.move('stash', url, socket)
-    else if (event.key == 'c') {
+    else if (event.key === 'c') {
       api.askToEndGame(socket, url)
     }
   }
@@ -124,7 +127,15 @@ class Game extends Component {
         () => {
           this.socket.on('disconnect', () => nav(this.props.history, '/'))
           this.socket.on('refreshVue', (game, spec) => { this.refreshGame(game, spec, this) })
-          this.socket.on('endGame', () => { this.props.history.replace(`/${this.props.match.params.room}`) }) // ici gestion gamover
+          this.socket.on('endGame', () => {
+            if (this.props.socketConnector.areGameEventsLoaded === true) {
+              window.removeEventListener('keydown', this.eventDispatcher)
+              const action = { type: 'GAME_EVENTS_UNLOADED' }
+              this.props.dispatch(action)
+            }
+            this.setState({ ...this.state, isOut: true })
+          })
+          this.socket.on('theEnd', (winnerName) => { this.setState({ ...this.state, winner: winnerName }); })
           if (this.props.socketConnector.areGameEventsLoaded === false) {
             console.log('gameEventsLoaded')
             // window.addEventListener("keypress", this.eventDispatcher.bind(this))
@@ -144,7 +155,7 @@ class Game extends Component {
       this.props.socketConnector.socket.removeAllListeners()
     if (this.props.socketConnector.areGameEventsLoaded === true) {
       window.removeEventListener('keydown', this.eventDispatcher)
-      const action = { type: 'GAME_EVENTS_UNLOADED' } // a voir | en gros tu peux pas restart visiblement y'a .isInGame() qui s'est pas reset
+      const action = { type: 'GAME_EVENTS_UNLOADED' }
       this.props.dispatch(action)
     }
   }
@@ -165,39 +176,68 @@ class Game extends Component {
     return ret
   }
 
+  createGameOverDisplay() {
+    let returnToRoomButton = (
+      <div className="bottomButtons">
+        <button className="roomButton" id="leaveGame">
+          <span className="textButton">flex</span>
+        </button>
+      </div>
+    )
+
+    if (this.state.winner !== undefined) {
+      return (
+        <div className="gameOverDisplay">
+          <div className="gameOverLayout">
+            <div className="gameOverTitle">
+              <span className="textButton" id="gameOverText">OMG GG WP DUUUDE</span>
+              <span className="textButton" id="gameOverTextReveal">but you lose, like the looser you are! :(((</span>
+              <span className="textButton" id="gameOverTextReveal">{this.state.winner} is the real beaugosse!</span>
+            </div>
+            {this.state.isOwner === true ? returnToRoomButton : {}}
+            {/* {returnToRoomButton} */}
+          </div>
+        </div>
+      )
+    }
+  }
+
   render() {
     console.log(this.state)
     let spec = (this.state.spec.length !== 0) ? [
       this.state.spec.slice(0, this.state.spec.length / 2),
       this.state.spec.slice(this.state.spec.length / 2)
     ] : undefined
+    let gameOverDisplay = this.createGameOverDisplay()
     console.log(spec)
     return (
-      <div className='display'>
-        <div className="game" id="spec">
-          <div className="spec">
-            {spec ? this.createSpec(spec[0]) : undefined}
-          </div>
-        </div>
-        <div className="game">
-          <div className="board">
-            {this.createLines(this.state.lines, 'line', 'lineBloc')}
-          </div>
-          <div className="rightPanel">
-            <div className="nextText">NEXT :</div>
-            <div className="nextPiece">
-              {this.state.tetri !== undefined ? this.createLines(this.state.tetri.nextShape, 'lineNext', 'lineBlocNext', undefined, this.state.tetri.nextId) : undefined}
+      <Fragment>
+        <div className='display'>
+          <div className="game" id="spec">
+            <div className="spec">
+              {spec ? this.createSpec(spec[0]) : undefined}
             </div>
-            <div className="score">Score :<br />00</div>
+          </div>
+          <div className="game">
+            <div className="board">
+              {this.createLines(this.state.lines, 'line', 'lineBloc')}
+            </div>
+            <div className="rightPanel">
+              <div className="nextText">NEXT :</div>
+              <div className="nextPiece">
+                {this.state.tetri !== undefined ? this.createLines(this.state.tetri.nextShape, 'lineNext', 'lineBlocNext', undefined, this.state.tetri.nextId) : undefined}
+              </div>
+              <div className="score">Score :<br />00</div>
+            </div>
+          </div>
+          <div className="game" id="spec">
+            <div className="spec">
+              {spec ? this.createSpec(spec[1]) : undefined}
+            </div>
           </div>
         </div>
-        <div className="game" id="spec">
-          <div className="spec">
-            {spec ? this.createSpec(spec[1]) : undefined}
-          </div>
-        </div>
-      </div>
-
+        {gameOverDisplay}
+      </Fragment>
     )
   }
 }
