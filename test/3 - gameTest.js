@@ -74,47 +74,36 @@ describe('Game Tests', () => {
   describe('GameLoop/Refresh', () => {
     let gamesCpy
 
-    before(() => {
+    beforeEach(() => {
       gamesCpy = _.cloneDeep(room.getAllGames())
     })
 
-    it('Should gameLoop refresh values x1 (different values)', () => {
+    it('Should gameLoop init values', () => {
       room.gameLoop(master.getSioListFromRoom(room.getUrl(), true), room.getUrl())
       expect(room.getAllGames()).to.not.be.eql(gamesCpy)
     })
 
-    it('Y should be +1 or reseted if placed', () => {
-      // expect(room.getAllGames())
+    it('Y should be +1 for every clients', () => {
+      room.gameLoop(master.getSioListFromRoom(room.getUrl(), true), room.getUrl())
+      for (let [key, value] of Object.entries(gamesCpy))
+        expect(room.getAllGames(key).getY()).to.be.eql(value.getY() + 1)
     })
 
-    // it('Should gameLoop ')
+    it('Api should move right', async () => {
+      for (let [key, value] of Object.entries(gamesCpy)) {
+        api.move('right', room.getUrl(), sockets.find(socket => socket.id === key));
+        await waitAMinute(200)
+        expect(room.getAllGames(key).getX()).to.be.eql(value.getX() + 1);
+      }
+    })
+
+    it('Api should move left', async () => {
+      for (let [key, value] of Object.entries(gamesCpy)) {
+        api.move('left', room.getUrl(), sockets.find(socket => socket.id === key));
+        await waitAMinute(200)
+        expect(room.getAllGames(key).getX()).to.be.eql(value.getX() - 1);
+      }
+    })
+
   })
-
-  // it('Devrait lancer la partie (1 joueur)', () => {
-  //   master.readyToStart(sockets[0].id, room.getUrl())
-  //   clearInterval(room.getInterval())
-  //   room.gameLoop(master.getSioListFromRoom(room.getUrl(), true), room.getUrl())
-  //   expect(room._inGame).to.be.eql(true);
-  // });
-
-  // it('Devrait finir la partie (4 joueurs)', () => {
-  //   var players = [{ name: 'j1' }, { name: 'j2' }, { name: 'j3' }, { name: 'j4' }]
-  //   master.createRoom(sockets[0].id, players[0], cb);
-  //   room = getRoomFromPlayerId(sockets[0].id, master);
-  //   master.joinRoom(sockets[1], players[1], room.getUrl());
-  //   master.joinRoom(sockets[2], players[2], room.getUrl());
-  //   master.joinRoom(sockets[3], players[3], room.getUrl());
-  //   master.readyToStart(sockets[0].id, room.getUrl())
-  //   expect(room._inGame).to.be.eql(true);
-  //   clearInterval(room.getInterval())
-  //   var fastEnd = 0
-  //   while (fastEnd++ < 500) {
-  //     room.gameLoop(master.getSioListFromRoom(room.getUrl(), true), room.getUrl())
-  //   }
-  //   expect(room._inGame).to.be.eql(false);
-
-  // });
-
-
-
 })

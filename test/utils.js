@@ -1,4 +1,3 @@
-let Master = require("../server/classes/Master.js")
 let { expect } = require('chai')
 let { defaultRules } = require('../src/ressources/rules.js')
 const openSocket = require('socket.io-client')

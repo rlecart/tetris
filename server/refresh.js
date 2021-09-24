@@ -341,7 +341,7 @@ function refresh(game, room, id) {
     if ((filledLines = checkFilledLine(game)) > 0)
       addFilledLine(room, id, filledLines)
     //console.log('avant createnewtetri')
-    console.log('niquetamere')
+    // console.log('niquetamere')
     game.refreshSpec(game.getLines())
     createNewTetri(game, room)
     //console.log('apres createnewtetri')

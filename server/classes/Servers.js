@@ -19,7 +19,7 @@ module.exports = class mainServer {
       },
       'pingInterval': 5000
     });
-    console.log('[HTTP server started]')
+    // console.log('[HTTP server started]')
   }
 
   stopServer() {
@@ -47,7 +47,6 @@ module.exports = class mainServer {
     this._io.on('connection', (client) => {
       master.addNewSio(client)
       client.on('move', (clientId, url, dir) => {
-        console.log('maisputian')
         if (master.getRoom(url).isInGame())
           master.askToMove(clientId, url, dir)
       })
@@ -85,9 +84,9 @@ module.exports = class mainServer {
         //   }, 6000);
       });
 
-      console.log('connected')
+      // console.log('connected')
     })
     this._io.listen(this._port);
-    console.log(`[Io listening on port ${this._port}]`);
+    // console.log(`[Io listening on port ${this._port}]`);
   }
 }

@@ -15,14 +15,14 @@ module.exports = class Master {
     this._server = new mainServer(this)
     this._server.startServer()
     this._server.listenSio(this)
-    console.log('[Server completely started]')
+    // console.log('[Server completely started]')
   }
 
   stopServer() {
     this._server.stopListenSio(this._sioClientList)
     this._server.stopServer()
     this._server = undefined
-    console.log('[Server completely stopped]')
+    // console.log('[Server completely stopped]')
   }
 
   addNewRoom(room) {
@@ -99,7 +99,7 @@ module.exports = class Master {
       //console.log(clientId + ' joinroom ' + url)
       room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
       room.emitOnly('goToRoom', clientId, url)
-      console.log('room joined')
+      // console.log('room joined')
     }
   }
 

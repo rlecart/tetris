@@ -1,5 +1,5 @@
   const move = (dir, idRoom, socket) => {
-    socket.emit('move', socket.id, idRoom, dir, () => { console.log('move envoye') })
+    socket.emit('move', socket.id, idRoom, dir)
   }
 
   const getRoomInfo = (socket, idRoom, cb) => {
