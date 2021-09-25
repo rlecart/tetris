@@ -61,18 +61,24 @@ module.exports = class Room {
   addOut(id) {
     this._isOut = { ...this._isOut, [id]: id }
     if (Object.keys(this._isOut).length >= this._nbPlayer - 1) {
+      let winnerInfo = {}
       let winnerId
 
-      for (let key of Object.keys(this.getListPlayers())) {
-        if (this._isOut[key] === undefined)
-          winnerId = key
+      console.log('nbplayer = ', this.getNbPlayer())
+      if (this.getNbPlayer() > 1) {
+        for (let key of Object.keys(this.getListPlayers())) {
+          if (this._isOut[key] === undefined)
+            winnerId = key
+        }
+        winnerInfo = {
+          name: String(this.getListPlayers(winnerId).getName()),
+          id: winnerId,
+        }
+        console.log('winnerInfo = ', winnerInfo)
       }
+      console.log('winnerInfo out = ', winnerInfo)
       this._isOut = undefined
       this.endGame()
-      let winnerInfo = {
-        name: String(this.getListPlayers(winnerId).getName()),
-        id: winnerId,
-      }
       this.emitAll('theEnd', undefined, winnerInfo)
       for (let [key, value] of Object.entries(this.getListPlayers()))
         value.setGame(undefined)
@@ -240,19 +246,20 @@ module.exports = class Room {
 
   hiddenSpec(ret) {
     // console.log(ret)
-    let hiddenCols = new Array(ret[0].lines[0].length).fill(false)
+    let hiddenCols = new Array(ret.length)
 
-
-    for (let player of ret) {
-      for (let line of player.lines) {
-        for (let i in line) {
-          if (hiddenCols[i] === false && line[i] !== 0 && line[i] !== 1)
-            hiddenCols[i] = true
-          else if (hiddenCols[i] === true)
-            line[i] = 1
+    for (let player in ret) {
+      hiddenCols[player] = new Array(ret[player].lines[0].length).fill(false)
+      for (let line in ret[player].lines) {
+        for (let i in ret[player].lines[line]) {
+          if (hiddenCols[player][i] === false && ret[player].lines[line][i] !== 0 && ret[player].lines[line][i] !== 1)
+            hiddenCols[player][i] = true
+          else if (hiddenCols[player][i] === true)
+            ret[player].lines[line][i] = 1
         }
       }
     }
+    hiddenCols = null
     return (ret)
   }
 

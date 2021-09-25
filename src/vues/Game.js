@@ -137,7 +137,7 @@ class Game extends Component {
             this.setState({ ...this.state, isOut: true })
           })
           this.socket.on('theEnd', (winnerInfo) => {
-            this.setState({ ...this.state, winner: { name: winnerInfo.name, id: winnerInfo.id } })
+            this.setState({ ...this.state, winner: winnerInfo })
           })
           if (this.props.socketConnector.areGameEventsLoaded === false) {
             console.log('gameEventsLoaded')
@@ -191,17 +191,21 @@ class Game extends Component {
         </button>
       </div>) : undefined;
 
+    console.log('wiineerwaoirjaoirjawopr', this.state.winner)
     if (this.state.winner !== undefined) {
-      let finalText = (this.state.winner.id === this.props.socketConnector.socket.id) ? (
-        <Fragment>
-          <span className="textButton" id="gameOverTextReveal">what a pro you are, such a nice musculature!!! :Q</span>
-          <span className="textButton" id="gameOverTextReveal">YOU are the real beaugosse!</span>
-        </Fragment>
-      ) : (
-        <Fragment>
-          <span className="textButton" id="gameOverTextReveal">but you lose, like the looser you are! :(((</span>
-          <span className="textButton" id="gameOverTextReveal">{this.state.winner.name} is the real beaugosse!</span>
-        </Fragment>)
+      var finalText
+      if (Object.keys(this.state.winner).length !== 0) {
+        finalText = (this.state.winner.id === this.props.socketConnector.socket.id) ? (
+          <Fragment>
+            <span className="textButton" id="gameOverTextReveal">what a pro you are, such a nice musculature!!! :Q</span>
+            <span className="textButton" id="gameOverTextReveal">YOU are the real beaugosse!</span>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <span className="textButton" id="gameOverTextReveal">but you lose, like the looser you are! :(((</span>
+            <span className="textButton" id="gameOverTextReveal">{this.state.winner.name} is the real beaugosse!</span>
+          </Fragment>)
+      }
 
       return (
         <div className="gameOverDisplay">
