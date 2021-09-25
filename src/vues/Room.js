@@ -19,7 +19,7 @@ class Room extends Component {
     let ret = []
 
     if (this.state.roomInfo && this.state.roomInfo.listPlayers) {
-      for (let [key, value] of Object.entries(this.state.roomInfo.listPlayers)) {
+      for (let value of Object.values(this.state.roomInfo.listPlayers)) {
         ret.push(<div className="player">{value._profil.name}</div>)
       }
     }

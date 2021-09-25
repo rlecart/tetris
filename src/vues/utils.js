@@ -1,13 +1,5 @@
-const api = require('../api/clientApi.js')
-
 const canIStayHere = (where, context) => {
   return (new Promise((res, rej) => {
-    let url = context.props.location.pathname
-    let name = url.substring(url.search(/\[[0-9a-zA-Z]+\]/) + 1, url.length - 1)
-    let idRoom = url.substring(1, url.search(/\[/))
-
-    console.log(context)
-    console.log('weoighwe')
     if (where === 'game') {
       if (Object.keys(context.props.roomReducer).length === 0 || Object.keys(context.props.socketConnector.socket).length === 0)
         rej()
