@@ -54,17 +54,28 @@ module.exports = class Room {
   }
 
   isOut(id) {
-    return (this._isOut[id])
+    if (this._isOut !== undefined)
+      return (this._isOut[id])
   }
 
   addOut(id) {
     this._isOut = { ...this._isOut, [id]: id }
-    if (Object.keys(this._isOut).length >= this._nbPlayer) {
-      console.log(id)
-      console.log(this.getListPlayers(id))
-      console.log(this.getListPlayers(id).getName())
+    if (Object.keys(this._isOut).length >= this._nbPlayer - 1) {
+      let winnerId
+
+      for (let key of Object.keys(this.getListPlayers())) {
+        if (this._isOut[key] === undefined)
+          winnerId = key
+      }
+      this._isOut = undefined
       this.endGame()
-      this.emitAll('theEnd', undefined, String(this.getListPlayers(id).getName()))
+      let winnerInfo = {
+        name: String(this.getListPlayers(winnerId).getName()),
+        id: winnerId,
+      }
+      this.emitAll('theEnd', undefined, winnerInfo)
+      for (let [key, value] of Object.entries(this.getListPlayers()))
+        value.setGame(undefined)
     }
   }
 

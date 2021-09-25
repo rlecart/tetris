@@ -50,4 +50,10 @@ const readyToStart = (socket, idRoom) => {
   }))
 }
 
-module.exports = { move, getRoomInfo, createRoom, joinRoom, askToEndGame, askToStartGame, leaveRoom, readyToStart }
+const askEverybodyToCalmDown = (socket, idRoom) => {
+  return (new Promise((res) => {
+    socket.emit('askEverybodyToCalmDown', socket.id, idRoom, res)
+  }))
+}
+
+module.exports = { move, getRoomInfo, createRoom, joinRoom, askToEndGame, askToStartGame, leaveRoom, readyToStart, askEverybodyToCalmDown }

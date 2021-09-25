@@ -3,6 +3,7 @@ let mainServer = require('./Servers.js')
 let { createNewUrl } = require('../utils.js')
 let { refresh, endGame } = require('../refresh.js')
 let _ = require('lodash')
+const { askEverybodyToCalmDown } = require('../../src/api/clientApi.js')
 
 module.exports = class Master {
   constructor() {
@@ -196,5 +197,19 @@ module.exports = class Master {
     }
     else
       rej('[MOVE] Cant\'t find room or player')
+  }
+
+  askEverybodyToCalmDown(clientId, url, res) {
+    let room = {}
+    let sioList = {}
+
+    if ((room = this.getRoom(url)) && room.getOwner() === clientId && (sioList = room.getSio())) {
+      for (let [key, value] of Object.entries(sioList)) {
+        value.emit('nowChillOutDude', `/${url}[${String(room.getListPlayers(key).getName())}]`)
+        res()
+      }
+    }
+    else
+      rej('[CALMDOWN] Cant\'t find room or bad owner or can\'t find sioList')
   }
 }

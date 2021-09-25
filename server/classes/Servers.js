@@ -62,6 +62,7 @@ module.exports = class mainServer {
       client.on('askToStartGame', (clientId, url, res) => { master.askToStartGame(clientId, url, res) })
       client.on('readyToStart', (clientId, url, res) => { master.readyToStart(clientId, url, res) })
       client.on('askToEndGame', (clientId, url, res) => { master.askToEndGame(clientId, url, res) })
+      client.on('askEverybodyToCalmDown', (clientId, url, res) => { master.askEverybodyToCalmDown(clientId, url, res) })
       client.on('ping', () => { client.emit('pong') })
       // client.on('hahabjr', () => { console.log('ahmais quoiiiii') })
       client.conn.on('heartbeat', () => {

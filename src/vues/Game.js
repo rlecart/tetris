@@ -127,6 +127,7 @@ class Game extends Component {
         () => {
           this.socket.on('disconnect', () => nav(this.props.history, '/'))
           this.socket.on('refreshVue', (game, spec) => { this.refreshGame(game, spec, this) })
+          this.socket.on('nowChillOutDude', (path) => this.props.history.replace(path))
           this.socket.on('endGame', () => {
             if (this.props.socketConnector.areGameEventsLoaded === true) {
               window.removeEventListener('keydown', this.eventDispatcher)
@@ -135,7 +136,9 @@ class Game extends Component {
             }
             this.setState({ ...this.state, isOut: true })
           })
-          this.socket.on('theEnd', (winnerName) => { this.setState({ ...this.state, winner: winnerName }) })
+          this.socket.on('theEnd', (winnerInfo) => {
+            this.setState({ ...this.state, winner: { name: winnerInfo.name, id: winnerInfo.id } })
+          })
           if (this.props.socketConnector.areGameEventsLoaded === false) {
             console.log('gameEventsLoaded')
             // window.addEventListener("keypress", this.eventDispatcher.bind(this))
@@ -151,12 +154,14 @@ class Game extends Component {
   }
 
   componentWillUnmount() {
-    if (!isEmpty(this.props.socketConnector) && !isEmpty(this.props.socketConnector.socket))
-      this.props.socketConnector.socket.removeAllListeners()
-    if (this.props.socketConnector.areGameEventsLoaded === true) {
-      window.removeEventListener('keydown', this.eventDispatcher)
-      const action = { type: 'GAME_EVENTS_UNLOADED' }
-      this.props.dispatch(action)
+    if (!isEmpty(this.props.socketConnector)) {
+      if (!isEmpty(this.props.socketConnector.socket))
+        this.props.socketConnector.socket.removeAllListeners()
+      if (this.props.socketConnector.areGameEventsLoaded === true) {
+        window.removeEventListener('keydown', this.eventDispatcher)
+        const action = { type: 'GAME_EVENTS_UNLOADED' }
+        this.props.dispatch(action)
+      }
     }
   }
 
@@ -179,21 +184,32 @@ class Game extends Component {
   createGameOverDisplay() {
     let returnToRoomButton = (this.props.roomReducer.roomInfo.owner === this.props.socketConnector.socket.id) ? (
       <div className="bottomButtons">
-        <button className="roomButton" id="leaveGame">
+        <button className="roomButton" id="leaveGame" onClick={() => {
+          api.askEverybodyToCalmDown(this.socket, this.props.roomReducer.roomInfo.url)
+        }}>
           <span className="textButton">flex</span>
         </button>
       </div>) : undefined;
 
     if (this.state.winner !== undefined) {
+      let finalText = (this.state.winner.id === this.props.socketConnector.socket.id) ? (
+        <Fragment>
+          <span className="textButton" id="gameOverTextReveal">what a pro you are, such a nice musculature!!! :Q</span>
+          <span className="textButton" id="gameOverTextReveal">YOU are the real beaugosse!</span>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <span className="textButton" id="gameOverTextReveal">but you lose, like the looser you are! :(((</span>
+          <span className="textButton" id="gameOverTextReveal">{this.state.winner.name} is the real beaugosse!</span>
+        </Fragment>)
+
       return (
         <div className="gameOverDisplay">
           <div className="gameOverLayout">
             <div className="gameOverTitle">
               <span className="textButton" id="gameOverText">OMG GG WP DUUUDE</span>
-              <span className="textButton" id="gameOverTextReveal">but you lose, like the looser you are! :(((</span>
-              <span className="textButton" id="gameOverTextReveal">{this.state.winner} is the real beaugosse!</span>
+              {finalText}
             </div>
-            {this.state.isOwner === true ? returnToRoomButton : undefined}
             {returnToRoomButton}
           </div>
         </div>
