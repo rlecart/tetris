@@ -284,7 +284,7 @@ const endGame = (room, id, res) => { // gameover
   // room.endGame(id, res)
   room.addOut(id)
   console.log(id)
-  room.emitOnly('endGame') // ici emitOnly plutot pour faire continuer les autres
+  room.emitOnly('endGame', id)
   // room.getParent().closeRoom(room)
 }
 

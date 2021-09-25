@@ -135,7 +135,7 @@ class Game extends Component {
             }
             this.setState({ ...this.state, isOut: true })
           })
-          this.socket.on('theEnd', (winnerName) => { this.setState({ ...this.state, winner: winnerName }); })
+          this.socket.on('theEnd', (winnerName) => { this.setState({ ...this.state, winner: winnerName }) })
           if (this.props.socketConnector.areGameEventsLoaded === false) {
             console.log('gameEventsLoaded')
             // window.addEventListener("keypress", this.eventDispatcher.bind(this))
@@ -177,13 +177,12 @@ class Game extends Component {
   }
 
   createGameOverDisplay() {
-    let returnToRoomButton = (
+    let returnToRoomButton = (this.props.roomReducer.roomInfo.owner === this.props.socketConnector.socket.id) ? (
       <div className="bottomButtons">
         <button className="roomButton" id="leaveGame">
           <span className="textButton">flex</span>
         </button>
-      </div>
-    )
+      </div>) : undefined;
 
     if (this.state.winner !== undefined) {
       return (
@@ -194,8 +193,8 @@ class Game extends Component {
               <span className="textButton" id="gameOverTextReveal">but you lose, like the looser you are! :(((</span>
               <span className="textButton" id="gameOverTextReveal">{this.state.winner} is the real beaugosse!</span>
             </div>
-            {this.state.isOwner === true ? returnToRoomButton : {}}
-            {/* {returnToRoomButton} */}
+            {this.state.isOwner === true ? returnToRoomButton : undefined}
+            {returnToRoomButton}
           </div>
         </div>
       )

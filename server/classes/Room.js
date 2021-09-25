@@ -59,9 +59,12 @@ module.exports = class Room {
 
   addOut(id) {
     this._isOut = { ...this._isOut, [id]: id }
-    if (Object.keys(this._isOut).length === this._nbPlayer) {
-      this.emitAll('theEnd', undefined, this.getListPlayers(id).getName())
+    if (Object.keys(this._isOut).length >= this._nbPlayer) {
+      console.log(id)
+      console.log(this.getListPlayers(id))
+      console.log(this.getListPlayers(id).getName())
       this.endGame()
+      this.emitAll('theEnd', undefined, String(this.getListPlayers(id).getName()))
     }
   }
 
