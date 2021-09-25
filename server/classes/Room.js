@@ -1,7 +1,8 @@
 let { defaultRules } = require('../../src/ressources/rules.js')
 let Player = require('./Player.js')
+let Game = require('./Game.js')
 let _ = require('lodash')
-let { refresh, initShapes } = require('../refresh.js')
+let { refresh, initShapes, addTetri } = require('../refresh.js')
 
 module.exports = class Room {
   constructor() {
@@ -291,19 +292,33 @@ module.exports = class Room {
     }
   }
 
+  flatGames(only) {
+    let ret
+
+    if (only !== undefined) {
+      ret = _.cloneDeep(this.getAllGames(only))
+      addTetri(ret)
+      return (ret)
+    }
+  }
+
   gameLoop(socketClients, url) {
     let gamesTmp = this.getAllGames() // parce qu'on a besoin que tout soit actualise en meme temps a la fin
     // ici need un deepclone ?? (pas sur que ce soit une copie quoi)
     for (let [key, value] of Object.entries(socketClients)) {
       if (this.isInGame() === true && !this.isOut(key)) {
+        // console.log('\n\n\ngames', gamesTmp[key])
         gamesTmp[key] = refresh(gamesTmp[key], this, key)
+        // console.log(gamesTmp[key], '\n\n\n\n')
       }
     }
     if (this.isInGame() === true) {
       this.setAllGames(gamesTmp)
       for (let [key, value] of Object.entries(socketClients)) {
-        if (this.isInGame() === true)
-          value.emit('refreshVue', this.getAllGames(key), this.createSpecList(key))
+        if (this.isInGame() === true) {
+          let flatGame = this.flatGames(key)
+          value.emit('refreshVue', flatGame, this.createSpecList(key))
+        }
       }
     }
     // console.log(this.getAllGames())

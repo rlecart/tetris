@@ -67,9 +67,15 @@ const checkTetri = (game, truePos) => {
   let y = game.getY()
   let actual = game.getActualShape()
 
-  if (x + truePos.lengthX - 1 > game.getLines(0).length
-    || y + truePos.lengthY - 1 > game.getLines().length)
-    return (-1)
+  console.log('y = ', y)
+  console.log('truePos = ', truePos)
+  console.log('actual = ', actual)
+  console.log('lemghtr = ', game.getLines().length)
+  if (x + truePos.lengthX > game.getLines(0).length - 1
+    || y + truePos.lengthY > game.getLines().length - 1) {
+      console.log('\n\net cest le -1\n\n')
+      return (-1)
+    }
   while (++i < actual.length) {
     while (++j < actual[i].length) {
       if (actual[i][j] === 1 && game.getLines(y, x) !== undefined && game.getLines(y, x) !== 0) {
@@ -235,15 +241,17 @@ const moveTetri = (game, x, y) => {
       turnTetri(game, false)
     return (errors)
   }
-  if (x === 0 && y === 0)
-    turnTetri(game, false)
-  if (game.getY() !== -1 || (y === 0 && x !== 0))
-    removeTetri(game)
-  if (x === 0 && y === 0)
-    turnTetri(game, true)
+  // if (x === 0 && y === 0)
+  //   turnTetri(game, false)
+  // if (game.getY() !== -1 || (y === 0 && x !== 0))
+  //   removeTetri(game)
+  // if (x === 0 && y === 0)
+  //   turnTetri(game, true)
   game.addY(y)
   game.addX(x)
+  console.log('before checktetri')
   if (checkTetri(game, truePos) === -1) {
+    console.log('checkTetri')
     if (noMoreSpace(game) === false) {
       // console.log(game, game.tetri)
       return (-1)//gameover
@@ -254,14 +262,15 @@ const moveTetri = (game, x, y) => {
       if (x === 0 && y === 0)
         turnTetri(game, false)
       if (x === 0) {
-        addTetri(game)
         if (x === 0 && y === 0)
           return (0)
+        console.log('\n\n\ncest sense stash\n\n\n')
+        addTetri(game)
         return (1)
       }
     }
   }
-  addTetri(game)
+  // addTetri(game)
   return (2)
 }
 
@@ -327,33 +336,20 @@ function refresh(game, room, id) {
   let hasMoved = 0
   let filledLines = 0
 
-  // console.log(game)
-  //console.log('debut refresh')
   if (game.getPlaced() === -1)
     createNewTetri(game, room)
-  //console.log('avant move')
   hasMoved = moveTetri(game, 0, 1)
-  //console.log('apres move')
-  if (hasMoved == -1) {
-    //console.log('avant endgamee')
+  if (hasMoved == -1)
     endGame(room, id)
-    //console.log('apres endgamee')
-  }
   else if (hasMoved == 1) {
-    //console.log('avant moved=1')
     if ((filledLines = checkFilledLine(game)) > 0)
       addFilledLine(room, id, filledLines)
-    //console.log('avant createnewtetri')
-    // console.log('niquetamere')
     game.refreshSpec(game.getLines())
     createNewTetri(game, room)
-    //console.log('apres createnewtetri')
-    //console.log('avant de relaunch refresh')
     refresh(game, room, id)
   }
-  //console.log('refresh finish')
   return (game)
 }
 
 
-module.exports = { refresh, moveTetri, initShapes, endGame }
+module.exports = { refresh, moveTetri, initShapes, endGame, addTetri }

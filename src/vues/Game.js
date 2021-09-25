@@ -53,7 +53,7 @@ class Game extends Component {
   createLines(lines, lineClass, blocClass, id, idTetri) {
     let ret = []
 
-    if (idTetri === 5)
+    if (idTetri === 5 && lines.length < 3)
       lines.unshift(new Array(lines[0].length).fill(0))
     for (let line of lines) {
       ret.push(
