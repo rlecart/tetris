@@ -284,6 +284,8 @@ const endGame = (room, id, res) => { // gameover
   // room.endGame(id, res)
   room.addOut(id)
   room.emitOnly('endGame', id)
+  if (res !== undefined)
+    res()
   // room.getParent().closeRoom(room)
 }
 

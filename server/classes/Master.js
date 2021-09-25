@@ -158,7 +158,7 @@ module.exports = class Master {
   askToEndGame(clientId, url, res) {
     let room = {}
 
-    if ((room = this.getRoom(url)) && room.isOwner(clientId)) {
+    if ((room = this.getRoom(url))) {
       endGame(room, clientId, res)
     }
   }
