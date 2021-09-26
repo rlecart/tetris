@@ -59,6 +59,7 @@ module.exports = class mainServer {
       client.on('getRoomInfo', (url, res) => {
         res(master.getRoom(url).getRoomInfo())
       })
+      client.on('avance', (clientId, url, res) => { master.avance(clientId, url, res) })
       client.on('askToStartGame', (clientId, url, res) => { master.askToStartGame(clientId, url, res) })
       client.on('readyToStart', (clientId, url, res) => { master.readyToStart(clientId, url, res) })
       client.on('askToEndGame', (clientId, url, res) => { master.askToEndGame(clientId, url, res) })

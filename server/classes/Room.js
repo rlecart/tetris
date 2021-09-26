@@ -303,7 +303,7 @@ module.exports = class Room {
   }
 
   gameLoop(socketClients, url) {
-    let gamesTmp = this.getAllGames() // parce qu'on a besoin que tout soit actualise en meme temps a la fin
+    let gamesTmp = _.cloneDeep(this.getAllGames()) // parce qu'on a besoin que tout soit actualise en meme temps a la fin
     // ici need un deepclone ?? (pas sur que ce soit une copie quoi)
     for (let [key, value] of Object.entries(socketClients)) {
       if (this.isInGame() === true && !this.isOut(key)) {

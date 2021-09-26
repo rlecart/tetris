@@ -67,18 +67,27 @@ const checkTetri = (game, truePos) => {
   let y = game.getY()
   let actual = game.getActualShape()
 
-  console.log('y = ', y)
-  console.log('truePos = ', truePos)
-  console.log('actual = ', actual)
-  console.log('lemghtr = ', game.getLines().length)
+  // console.log('y = ', y)
+  // console.log('truePos = ', truePos)
+  // console.log('actual = ', actual)
+  // console.log('lemghtr = ', game.getLines().length)
   if (x + truePos.lengthX > game.getLines(0).length - 1
-    || y + truePos.lengthY > game.getLines().length - 1) {
+    || y + truePos.lengthY >= game.getLines().length - 1) {
       console.log('\n\net cest le -1\n\n')
       return (-1)
     }
   while (++i < actual.length) {
     while (++j < actual[i].length) {
+      console.log('\n\n\n')
+      console.log('actual = ', actual)
+      console.log('char = ', game.getLines(y, x))
+      console.log('i = ', i)
+      console.log('j = ', j)
+      console.log('y = ', y)
+      console.log('x = ', x)
+      console.log('\n\n\n')
       if (actual[i][j] === 1 && game.getLines(y, x) !== undefined && game.getLines(y, x) !== 0) {
+        console.log('ca part')
         return (-1)
       }
       x++
@@ -241,22 +250,14 @@ const moveTetri = (game, x, y) => {
       turnTetri(game, false)
     return (errors)
   }
-  // if (x === 0 && y === 0)
-  //   turnTetri(game, false)
-  // if (game.getY() !== -1 || (y === 0 && x !== 0))
-  //   removeTetri(game)
-  // if (x === 0 && y === 0)
-  //   turnTetri(game, true)
   game.addY(y)
   game.addX(x)
-  console.log('before checktetri')
   if (checkTetri(game, truePos) === -1) {
-    console.log('checkTetri')
-    if (noMoreSpace(game) === false) {
-      // console.log(game, game.tetri)
-      return (-1)//gameover
+    if ((x === 0 && y !== 0) && noMoreSpace(game) === false) {
+      return (-1)
     }
     else {
+      console.log('ca sub')
       game.subY(y)
       game.subX(x)
       if (x === 0 && y === 0)
@@ -264,13 +265,11 @@ const moveTetri = (game, x, y) => {
       if (x === 0) {
         if (x === 0 && y === 0)
           return (0)
-        console.log('\n\n\ncest sense stash\n\n\n')
         addTetri(game)
         return (1)
       }
     }
   }
-  // addTetri(game)
   return (2)
 }
 
@@ -302,29 +301,18 @@ function addFilledLine(room, exception, amount) {
   let players = room.getSio()
 
   for (let [key, value] of Object.entries(players)) {
-    // console.log('haha = ', ++haha)
     if (key !== exception && !room.isOut(key)) {
       for (let i = 0; i < amount; i++) {
-        // console.log('i = ', i)
-        // console.log('room = ', room)
-        // console.log('getlistplayers = ', room.getListPlayers(key))
-        // console.log('getlistplayers = ', room.getListPlayers(key))
         if (room.getListPlayers(key).getGame().getLines(0).find((elem) => { elem !== 0 })) { // ca check si y'avait deja un bloc en [0;X] avant d'ajouter la ligne car si oui alors ca veut dire que le joueur en question a perdu donc fin de game, sinon bah ca continue
           endGame(room, key)
           break;
         }
         else {
-          // console.log('else')
           if (room.getListPlayers(key).getGame().getY() === 0)
-            refresh(room.getListPlayers(key).getGame(), room, key) // ici ca bug quand c'est tetri first line
-          // console.log('apres refresh cas tetri first line')
+            refresh(room.getListPlayers(key).getGame(), room, key)
           room.getListPlayers(key).getGame().subY(1)
-          // console.log('apres subY')
           room.getListPlayers(key).getGame().fillLine()
-          // console.log('apres fillLine')
           refresh(room.getListPlayers(key).getGame(), room, key)
-          // console.log('apres refresh')
-          // console.log('avant refreshvue')
           room.emitOnly('refreshVue', key, room.getListPlayers(key).getGame(), room.createSpecList(key))
         }
       }
