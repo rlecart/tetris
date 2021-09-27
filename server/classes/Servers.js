@@ -48,10 +48,10 @@ module.exports = class mainServer {
     this._io.on('connection', (client) => {
       master.addNewSio(client)
       client.on('move', (clientId, url, dir, res, rej) => {
-        if (master.getRoom(url).isInGame())
+        if (master.getRoom(url).isInGame() === true)
           master.askToMove(clientId, url, dir, res)
         else
-          rej('[MOVE] Cant\'t find room with url')
+          rej('[MOVE] Cant\'t find room with url or isInGame() not true')
       })
       client.on('createRoom', (clientId, profil, res) => { master.createRoom(clientId, profil, res) })
       client.on('joinRoom', (clientId, profil, url, res) => { master.joinRoom(clientId, profil, url, res) })

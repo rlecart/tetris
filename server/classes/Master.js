@@ -93,7 +93,7 @@ module.exports = class Master {
   joinRoom(clientId, profil, url, res) {
     let room = {}
 
-    if (profil.name && (room = this.getRoom(url)) && !room.isInGame() && !room.getListPlayers(clientId) && room.getNbPlayer() < 8) {
+    if (profil.name && (room = this.getRoom(url)) && room.isInGame() !== true && !room.getListPlayers(clientId) && room.getNbPlayer() < 8) {
       profil = { ...profil, url: url }
       room.addNewPlayer(clientId, profil)
       room.addSio(this.getSioList(clientId))
@@ -149,7 +149,7 @@ module.exports = class Master {
   askToStartGame(clientId, url, res) {
     let room = {}
 
-    if ((room = this.getRoom(url)) && room.isOwner(clientId)) {
+    if ((room = this.getRoom(url)) && room.isOwner(clientId) && room.isInGame() === false) {
       room.emitAll('goToGame')
     }
     res()
