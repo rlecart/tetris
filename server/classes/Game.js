@@ -12,17 +12,19 @@ module.exports = class Game {
     this._tetri.nextId = shapesId[1]
     this._tetri.actualShape = shapes[0]
     this._tetri.nextShape = shapes[1]
+    this._tetri.x = Math.trunc(this._lines[0].length / 2 - this._tetri.actualShape[0].length / 2)
+    this._tetri.y = -1
     this._placed = clonedeep(defaultGame.placed)
   }
 
   setTetri(tetri) {
     this._tetri.id = tetri.id
-    this._tetri.actualShape = actualShape
-    this._tetri.nextId = nextId
-    this._tetri.nextShape = nextShape
-    this._tetri.rotation = rotation
-    this._tetri.x = x
-    this._tetri.y = y
+    this._tetri.actualShape = tetri.actualShape
+    this._tetri.nextId = tetri.nextId
+    this._tetri.nextShape = tetri.nextShape
+    this._tetri.rotation = tetri.rotation
+    this._tetri.x = tetri.x
+    this._tetri.y = tetri.y
   }
 
   getTetri() {

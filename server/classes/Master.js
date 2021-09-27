@@ -189,10 +189,12 @@ module.exports = class Master {
   askToMove(clientId, url, dir, res, rej) {
     let room = {}
     let player = {}
+    let game = {}
 
     // console.log(clientId)
     if ((room = this.getRoom(url)) && (player = room.getListPlayers(clientId))) {
-      player.move(dir, room)
+      if ((game = player.getGame()) && game.getY() !== -1)
+        player.move(dir, room)
       res()
     }
     else
