@@ -136,8 +136,14 @@ class Game extends Component {
             }
             this.setState({ ...this.state, isOut: true })
           })
-          this.socket.on('theEnd', (winnerInfo) => {
-            this.setState({ ...this.state, winner: winnerInfo })
+          this.socket.on('theEnd', ({ winnerInfo, owner }) => {
+            console.log('winnerInfo = ', winnerInfo)
+            console.log('owner = ', owner)
+            console.log('this.socket.id = ', this.socket.id)
+            console.log('this.socket.id === owner ', this.socket.id === owner)
+            console.log('this.socket.id === parseInt(owner) ', this.socket.id === parseInt(owner))
+            this.setState({ ...this.state, winner: winnerInfo,
+            isOwner: owner === this.socket.id ? true : false })
           })
           if (this.props.socketConnector.areGameEventsLoaded === false) {
             console.log('gameEventsLoaded')
@@ -182,7 +188,7 @@ class Game extends Component {
   }
 
   createGameOverDisplay() {
-    let returnToRoomButton = (this.props.roomReducer.roomInfo.owner === this.props.socketConnector.socket.id) ? (
+    let returnToRoomButton = (this.state.isOwner === true) ? (
       <div className="bottomButtons">
         <button className="roomButton" id="leaveGame" onClick={() => {
           api.askEverybodyToCalmDown(this.socket, this.props.roomReducer.roomInfo.url)

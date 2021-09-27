@@ -80,7 +80,7 @@ module.exports = class Room {
       console.log('winnerInfo out = ', winnerInfo)
       this._isOut = undefined
       this.endGame()
-      this.emitAll('theEnd', undefined, winnerInfo)
+      this.emitAll('theEnd', undefined, { winnerInfo, owner: this.getOwner() })
       for (let [key, value] of Object.entries(this.getListPlayers()))
         value.setGame(undefined)
     }
@@ -140,6 +140,7 @@ module.exports = class Room {
     this._arrivalOrder.splice(this._arrivalOrder.indexOf(clientId), 1)
 
     delete this._listPlayers[clientId]
+    delete this._sioList[clientId]
     this.emitAll('refreshRoomInfo', clientId, this.getRoomInfo())
   }
 
@@ -221,7 +222,7 @@ module.exports = class Room {
     initShapes(this)
     this.initGames()
     this.setInGame(true)
-    this._interval = setInterval(this.gameLoop.bind(this), 1000, sio, this.getUrl())
+    this._interval = setInterval(this.gameLoop.bind(this), 1000, this.getSio(), this.getUrl())
     this._readyToStart = undefined
     //console.log(`interval ${this.getUrl()} init`)
   }
