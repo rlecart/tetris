@@ -73,28 +73,28 @@ const checkTetri = (game, truePos) => {
   // console.log('lemghtr = ', game.getLines().length)
   if (x + truePos.x + truePos.lengthX > game.getLines(0).length
     || y + truePos.y + truePos.lengthY > game.getLines().length) {
-    console.log('\n\net cest le -1\n\n')
+    // console.log('\n\net cest le -1\n\n')
     return (-1)
   }
   while (++i < actual.length && i <= truePos.y + truePos.lengthY - 1) {
     while (++j < actual[i].length && j <= truePos.x + truePos.lengthX - 1) {
-      console.log('\n')
-      console.log('actual = ', actual)
-      console.log('char = ', game.getLines(y, x))
-      console.log('i = ', i)
-      console.log('j = ', j)
-      console.log('y = ', y)
-      console.log('x = ', x)
-      console.log('\n')
+      // console.log('\n')
+      // console.log('actual = ', actual)
+      // console.log('char = ', game.getLines(y, x))
+      // console.log('i = ', i)
+      // console.log('j = ', j)
+      // console.log('y = ', y)
+      // console.log('x = ', x)
+      // console.log('\n')
       if (game.getY() + i >= game.getLines().length) {
-        console.log('coucou c le 20')
+        // console.log('coucou c le 20')
         // if (game.getY() + truePos.y + truePos.lengthY - 1 >= game.getLines().length) {
         //   // if (game.getY() + truePos.y + truePos.lengthY - 1 <= game.getLines().length) {
         //     console.log('coucou c le 20 mais -1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
         //     return (2)
         // }
         // else {
-        console.log('coucou c le 20 mais 2')
+        // console.log('coucou c le 20 mais 2')
         return (-1)
       }
       // if (x) // si il reste des choses a parser

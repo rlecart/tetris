@@ -111,12 +111,21 @@ class Game extends Component {
     state.lines = game._lines
     state.tetri = game._tetri
     state.interval = game._interval // se trouve ailleurs normalement -> a checker
-    console.log('\n\n', spec, '\n\n')
     state.spec = spec
+    // state.owner = game._owner
     // state.client = game.client
     console.log('refreshed')
     // console.log(game.tetri.id)
     context.setState(state)
+  }
+
+  refreshRoomInfo(roomInfo, context) {
+    let stateTmp = context.state
+
+    stateTmp = { ...stateTmp,
+      isOwner: (roomInfo.owner === this.socket.id) ? true : false
+    }
+    context.setState(stateTmp)
   }
 
   componentDidMount() {
@@ -127,6 +136,7 @@ class Game extends Component {
         () => {
           this.socket.on('disconnect', () => nav(this.props.history, '/'))
           this.socket.on('refreshVue', (game, spec) => { this.refreshGame(game, spec, this) })
+          this.socket.on('refreshRoomInfo', (game) => { this.refreshRoomInfo(game, this) })
           this.socket.on('nowChillOutDude', (path) => this.props.history.replace(path))
           this.socket.on('endGame', () => {
             if (this.props.socketConnector.areGameEventsLoaded === true) {
@@ -141,9 +151,10 @@ class Game extends Component {
             console.log('owner = ', owner)
             console.log('this.socket.id = ', this.socket.id)
             console.log('this.socket.id === owner ', this.socket.id === owner)
-            console.log('this.socket.id === parseInt(owner) ', this.socket.id === parseInt(owner))
-            this.setState({ ...this.state, winner: winnerInfo,
-            isOwner: owner === this.socket.id ? true : false })
+            this.setState({
+              ...this.state, winner: winnerInfo,
+              isOwner: (owner === this.socket.id) ? true : false
+            })
           })
           if (this.props.socketConnector.areGameEventsLoaded === false) {
             console.log('gameEventsLoaded')

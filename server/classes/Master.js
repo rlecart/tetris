@@ -128,7 +128,7 @@ module.exports = class Master {
       if (room.getNbPlayer() <= 0) {
         this.closeRoom(room)
       }
-      room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
+      // room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
       res()
     }
   }
@@ -143,7 +143,7 @@ module.exports = class Master {
     room.resetUrl()
     this._roomsList[url] = undefined
     delete this._roomsList[url]
-    //console.log(`room ${url} closed`)
+    // console.log(`room ${url} closed`)
   }
 
   askToStartGame(clientId, url, res) {
@@ -186,7 +186,7 @@ module.exports = class Master {
     }
   }
 
-  askToMove(clientId, url, dir, res, rej) {
+  askToMove(clientId, url, dir, res) {
     let room = {}
     let player = {}
     let game = {}
@@ -197,8 +197,8 @@ module.exports = class Master {
         player.move(dir, room)
       res()
     }
-    else
-      rej('[MOVE] Cant\'t find room or player')
+    // else
+    //   rej('[MOVE] Cant\'t find room or player')
   }
 
   askEverybodyToCalmDown(clientId, url, res) {
@@ -208,8 +208,9 @@ module.exports = class Master {
     if ((room = this.getRoom(url)) && room.getOwner() === clientId && (sioList = room.getSio())) {
       for (let [key, value] of Object.entries(sioList)) {
         value.emit('nowChillOutDude', `/${url}[${String(room.getListPlayers(key).getName())}]`)
-        res()
       }
+      room.setPending(false)
+      res()
     }
     else
       rej('[CALMDOWN] Cant\'t find room or bad owner or can\'t find sioList')

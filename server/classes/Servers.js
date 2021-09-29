@@ -47,11 +47,11 @@ module.exports = class mainServer {
   listenSio(master) {
     this._io.on('connection', (client) => {
       master.addNewSio(client)
-      client.on('move', (clientId, url, dir, res, rej) => {
+      client.on('move', (clientId, url, dir, res) => {
         if (master.getRoom(url).isInGame() === true)
           master.askToMove(clientId, url, dir, res)
-        else
-          rej('[MOVE] Cant\'t find room with url or isInGame() not true')
+        // else
+        //   rej('[MOVE] Cant\'t find room with url or isInGame() not true')
       })
       client.on('createRoom', (clientId, profil, res) => { master.createRoom(clientId, profil, res) })
       client.on('joinRoom', (clientId, profil, url, res) => { master.joinRoom(clientId, profil, url, res) })
@@ -59,7 +59,6 @@ module.exports = class mainServer {
       client.on('getRoomInfo', (url, res) => {
         res(master.getRoom(url).getRoomInfo())
       })
-      client.on('avance', (clientId, url, res) => { master.avance(clientId, url, res) })
       client.on('askToStartGame', (clientId, url, res) => { master.askToStartGame(clientId, url, res) })
       client.on('readyToStart', (clientId, url, res) => { master.readyToStart(clientId, url, res) })
       client.on('askToEndGame', (clientId, url, res) => { master.askToEndGame(clientId, url, res) })
@@ -83,7 +82,7 @@ module.exports = class mainServer {
         }, 6000);
       });
 
-      console.log('connected')
+      // console.log('connected')
     })
     this._io.listen(this._port);
     // console.log(`[Io listening on port ${this._port}]`);
