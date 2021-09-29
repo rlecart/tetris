@@ -23,7 +23,7 @@ module.exports = class Room {
     this._sioList = {}
     this._owner = undefined
     this._arrivalOrder = []
-    this._pending = false
+    this._pending = true
   }
 
   addSio(sio) {
@@ -234,6 +234,7 @@ launchGame(sio) {
   initShapes(this)
   this.initGames()
   this.setInGame(true)
+  this.setPending(false)
   this._interval = setInterval(this.gameLoop.bind(this), 1000, this.getSio(), this.getUrl())
   this._readyToStart = undefined
   //console.log(`interval ${this.getUrl()} init`)

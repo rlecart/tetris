@@ -35,6 +35,7 @@ class Game extends Component {
     winner: undefined,
     isOut: false,
     isOwner: false,
+    showGoBack: false,
   }
 
   createbloc(bloc, blocClass, id, idTetri) {
@@ -122,7 +123,8 @@ class Game extends Component {
   refreshRoomInfo(roomInfo, context) {
     let stateTmp = context.state
 
-    stateTmp = { ...stateTmp,
+    stateTmp = {
+      ...stateTmp,
       isOwner: (roomInfo.owner === this.socket.id) ? true : false
     }
     context.setState(stateTmp)
@@ -151,6 +153,7 @@ class Game extends Component {
             console.log('owner = ', owner)
             console.log('this.socket.id = ', this.socket.id)
             console.log('this.socket.id === owner ', this.socket.id === owner)
+            setTimeout(() => { this.setState({ showGoBack: true }) }, 5000)
             this.setState({
               ...this.state, winner: winnerInfo,
               isOwner: (owner === this.socket.id) ? true : false
@@ -200,15 +203,20 @@ class Game extends Component {
 
   createGameOverDisplay() {
     let returnToRoomButton = (this.state.isOwner === true) ? (
-      <div className="bottomButtons">
-        <button className="roomButton" id="leaveGame" onClick={() => {
-          api.askEverybodyToCalmDown(this.socket, this.props.roomReducer.roomInfo.url)
-        }}>
-          <span className="textButton">flex</span>
-        </button>
-      </div>) : undefined;
+      <button className="roomButton" id="leaveGame" onClick={() => {
+        api.askEverybodyToCalmDown(this.socket, this.props.roomReducer.roomInfo.url)
+      }}>
+        <span className="textButton">flex</span>
+      </button>) : undefined;
+    let goBack = (this.state.showGoBack === true && this.state.isOwner === false) ? (
+      <button className="roomButton" id="leaveGame" onClick={() => {
+        let profil = this.props.roomReducer.roomInfo.listPlayers[this.socket.id]._profil
+        this.props.history.replace(`/${profil.url}[${profil.name}]`)
+      }}>
+        <span className="textButton">Go back</span>
+      </button>) : undefined;
 
-    console.log('wiineerwaoirjaoirjawopr', this.state.winner)
+    console.log('wiineerwaoirjaoirjawopr', this.props.roomReducer)
     if (this.state.winner !== undefined) {
       var finalText
       if (Object.keys(this.state.winner).length !== 0) {
@@ -231,7 +239,10 @@ class Game extends Component {
               <span className="textButton" id="gameOverText">OMG GG WP DUUUDE</span>
               {finalText}
             </div>
-            {returnToRoomButton}
+            <div className="bottomButtons">
+              {returnToRoomButton}
+              {goBack}
+            </div>
           </div>
         </div>
       )

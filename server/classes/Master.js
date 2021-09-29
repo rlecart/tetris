@@ -108,17 +108,20 @@ module.exports = class Master {
   }
 
   joinRoom(clientId, profil, url, res) {
-    let room = {}
+    let room
 
-    if (profil.name && (room = this.getRoom(url)) && room.isInGame() !== true && !room.getListPlayers(clientId) && room.getNbPlayer() < 8 && !this.isInRoom(clientId)) {
-      profil = { ...profil, url: url }
-      room.addNewPlayer(clientId, profil)
-      room.addSio(this.getSioList(clientId))
-      //console.log(clientId + ' joinroom ' + url)
-      room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
-      res(url)
-      // room.emitOnly('goToRoom', clientId, url)
-      // console.log('room joined')
+    if (profil && profil !== undefined && profil.name) {
+      if (this.isInRoom(clientId) && (room = getRoomFromPlayerId(clientId, this)))
+        this.leaveRoom(clientId, room.getUrl())
+      if ((room = this.getRoom(url)) && room.isInGame() !== true && room.getNbPlayer() < 8) {
+        profil = { ...profil, url: url }
+        room.addNewPlayer(clientId, profil)
+        room.addSio(this.getSioList(clientId))
+        //console.log(clientId + ' joinroom ' + url)
+        room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
+        res(url)
+        // console.log('room joined')
+      }
     }
   }
 
@@ -192,16 +195,17 @@ module.exports = class Master {
   }
 
   readyToStart(clientId, url, res) {
-    let result
-    let room = {}
+    let room
 
-    if (url && clientId && (room = this.getRoom(url)) && room.getListPlayers(clientId) && room.isInGame() === false) {
+    if (url && clientId && (room = this.getRoom(url)) && room.getListPlayers(clientId) && room.isInGame() === false && room.isPending()) {
       room.addReadyToStart(clientId)
-      if (result = this.tryToStart(room.getReadyToStart(), room.getNbPlayer())) {
+      if (this.tryToStart(room.getReadyToStart(), room.getNbPlayer())) {
         room.launchGame(this.getSioListFromRoom(url, true))
       }
       res()
     }
+    else if (room !== undefined && !room.isPending())
+      room.emitOnly('nowChillOutDude', clientId, `/${url}[${String(room.getListPlayers(clientId).getName())}]`)
   }
 
   askToMove(clientId, url, dir, res) {
@@ -227,7 +231,7 @@ module.exports = class Master {
       for (let [key, value] of Object.entries(sioList)) {
         value.emit('nowChillOutDude', `/${url}[${String(room.getListPlayers(key).getName())}]`)
       }
-      room.setPending(false)
+      room.setPending(true)
       res()
     }
     else
