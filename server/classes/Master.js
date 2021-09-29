@@ -4,6 +4,8 @@ let { createNewUrl } = require('../utils.js')
 let { refresh, endGame } = require('../refresh.js')
 let _ = require('lodash')
 const { askEverybodyToCalmDown } = require('../../src/api/clientApi.js')
+const { isEmpty } = require('../../src/vues/utils')
+const { getRoomFromPlayerId } = require('../../test/utils.js')
 
 module.exports = class Master {
   constructor() {
@@ -81,9 +83,24 @@ module.exports = class Master {
     }
   }
 
+  isInRoom(clientId) {
+    console.log(this.getRoomsList())
+    if (Object.keys(this.getRoomsList()).length > 0) {
+      for (let room of Object.values(this.getRoomsList())) {
+        if (room.getListPlayers(clientId) !== undefined)
+          return (true)
+      }
+    }
+    return (false)
+  }
+
   createRoom(clientId, profil, res) {
-    if (profil.name && clientId !== undefined) {
-      let room = new Room(this)
+    let room
+
+    if (profil.name !== undefined && clientId !== undefined && clientId !== null) {
+      if (this.isInRoom(clientId) && (room = getRoomFromPlayerId(clientId, this)))
+        this.leaveRoom(clientId, room.getUrl())
+      room = new Room(this)
       room.setUrl(createNewUrl(this.getRoomsList()))
       this.addNewRoom(room)
       this.joinRoom(clientId, profil, room.getUrl(), res)
@@ -93,7 +110,7 @@ module.exports = class Master {
   joinRoom(clientId, profil, url, res) {
     let room = {}
 
-    if (profil.name && (room = this.getRoom(url)) && room.isInGame() !== true && !room.getListPlayers(clientId) && room.getNbPlayer() < 8) {
+    if (profil.name && (room = this.getRoom(url)) && room.isInGame() !== true && !room.getListPlayers(clientId) && room.getNbPlayer() < 8 && !this.isInRoom(clientId)) {
       profil = { ...profil, url: url }
       room.addNewPlayer(clientId, profil)
       room.addSio(this.getSioList(clientId))
@@ -129,7 +146,8 @@ module.exports = class Master {
         this.closeRoom(room)
       }
       // room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
-      res()
+      if (res !== undefined)
+        res()
     }
   }
 

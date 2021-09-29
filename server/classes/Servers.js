@@ -57,7 +57,10 @@ module.exports = class mainServer {
       client.on('joinRoom', (clientId, profil, url, res) => { master.joinRoom(clientId, profil, url, res) })
       client.on('leaveRoom', (clientId, url, res) => { master.leaveRoom(clientId, url, res) })
       client.on('getRoomInfo', (url, res) => {
-        res(master.getRoom(url).getRoomInfo())
+        let room
+
+        if ((room = master.getRoom(url)))
+          res(room.getRoomInfo())
       })
       client.on('askToStartGame', (clientId, url, res) => { master.askToStartGame(clientId, url, res) })
       client.on('readyToStart', (clientId, url, res) => { master.readyToStart(clientId, url, res) })
@@ -75,7 +78,7 @@ module.exports = class mainServer {
             console.log('this client id will be closed ' + client.id);
             let room = getRoomFromPlayerId(client.id, master)
             if (room !== undefined)
-              master.leaveRoom(client.id, room.getUrl(), () => {})
+              master.leaveRoom(client.id, room.getUrl(), () => { })
             setTimeout(() => master.removeSio(client), 500)
           }
           now = null;
