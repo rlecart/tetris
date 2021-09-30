@@ -8,7 +8,7 @@ let { defaultRules } = require('../src/ressources/rules.js')
 describe('Room Tests', () => {
 	const playersId = [475, 307, 184467440737615];
 	const players = [{ name: 'Hector' }, { name: '\t\n\r\v\f' }, { name: 'pouayayay' }];
-	let cb = () => {  };
+	let cb = () => { };
 	let master;
 	let room = {};
 	let mainId = 2100;
@@ -22,7 +22,7 @@ describe('Room Tests', () => {
 	after(() => {
 		master.stopServer();
 	})
-	
+
 	describe('Create room', () => {
 		it('Should create room', () => {
 			//Nom: normal | Id: normal
@@ -52,22 +52,26 @@ describe('Room Tests', () => {
 			//Nom: empty name
 			master.createRoom(playersId[0], { name: "" }, cb);
 			room = getRoomFromPlayerId(playersId[0], master);
-			expectNewRoom(room, playersId[0]);
+			expect(room).to.be.undefined
+			// expectNewRoom(room, playersId[0]);
 			//Nom: name null
 			master.createRoom(playersId[0], { name: null }, cb);
 			room = getRoomFromPlayerId(playersId[0], master);
-			expectNewRoom(room, playersId[0]);
+			expect(room).to.be.undefined
+			// expectNewRoom(room, playersId[0]);
 			//Bad profil object (missing 'name')
 			master.createRoom(playersId[0], { pseudo: "Jean" }, cb);
 			room = getRoomFromPlayerId(playersId[0], master);
-			expectNewRoom(room, playersId[0]);
+			expect(room).to.be.undefined
+			// expectNewRoom(room, playersId[0]);
 		});
 	})
 
 	describe('Join room', () => {
 		it('Should join room ', () => {
-			//Player 1 rejoint la game crée par le joueur 0
+			master.createRoom(playersId[0], players[0], cb);
 			room = getRoomFromPlayerId(playersId[0], master);
+			//Player 1 rejoint la game crée par le joueur 0
 			master.joinRoom(playersId[1], players[1], room.getUrl(), cb);
 			expectJoinRoom(room, playersId[1], players[1], 2);
 			//Player 2 rejoint la game crée par le joueur 0

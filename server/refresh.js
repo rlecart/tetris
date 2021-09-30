@@ -101,7 +101,7 @@ const checkTetri = (game, truePos) => {
       // if (game.getLines(y, x) === undefined)
       //   return (-1)
       if (actual[i][j] === 1 && game.getLines(y, x) !== undefined && game.getLines(y, x) !== 0) {
-        console.log('ca part')
+        // console.log('ca part')
         return (-1)
       }
       x++
@@ -261,7 +261,6 @@ const moveTetri = (game, x, y) => {
   truePos = parseTruePos(game.getActualShape())
   errors = checkIfOk(game, x, y, truePos)
   if (errors !== 'ok') {
-    console.log('erreur checkIfOk = ', errors)
     if (x === 0 && y === 0)
       turnTetri(game, false)
     if (errors === 1)
@@ -271,13 +270,10 @@ const moveTetri = (game, x, y) => {
   game.addY(y)
   game.addX(x)
   if ((doINeedToAdd = checkTetri(game, truePos)) === -1) {
-    console.log('checkTetri -1')
     if ((x === 0 && y !== 0) && noMoreSpace(game) === false) {
-      console.log('plus dplace')
       return (-1)
     }
     else {
-      console.log('ca sub')
       game.subY(y)
       game.subX(x)
       if (x === 0 && y === 0)
@@ -292,7 +288,6 @@ const moveTetri = (game, x, y) => {
   }
   else if (doINeedToAdd === 2)
     addTetri(game)
-  console.log('tout va bien')
   return (2)
 }
 

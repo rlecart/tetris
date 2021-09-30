@@ -129,8 +129,16 @@ describe('Game Tests', () => {
     })
 
     it('Api should endGame', async () => {
-      await api.askToEndGame(sockets[0], room.getUrl());
-      expect(room.isInGame()).to.be.false;
+      for (let i in sockets)
+        api.askToEndGame(sockets[i], room.getUrl());
+      await waitAMinute(500)
+      expect(room.isInGame()).to.satisfy((value) => {
+        if (value === false || (value === undefined && room.isPending() === true))
+          return (true)
+        else
+          return (false)
+      })
+      // expect(room.isInGame()).to.be.eql(false);
     })
   })
 

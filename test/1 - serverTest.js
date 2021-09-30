@@ -1,7 +1,7 @@
 let { expect, assert } = require('chai')
 let openSocket = require('socket.io-client')
 let Master = require('../server/classes/Master.js')
-const { addNewClients, removeEveryClients } = require('./utils.js')
+const { addNewClients, removeEveryClients, waitAMinute } = require('./utils.js')
 
 describe('Server tests', () => {
   let server
@@ -71,7 +71,8 @@ describe('Server tests', () => {
       expect(Object.keys(master.getSioList()).length).to.be.eql(0)
     })
 
-    it('Socket list nicely filled', () => {
+    it('Socket list nicely filled', async () => {
+      await waitAMinute(500)
       expect(Object.keys(master.getSioList()).length).to.be.eql(50)
     })
     it('Emit test with ping', (done) => {
@@ -91,5 +92,4 @@ describe('Server tests', () => {
       expect(Object.keys(master.getSioList()).length).to.be.eql(0)
     })
   })
-
 })

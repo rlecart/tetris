@@ -70,10 +70,6 @@ module.exports = class Master {
     // this._sioClientList = { ...this._sioClientList, [client.id]: ret }
     // }
     this._sioClientList = { ...this._sioClientList, [client.id]: client }
-
-    // console.log('whaaaaaa')
-    // console.log(client)
-    // console.log('whaaaaaa fin')
   }
 
   removeSio(client) {
@@ -84,7 +80,6 @@ module.exports = class Master {
   }
 
   isInRoom(clientId) {
-    console.log(this.getRoomsList())
     if (Object.keys(this.getRoomsList()).length > 0) {
       for (let room of Object.values(this.getRoomsList())) {
         if (room.getListPlayers(clientId) !== undefined)
@@ -117,7 +112,6 @@ module.exports = class Master {
         profil = { ...profil, url: url }
         room.addNewPlayer(clientId, profil)
         room.addSio(this.getSioList(clientId))
-        //console.log(clientId + ' joinroom ' + url)
         room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
         res(url)
         // console.log('room joined')
@@ -148,7 +142,6 @@ module.exports = class Master {
       if (room.getNbPlayer() <= 0) {
         this.closeRoom(room)
       }
-      // room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo())
       if (res !== undefined)
         res()
     }
@@ -213,7 +206,6 @@ module.exports = class Master {
     let player = {}
     let game = {}
 
-    // console.log(clientId)
     if ((room = this.getRoom(url)) && (player = room.getListPlayers(clientId))) {
       if ((game = player.getGame()) && game.getY() !== -1)
         player.move(dir, room)
