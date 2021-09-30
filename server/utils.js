@@ -17,4 +17,16 @@ const getArrayFromObject = (obj) => {
   return ret
 }
 
-module.exports = { generateUrl, createNewUrl, getArrayFromObject }
+const getRoomFromPlayerId = (playerId, master) => {
+  let allRooms = master.getRoomsList()
+
+  for (let roomUrl in allRooms) {
+    let room = master.getRoom(roomUrl)
+    if (room._listPlayers[playerId]) {
+      return (room)
+    }
+  }
+  return (undefined)
+}
+
+module.exports = { generateUrl, createNewUrl, getArrayFromObject, getRoomFromPlayerId }

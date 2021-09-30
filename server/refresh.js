@@ -286,8 +286,8 @@ const moveTetri = (game, x, y) => {
       }
     }
   }
-  else if (doINeedToAdd === 2)
-    addTetri(game)
+  // else if (doINeedToAdd === 2)
+  //   addTetri(game)
   return (2)
 }
 

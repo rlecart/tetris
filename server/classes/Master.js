@@ -1,11 +1,11 @@
 let Room = require('./Room.js')
 let mainServer = require('./Servers.js')
-let { createNewUrl } = require('../utils.js')
+let { createNewUrl, getRoomFromPlayerId } = require('../utils.js')
 let { refresh, endGame } = require('../refresh.js')
+
 let _ = require('lodash')
 const { askEverybodyToCalmDown } = require('../../src/api/clientApi.js')
 const { isEmpty } = require('../../src/vues/utils')
-const { getRoomFromPlayerId } = require('../../test/utils.js')
 
 module.exports = class Master {
   constructor() {

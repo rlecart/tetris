@@ -1,7 +1,7 @@
-let { config } = require('../../config.js')
+let { config } = require('../../serverConfig.js')
 let http = require('http')
 let { Server } = require('socket.io')
-const { getRoomFromPlayerId } = require('../../test/utils.js')
+const { getRoomFromPlayerId } = require('../utils.js')
 
 module.exports = class mainServer {
   constructor() {
