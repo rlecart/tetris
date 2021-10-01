@@ -240,12 +240,12 @@ const checkIfOk = (game, x, y, truePos) => {
     || game.getX() + truePos.x + truePos.lengthX - 1 + x >= game.getLines(0).length) {
     return (0)
   }
-  if (game.getY() + truePos.y + y < 0
-    || game.getY() + truePos.y + truePos.lengthY - 1 + y >= game.getLines().length)
-    return (1)
+  // if (game.getY() + truePos.y + y < 0
+  //   || game.getY() + truePos.y + truePos.lengthY - 1 + y >= game.getLines().length)
+  //   return ('ok')
   if (x === 0 && y === 0
-    && ((truePos.lengthX < truePos.lengthY && game.getX() + truePos.x + truePos.lengthX - 1 + truePos.lengthY - truePos.lengthX > game.getLines(0).length)
-      || (truePos.lengthY < truePos.lengthX && game.getY() + truePos.y + truePos.lengthY - 1 + truePos.lengthX - truePos.lengthY > game.getLines().length))) {
+    && ((truePos.lengthX < truePos.lengthY && game.getX() + truePos.x + truePos.lengthX - 1 > game.getLines(0).length)
+      || (truePos.lengthY < truePos.lengthX && game.getY() + truePos.y + truePos.lengthY - 1 > game.getLines().length))) {
     return (0)
   }
   return ('ok')
