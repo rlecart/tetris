@@ -8,8 +8,8 @@ import Store from './Store/configureStore';
 
 import NotFound from './components/NotFound';
 import App from './App';
-import Room from './vues/Room';
-import Game from './vues/Game';
+import Room from './components/Room';
+import Game from './components/Game';
 
 import {
   HashRouter,
