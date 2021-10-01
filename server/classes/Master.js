@@ -1,6 +1,6 @@
 let Room = require('./Room.js');
 let mainServer = require('./Servers.js');
-let { createNewUrl } = require('../utils.js');
+let { createNewUrl } = require('../../src/utils.js');
 let { endGame } = require('../refresh.js');
 
 let _ = require('lodash');
