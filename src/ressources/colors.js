@@ -8,6 +8,6 @@ const colors = [
     'teal',
     'orange',
     'purple'
-]
+];
 
-export default colors
+export default colors;

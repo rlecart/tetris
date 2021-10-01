@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
-import { Provider } from 'react-redux'
-import Store from './Store/configureStore'
+import { Provider } from 'react-redux';
+import Store from './Store/configureStore';
 
-import NotFound from './components/NotFound'
+import NotFound from './components/NotFound';
 import App from './App';
 import Room from './vues/Room';
 import Game from './vues/Game';
@@ -15,7 +15,7 @@ import {
   HashRouter,
   Route,
   Switch
-} from 'react-router-dom'
+} from 'react-router-dom';
 
 const Root = () => (
   <Provider store={Store}>
@@ -28,9 +28,9 @@ const Root = () => (
       </Switch>
     </HashRouter>
   </Provider>
-)
+);
 
-ReactDOM.render(<Root />, document.getElementById('root'))
+ReactDOM.render(<Root />, document.getElementById('root'));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

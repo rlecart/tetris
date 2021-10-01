@@ -1,13 +1,13 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
 
-import colors from '../ressources/colors.js'
-import api from '../api/clientApi.js'
-import { canIStayHere, isEmpty } from './utils.js'
+import colors from '../ressources/colors.js';
+import api from '../api/clientApi.js';
+import { canIStayHere, isEmpty } from './utils.js';
 import nav from "../misc/nav";
 
 class Game extends Component {
-  socket = this.props.socketConnector.socket
+  socket = this.props.socketConnector.socket;
   state = {
     lines: [
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -36,157 +36,136 @@ class Game extends Component {
     isOut: false,
     isOwner: false,
     showGoBack: false,
-  }
+  };
 
   createbloc(bloc, blocClass, id, idTetri) {
-    let col = (idTetri && bloc !== 0) ? idTetri : bloc
-    return <div className={blocClass} id={id} style={{ backgroundColor: colors[col] }} />
+    let col = (idTetri && bloc !== 0) ? idTetri : bloc;
+
+    return (<div className={blocClass} id={id} style={{ backgroundColor: colors[col] }} />);
   }
 
   createLine(line, blocClass, id, idTetri) {
-    let ret = []
-    for (let bloc of line) {
-      ret.push(this.createbloc(bloc, blocClass, id, idTetri))
-    }
-    return ret
+    let ret = [];
+
+    for (let bloc of line)
+      ret.push(this.createbloc(bloc, blocClass, id, idTetri));
+    return (ret);
   }
 
   createLines(lines, lineClass, blocClass, id, idTetri) {
-    let ret = []
+    let ret = [];
 
     if (idTetri === 5 && lines.length < 3)
-      lines.unshift(new Array(lines[0].length).fill(0))
+      lines.unshift(new Array(lines[0].length).fill(0));
     for (let line of lines) {
       ret.push(
         <div className={lineClass}>
           {this.createLine(line, blocClass, id, idTetri)}
         </div>
-      )
+      );
     }
-    return ret
+    return (ret);
   }
 
-  afficherReponse(text) {
-    console.log(text)
-  }
-
-  acidMode(event, state) {
+  acidMode(state) {
     for (let line in state.lines) {
       for (let char in state.lines[line]) {
         state.lines[line][char]++;
-        state.lines[line][char] = (state.lines[line][char] % 9)
+        state.lines[line][char] = (state.lines[line][char] % 9);
       }
     }
-    this.setState(state)
+    this.setState(state);
   }
 
   eventDispatcher = (event) => {
-    const state = this.state
-    const socket = this.socket
-    const url = this.props.roomReducer.roomInfo.url
+    const state = this.state;
+    const socket = this.socket;
+    const url = this.props.roomReducer.roomInfo.url;
 
-    console.log(url)
-    console.log(event.key)
-
-    console.log('AH')
     if (event.key === "z")
-      this.acidMode(event, state)
+      this.acidMode(state);
     else if (event.key === 'ArrowRight')
-      api.move('right', url, socket)
+      api.move('right', url, socket);
     else if (event.key === 'ArrowLeft')
-      api.move('left', url, socket)
+      api.move('left', url, socket);
     else if (event.key === ' ')
-      api.move('down', url, socket)
+      api.move('down', url, socket);
     else if (event.key === 'ArrowUp')
-      api.move('turn', url, socket)
+      api.move('turn', url, socket);
     else if (event.key === 'ArrowDown')
-      api.move('stash', url, socket)
+      api.move('stash', url, socket);
     else if (event.key === 'c') {
-      api.askToEndGame(socket, url)
+      api.askToEndGame(socket, url);
     }
-  }
+  };
 
   refreshGame(game, spec, context) {
-    console.log(game)
-    const state = context.state
-    state.lines = game._lines
-    state.tetri = game._tetri
-    state.interval = game._interval // se trouve ailleurs normalement -> a checker
-    state.spec = spec
-    // state.owner = game._owner
-    // state.client = game.client
-    console.log('refreshed')
-    // console.log(game.tetri.id)
-    context.setState(state)
+    const state = context.state;
+
+    state.lines = game._lines;
+    state.tetri = game._tetri;
+    state.interval = game._interval;
+    state.spec = spec;
+    context.setState(state);
   }
 
   refreshRoomInfo(roomInfo, context) {
-    let stateTmp = context.state
+    let stateTmp = context.state;
 
     stateTmp = {
       ...stateTmp,
       isOwner: (roomInfo.owner === this.socket.id) ? true : false
-    }
-    context.setState(stateTmp)
+    };
+    context.setState(stateTmp);
   }
 
   componentDidMount() {
-    // console.log('bonjoru', this.props)
-    // fonction pour set toutes les reponses serv
     canIStayHere('game', this)
       .then(
         () => {
-          this.socket.on('disconnect', () => nav(this.props.history, '/'))
-          this.socket.on('refreshVue', (game, spec) => { this.refreshGame(game, spec, this) })
-          this.socket.on('refreshRoomInfo', (game) => { this.refreshRoomInfo(game, this) })
-          this.socket.on('nowChillOutDude', (path) => this.props.history.replace(path))
+          this.socket.on('disconnect', () => nav(this.props.history, '/'));
+          this.socket.on('refreshVue', (game, spec) => { this.refreshGame(game, spec, this); });
+          this.socket.on('refreshRoomInfo', (game) => { this.refreshRoomInfo(game, this); });
+          this.socket.on('nowChillOutDude', (path) => this.props.history.replace(path));
           this.socket.on('endGame', () => {
             if (this.props.socketConnector.areGameEventsLoaded === true) {
-              window.removeEventListener('keydown', this.eventDispatcher)
-              const action = { type: 'GAME_EVENTS_UNLOADED' }
-              this.props.dispatch(action)
+              window.removeEventListener('keydown', this.eventDispatcher);
+              const action = { type: 'GAME_EVENTS_UNLOADED' };
+              this.props.dispatch(action);
             }
-            this.setState({ ...this.state, isOut: true })
-          })
+            this.setState({ ...this.state, isOut: true });
+          });
           this.socket.on('theEnd', ({ winnerInfo, owner }) => {
-            console.log('winnerInfo = ', winnerInfo)
-            console.log('owner = ', owner)
-            console.log('this.socket.id = ', this.socket.id)
-            console.log('this.socket.id === owner ', this.socket.id === owner)
-            setTimeout(() => { this.setState({ showGoBack: true }) }, 5000)
+            setTimeout(() => { this.setState({ showGoBack: true }); }, 5000);
             this.setState({
               ...this.state, winner: winnerInfo,
               isOwner: (owner === this.socket.id) ? true : false
-            })
-          })
+            });
+          });
           if (this.props.socketConnector.areGameEventsLoaded === false) {
-            console.log('gameEventsLoaded')
-            // window.addEventListener("keypress", this.eventDispatcher.bind(this))
-            window.addEventListener("keydown", this.eventDispatcher)
-            const action = { type: 'GAME_EVENTS_LOADED' }
-            this.props.dispatch(action)
+            window.addEventListener("keydown", this.eventDispatcher);
+            const action = { type: 'GAME_EVENTS_LOADED' };
+            this.props.dispatch(action);
           }
-          api.readyToStart(this.socket, this.props.roomReducer.roomInfo.url)
+          api.readyToStart(this.socket, this.props.roomReducer.roomInfo.url);
         },
-        () => {
-          nav(this.props.history, '/')
-        })
+        () => { nav(this.props.history, '/'); });
   }
 
   componentWillUnmount() {
     if (!isEmpty(this.props.socketConnector)) {
       if (!isEmpty(this.props.socketConnector.socket))
-        this.props.socketConnector.socket.removeAllListeners()
+        this.props.socketConnector.socket.removeAllListeners();
       if (this.props.socketConnector.areGameEventsLoaded === true) {
-        window.removeEventListener('keydown', this.eventDispatcher)
-        const action = { type: 'GAME_EVENTS_UNLOADED' }
-        this.props.dispatch(action)
+        window.removeEventListener('keydown', this.eventDispatcher);
+        const action = { type: 'GAME_EVENTS_UNLOADED' };
+        this.props.dispatch(action);
       }
     }
   }
 
   createSpec(players) {
-    let ret = []
+    let ret = [];
 
     for (let player of players) {
       ret.push(
@@ -196,29 +175,29 @@ class Game extends Component {
           </div>
           <div className="nicknameSpec">{player.name}</div>
         </div>
-      )
+      );
     }
-    return ret
+    return (ret);
   }
 
   createGameOverDisplay() {
     let returnToRoomButton = (this.state.isOwner === true) ? (
       <button className="roomButton" id="leaveGame" onClick={() => {
-        api.askEverybodyToCalmDown(this.socket, this.props.roomReducer.roomInfo.url)
+        api.askEverybodyToCalmDown(this.socket, this.props.roomReducer.roomInfo.url);
       }}>
         <span className="textButton">flex</span>
       </button>) : undefined;
     let goBack = (this.state.showGoBack === true && this.state.isOwner === false) ? (
       <button className="roomButton" id="leaveGame" onClick={() => {
-        let profil = this.props.roomReducer.roomInfo.listPlayers[this.socket.id]._profil
-        this.props.history.replace(`/${profil.url}[${profil.name}]`)
+        let profil = this.props.roomReducer.roomInfo.listPlayers[this.socket.id]._profil;
+        this.props.history.replace(`/${profil.url}[${profil.name}]`);
       }}>
         <span className="textButton">Go back</span>
       </button>) : undefined;
 
-    console.log('wiineerwaoirjaoirjawopr', this.props.roomReducer)
     if (this.state.winner !== undefined) {
-      var finalText
+      var finalText;
+
       if (Object.keys(this.state.winner).length !== 0) {
         finalText = (this.state.winner.id === this.props.socketConnector.socket.id) ? (
           <Fragment>
@@ -229,7 +208,7 @@ class Game extends Component {
           <Fragment>
             <span className="textButton" id="gameOverTextReveal">but you lose, like the looser you are! :(((</span>
             <span className="textButton" id="gameOverTextReveal">{this.state.winner.name} is the real beaugosse!</span>
-          </Fragment>)
+          </Fragment>);
       }
 
       return (
@@ -245,18 +224,17 @@ class Game extends Component {
             </div>
           </div>
         </div>
-      )
+      );
     }
   }
 
   render() {
-    console.log(this.state)
     let spec = (this.state.spec.length !== 0) ? [
       this.state.spec.slice(0, this.state.spec.length / 2),
       this.state.spec.slice(this.state.spec.length / 2)
-    ] : undefined
-    let gameOverDisplay = this.createGameOverDisplay()
-    console.log(spec)
+    ] : undefined;
+    let gameOverDisplay = this.createGameOverDisplay();
+
     return (
       <Fragment>
         <div className='display'>
@@ -285,13 +263,13 @@ class Game extends Component {
         </div>
         {gameOverDisplay}
       </Fragment>
-    )
+    );
   }
 }
 
 
 const mapStateToProps = (state) => {
-  return state
-}
+  return state;
+};
 
-export default connect(mapStateToProps)(Game)
+export default connect(mapStateToProps)(Game);

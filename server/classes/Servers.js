@@ -1,13 +1,20 @@
-let { config } = require('../../serverConfig.js')
-let http = require('http')
-let { Server } = require('socket.io')
-const { getRoomFromPlayerId } = require('../utils.js')
+let { config } = require('../../serverConfig.js');
+let http = require('http');
+let { Server } = require('socket.io');
 
 module.exports = class mainServer {
   constructor() {
-    this._port = config.back.port
-    this._server = {}
-    this._io = {}
+    this._port = config.back.port;
+    this._server = {};
+    this._io = {};
+  }
+  
+  getHttpServer() {
+    return (this._server);
+  }
+
+  getIoServer() {
+    return (this._io);
   }
 
   startServer() {
@@ -24,70 +31,58 @@ module.exports = class mainServer {
   }
 
   stopServer() {
-    this._server.close()
-  }
-
-  getHttpServer() {
-    return (this._server)
-  }
-
-  getIoServer() {
-    return (this._io)
+    this._server.close();
   }
 
   stopListenSio(sioList) {
-    if (Object.entries(sioList).length !== 0) {
-      for (let [key, value] of Object.entries(sioList)) {
-        value.disconnect()
+    if (Object.values(sioList).length !== 0) {
+      for (let client of Object.values(sioList)) {
+        client.disconnect();
       }
     }
-    this._io.close()
+    this._io.close();
   }
 
   listenSio(master) {
     this._io.on('connection', (client) => {
-      master.addNewSio(client)
+      master.addNewSio(client);
       client.on('move', (clientId, url, dir, res) => {
         if (master.getRoom(url).isInGame() === true)
-          master.askToMove(clientId, url, dir, res)
-        // else
-        //   rej('[MOVE] Cant\'t find room with url or isInGame() not true')
-      })
-      client.on('createRoom', (clientId, profil, res) => { master.createRoom(clientId, profil, res) })
-      client.on('joinRoom', (clientId, profil, url, res) => { master.joinRoom(clientId, profil, url, res) })
-      client.on('leaveRoom', (clientId, url, res) => { master.leaveRoom(clientId, url, res) })
+          master.askToMove(clientId, url, dir, res);
+      });
+      client.on('createRoom', (clientId, profil, res) => { master.createRoom(clientId, profil, res); });
+      client.on('joinRoom', (clientId, profil, url, res) => { master.joinRoom(clientId, profil, url, res); });
+      client.on('leaveRoom', (clientId, url, res) => { master.leaveRoom(clientId, url, res); });
       client.on('getRoomInfo', (url, res) => {
-        let room
+        let room;
 
         if ((room = master.getRoom(url)))
-          res(room.getRoomInfo())
-      })
-      client.on('askToStartGame', (clientId, url, res) => { master.askToStartGame(clientId, url, res) })
-      client.on('readyToStart', (clientId, url, res) => { master.readyToStart(clientId, url, res) })
-      client.on('askToEndGame', (clientId, url, res) => { master.askToEndGame(clientId, url, res) })
-      client.on('askEverybodyToCalmDown', (clientId, url, res) => { master.askEverybodyToCalmDown(clientId, url, res) })
-      client.on('ping', () => { client.emit('pong') })
-      // client.on('hahabjr', () => { console.log('ahmais quoiiiii') })
+          res(room.getRoomInfo());
+      });
+      client.on('askToStartGame', (clientId, url, res) => { master.askToStartGame(clientId, url, res); });
+      client.on('readyToStart', (clientId, url, res) => { master.readyToStart(clientId, url, res); });
+      client.on('askToEndGame', (clientId, url, res) => { master.askToEndGame(clientId, url, res); });
+      client.on('askEverybodyToCalmDown', (clientId, url, res) => { master.askEverybodyToCalmDown(clientId, url, res); });
+      client.on('ping', () => { client.emit('pong'); });
       client.conn.on('heartbeat', () => {
         console.log('heartbeat called!');
-        master.setSioHbeat(client.id, Date.now())
+        master.setSioHbeat(client.id, Date.now());
         setTimeout(() => {
           let now = Date.now();
 
           if (now - master.getSioHbeat(client.id) > 5000) {
             console.log('this client id will be closed ' + client.id);
-            let room = getRoomFromPlayerId(client.id, master)
+            let room = master.getRoomFromPlayerId(client.id, master);
             if (room !== undefined)
-              master.leaveRoom(client.id, room.getUrl(), () => { })
-            setTimeout(() => master.removeSio(client), 500)
+              master.leaveRoom(client.id, room.getUrl(), () => { });
+            setTimeout(() => master.removeSio(client), 500);
           }
           now = null;
         }, 6000);
       });
-
       // console.log('connected')
-    })
+    });
     this._io.listen(this._port);
     // console.log(`[Io listening on port ${this._port}]`);
   }
-}
+};

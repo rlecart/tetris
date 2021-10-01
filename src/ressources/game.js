@@ -31,6 +31,6 @@ const defaultGame = {
     y: 0,
   },
   placed: -1,
-}
+};
 
-module.exports = defaultGame
+module.exports = defaultGame;

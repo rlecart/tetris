@@ -1,4 +1,4 @@
-const { defaultRules } = require('./rules.js')
+const { defaultRules } = require('./rules.js');
 
 const defaultRoom = {
   url: '',
@@ -6,6 +6,6 @@ const defaultRoom = {
   nbPlayer: 0,
   listPlayers: {},
   rules: defaultRules,
-}
+};
 
-exports.defaultRoom = defaultRoom
+exports.defaultRoom = defaultRoom;

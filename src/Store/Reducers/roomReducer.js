@@ -1,20 +1,20 @@
-const initialState = {}
+const initialState = {};
 
 const roomReducer = (state = initialState, action) => {
-  let nextState
+  let nextState;
 
-  switch (action.type) {
-    case 'SYNC_ROOM_DATA':
-      console.log(action.type)
-      nextState = {
-        ...state,
-        roomInfo: action.value
-      }
-      console.log('nextState = ', nextState, '\n')
-      return nextState || state
-    default:
-      return state
+  if (action) {
+    switch (action.type) {
+      case 'SYNC_ROOM_DATA':
+        nextState = {
+          ...state,
+          roomInfo: action.value
+        };
+        return nextState || state;
+      default:
+        return state;
+    }
   }
-}
+};
 
-export default roomReducer
+export default roomReducer;

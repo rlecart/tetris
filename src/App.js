@@ -1,45 +1,35 @@
 import './App.css';
-import React, { Component, Fragment } from 'react'
-
-import openSocket from 'socket.io-client'
-import Accueil from "./vues/Accueil"
-
+import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
+import openSocket from 'socket.io-client';
+
+import Accueil from "./vues/Accueil";
 
 class App extends Component {
   state = {
-  }
+  };
 
-  componentDidMount() { // checker si socket existant
-    // fonction pour set toutes les reponses serv
-    // console.log('\n\n\nquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjourquoiouibonjour\n\n\n')
-    let sock
+  componentDidMount() {
+    let sock;
 
-    // console.log(this.props.socketConnector)
-    // if (!this.props.socketConnector.socket) { // ici ca cree un nouveau socket a chaque retour arriere lors d'un leaveRoom()
-    console.log('LE SOCKET OMG LE SOCKET OLALA')
-    console.log(this.props.socketConnector)
     if (!this.props.socketConnector.isSocketConnected) {
-      sock = openSocket('http://localhost:8000')
-      const action = { type: 'CONNECT_SOCKET', value: sock }
-      this.props.dispatch(action)
+      sock = openSocket('http://localhost:8000');
+      const action = { type: 'CONNECT_SOCKET', value: sock };
+      this.props.dispatch(action);
     }
-    // }
-    // this.socket.on('')
   }
 
   render() {
-    console.log('app props', this.props)
     return (
       <Fragment>
         <Accueil history={this.props.history} />
       </Fragment>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => {
-  return state
-}
+  return state;
+};
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps)(App);
