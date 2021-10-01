@@ -1,5 +1,5 @@
 let { expect } = require('chai');
-let { defaultRules } = require('../src/ressources/rules.js');
+let { defaultRules } = require('../../src/ressources/rules.js');
 const openSocket = require('socket.io-client');
 
 const expectNewRoom = (room, playerId) => {

@@ -52,17 +52,19 @@ module.exports = class Master {
   getRoomFromPlayerId(id) {
     let room;
 
-    for (let url in this.getRoomsList()) {
-      room = this.getRoom(url);
-      if (room.getListPlayers(id) !== undefined)
-        return (room);
+    if (id !== undefined) {
+      for (let url in this.getRoomsList()) {
+        room = this.getRoom(url);
+        if (room.getListPlayers(id) !== undefined)
+          return (room);
+      }
     }
     return (undefined);
   }
 
   getSioListFromRoom(url) {
-    let ret = {};
-    let room = {};
+    let ret;
+    let room;
 
     if ((room = this.getRoom(url)) && room.getListPlayers()) {
       for (let id of Object.keys(room.getListPlayers()))
@@ -103,7 +105,7 @@ module.exports = class Master {
   createRoom(clientId, profil, res) {
     let room;
 
-    if (profil.name !== undefined && clientId !== undefined && clientId !== null) {
+    if (profil && profil !== undefined && profil.name && profil.name !== undefined && profil.name.length > 0 && clientId !== undefined && clientId !== null) {
       if (this.isInRoom(clientId) && (room = this.getRoomFromPlayerId(clientId)))
         this.leaveRoom(clientId, room.getUrl());
       room = new Room(this);
@@ -131,7 +133,7 @@ module.exports = class Master {
   }
 
   leaveRoom(clientId, url, res) {
-    let room = {};
+    let room;
 
     if ((room = this.getRoom(url)) && room.getListPlayers(clientId)) {
       room.removePlayer(clientId);
@@ -145,10 +147,12 @@ module.exports = class Master {
 
   closeRoom(room) {
     let url = room.getUrl();
-    let clientsRoom = this.getSioListFromRoom(url);
+    let clientsRoom;
 
-    for (let key of Object.keys(clientsRoom))
-      room.removePlayer(key);
+    if ((clientsRoom = this.getSioListFromRoom(url)) !== undefined) {
+      for (let id of Object.keys(clientsRoom))
+        room.removePlayer(id);
+    }
     room.resetUrl();
     this._roomsList[url] = undefined;
     delete this._roomsList[url];
