@@ -12,14 +12,14 @@ const newShape = (room, rand) => {
 };
 
 function initShapes(room) {
-  room.addNewShape(newShape(room, newRand(1, 6)));
-  room.addNewShape(newShape(room, newRand(1, 6)));
+  room.addNewShape(newShape(room, newRand(1, tetriminos.length)));
+  room.addNewShape(newShape(room, newRand(1, tetriminos.length)));
 }
 
 const createNewTetri = (game, room) => {
   game.addPlaced(1);
   if (game.getPlaced() >= room.getShapes().length - 1)
-    room.addNewShape(newShape(room, newRand(1, 6)));
+    room.addNewShape(newShape(room, newRand(1, tetriminos.length)));
   game.setActualShape(room.getShapes(game.getPlaced()));
   game.setNextShape(room.getShapes(game.getPlaced() + 1));
   game.setId(room.getShapesId(game.getPlaced()));
@@ -143,6 +143,8 @@ const parseTruePos = (tab) => {
 };
 
 const checkIfOk = (game, x, y, truePos) => {
+  if (game.isWaiting())
+    return (0);
   if (game.getId() === 5 && x === 0 && y === 0)
     return (0);
   if (game.getX() + truePos.x + x < 0
@@ -160,7 +162,6 @@ const checkIfOk = (game, x, y, truePos) => {
 const moveTetri = (game, x, y) => {
   let truePos;
   let errors;
-  let doINeedToAdd;
 
   if (x === 0 && y === 0)
     turnTetri(game, true);
@@ -169,16 +170,13 @@ const moveTetri = (game, x, y) => {
   if (errors !== 'ok') {
     if (x === 0 && y === 0)
       turnTetri(game, false);
-    if (errors === 1)
-      addTetri(game);
     return (errors);
   }
   game.addY(y);
   game.addX(x);
-  if ((doINeedToAdd = checkTetri(game, truePos)) === -1) {
-    if ((x === 0 && y !== 0) && noMoreSpace(game) === false) {
+  if ((checkTetri(game, truePos)) === -1) {
+    if ((x === 0 && y !== 0) && noMoreSpace(game) === false)
       return (-1);
-    }
     else {
       game.subY(y);
       game.subX(x);
@@ -187,7 +185,10 @@ const moveTetri = (game, x, y) => {
       if (x === 0) {
         if (x === 0 && y === 0)
           return (0);
-        addTetri(game);
+        if (!game.isWaiting()) {
+          game.setWaiting(true);
+          addTetri(game);
+        }
         return (1);
       }
     }
@@ -243,6 +244,7 @@ function refresh(game, room, id) {
   let hasMoved = 0;
   let filledLines = 0;
 
+  game.setWaiting(false);
   if (game.getPlaced() === -1)
     createNewTetri(game, room);
   hasMoved = moveTetri(game, 0, 1);

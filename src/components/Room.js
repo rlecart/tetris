@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import api from '../api/clientApi';
 import nav from "../misc/nav";
-import { canIStayHere, isEmpty } from './utils.js';
+import { canIStayHere, isEmpty } from '../misc/utils.js';
 
 class Room extends Component {
   state = {

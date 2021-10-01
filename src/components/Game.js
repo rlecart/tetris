@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import colors from '../ressources/colors.js';
 import api from '../api/clientApi.js';
-import { canIStayHere, isEmpty } from './utils.js';
+import { canIStayHere, isEmpty } from '../misc/utils.js';
 import nav from "../misc/nav";
 
 class Game extends Component {

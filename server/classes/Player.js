@@ -53,7 +53,7 @@ module.exports = class Player {
     else if (dir === 'turn')
       reponse = moveTetri(this.getGame(), 0, 0);
     else if (dir === 'stash') {
-      while (reponse === 2 || reponse === -2)
+      while (reponse !== 1)
         reponse = moveTetri(this.getGame(), 0, 1);
     }
     if (reponse !== 0)
