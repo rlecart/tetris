@@ -5,7 +5,7 @@ const newRand = (min, max) => {
 };
 
 const newShape = (room, rand) => {
-  const i = rand % 6;
+  const i = rand % tetriminos.length;
 
   room.addShapesId(i + 2);
   return (tetriminos[i]);
