@@ -1,7 +1,7 @@
 let { expect } = require('chai')
 const _ = require('lodash')
 
-let { getRoomFromPlayerId, addNewClients, waitAMinute } = require('./utils.js');
+let { getRoomFromPlayerId, addNewClients, waitAMinute } = require('./helpers/helper.js');
 let Master = require('../server/classes/Master.js')
 let api = require('../src/api/clientApi');
 
