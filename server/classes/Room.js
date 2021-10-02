@@ -156,7 +156,7 @@ module.exports = class Room {
       }
       this._isOut = undefined;
       this.endGame();
-      this.emitAll('theEnd', undefined, { winnerInfo, owner: this.getOwner() });
+      this.emitAll('theEnd', undefined, { winnerInfo });
       for (let player of Object.values(this.getListPlayers()))
         player.setGame(undefined);
     }
@@ -307,6 +307,7 @@ module.exports = class Room {
       if (this.isInGame() === true && id !== exception) {
         let flatGame = this.flatGames(id);
         client.emit('refreshVue', flatGame, this.createSpecList(id));
+        console.log('c bien refresh cote server')
       }
     }
   }

@@ -37,6 +37,7 @@ class Game extends Component {
     isOwner: false,
     showGoBack: false,
   };
+  // isOwner = this.props.roomReducer.roomInfo.listPlayers[socket.id].profil.owner
 
   createbloc(bloc, blocClass, id, idTetri) {
     let col = (idTetri && bloc !== 0) ? idTetri : bloc;
@@ -100,6 +101,7 @@ class Game extends Component {
   };
 
   refreshGame(game, spec, context) {
+    console.log('hop ca refresh');
     const state = context.state;
 
     state.lines = game._lines;
@@ -109,23 +111,14 @@ class Game extends Component {
     context.setState(state);
   }
 
-  refreshRoomInfo(roomInfo, context) {
-    let stateTmp = context.state;
-
-    stateTmp = {
-      ...stateTmp,
-      isOwner: (roomInfo.owner === this.socket.id) ? true : false
-    };
-    context.setState(stateTmp);
-  }
-
   componentDidMount() {
-    canIStayHere('game', this)
+    console.log('game');
+    canIStayHere('game', this.props)
       .then(
         () => {
-          this.socket.on('disconnect', () => nav(this.props.history, '/'));
+          console.log('jpeux rester');
+          console.log('socket = ', this.socket);
           this.socket.on('refreshVue', (game, spec) => { this.refreshGame(game, spec, this); });
-          this.socket.on('refreshRoomInfo', (game) => { this.refreshRoomInfo(game, this); });
           this.socket.on('nowChillOutDude', (path) => this.props.history.replace(path));
           this.socket.on('endGame', () => {
             if (this.props.socketConnector.areGameEventsLoaded === true) {
@@ -135,12 +128,9 @@ class Game extends Component {
             }
             this.setState({ ...this.state, isOut: true });
           });
-          this.socket.on('theEnd', ({ winnerInfo, owner }) => {
+          this.socket.on('theEnd', ({ winnerInfo }) => {
             setTimeout(() => { this.setState({ showGoBack: true }); }, 5000);
-            this.setState({
-              ...this.state, winner: winnerInfo,
-              isOwner: (owner === this.socket.id) ? true : false
-            });
+            this.setState({ ...this.state, winner: winnerInfo, });
           });
           if (this.props.socketConnector.areGameEventsLoaded === false) {
             window.addEventListener("keydown", this.eventDispatcher);
@@ -148,6 +138,7 @@ class Game extends Component {
             this.props.dispatch(action);
           }
           api.readyToStart(this.socket, this.props.roomReducer.roomInfo.url);
+          console.log('hop le RTS');
         },
         () => { nav(this.props.history, '/'); });
   }
@@ -181,13 +172,13 @@ class Game extends Component {
   }
 
   createGameOverDisplay() {
-    let returnToRoomButton = (this.state.isOwner === true) ? (
+    let returnToRoomButton = (this.state.owner === this.socket.id) ? (
       <button className="roomButton" id="leaveGame" onClick={() => {
         api.askEverybodyToCalmDown(this.socket, this.props.roomReducer.roomInfo.url);
       }}>
         <span className="textButton">flex</span>
       </button>) : undefined;
-    let goBack = (this.state.showGoBack === true && this.state.isOwner === false) ? (
+    let goBack = (this.state.showGoBack === true && this.state.owner === this.socket.id) ? (
       <button className="roomButton" id="leaveGame" onClick={() => {
         let profil = this.props.roomReducer.roomInfo.listPlayers[this.socket.id]._profil;
         this.props.history.replace(`/${profil.url}[${profil.name}]`);

@@ -4,29 +4,29 @@ import { connect } from 'react-redux';
 import api from "../api/clientApi";
 import nav from '../misc/nav';
 
-const handleChange = (props, event, [profil, setProfil], [roomUrl, setRoomUrl]) => {
-  let newProfil = profil;
-  let newRoomUrl = roomUrl;
-
-  if (event.target.name === 'name')
-    newProfil = { name: event.target.value };
-  else if (event.target.name === 'roomUrl')
-    newRoomUrl = event.target.value;
-  let action = {
-    type: 'SYNC_HOME_DATA',
-    value: {
-      profil: newProfil,
-      roomUrl: newRoomUrl,
-    },
-  };
-  props.dispatch(action);
-  setProfil(newProfil);
-  setRoomUrl(newRoomUrl);
-};
-
 const Home = (props) => {
   const [profil, setProfil] = React.useState({ name: '' });
   const [roomUrl, setRoomUrl] = React.useState('');
+
+  const handleChange = (event) => {
+    let newProfil = profil;
+    let newRoomUrl = roomUrl;
+
+    if (event.target.name === 'name')
+      newProfil = { name: event.target.value };
+    else if (event.target.name === 'roomUrl')
+      newRoomUrl = event.target.value;
+    let action = {
+      type: 'SYNC_HOME_DATA',
+      value: {
+        profil: newProfil,
+        roomUrl: newRoomUrl,
+      },
+    };
+    props.dispatch(action);
+    setProfil(newProfil);
+    setRoomUrl(newRoomUrl);
+  };
 
   return (
     <div className="display">
@@ -41,30 +41,34 @@ const Home = (props) => {
               <div className="avatar" />
               <div className="avatarButton" />
             </div>
-            <input className='nickname' type="text" name="name" required onChange={
-              (event) => handleChange(props, event, [profil, setProfil], [roomUrl, setRoomUrl])
-            } />
+            <input className='nickname' type="text" name="name" required
+              onChange={(event) => handleChange(event)} />
           </div>
           <div className="blocMenu" id="home">
-            <input className='roomUrl' type="text" name="roomUrl" required onChange={
-              (event) => handleChange(props, event, [profil, setProfil], [roomUrl, setRoomUrl])
-            } placeHolder='URL' />
+            <input className='roomUrl' type="text" name="roomUrl" required
+              onChange={(event) => handleChange(event)} placeholder='URL' />
             <button className="roomButton" onClick={() => {
               api.joinRoom(props.socketConnector.socket, profil, roomUrl)
-                .then((url) => { nav(props.history, `/#${url}[${profil.name}]`); });
+                .then((url) => {
+                  nav(props.history, `/#${url}[${profil.name}]`);
+                });
             }}>
               <span className="textButton">Join room</span>
             </button>
             <button className="roomButton" onClick={() => {
+              console.log(profil);
               api.createRoom(props.socketConnector.socket, profil)
-                .then((url) => { nav(props.history, `/#${url}[${profil.name}]`); });
+                .then((url) => {
+                  console.log('coucou ca nav');
+                  nav(props.history, `/#${url}[${profil.name}]`);
+                });
             }}>
               <span className="textButton">Create Room</span>
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

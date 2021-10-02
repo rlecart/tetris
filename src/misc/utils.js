@@ -1,14 +1,13 @@
-const canIStayHere = (where, context) => {
+const canIStayHere = (where, props) => {
   return (new Promise((res, rej) => {
     if (where === 'game') {
-      if (Object.keys(context.props.roomReducer).length === 0 || Object.keys(context.props.socketConnector.socket).length === 0)
+      if (Object.keys(props.roomReducer).length === 0 || Object.keys(props.socketConnector.socket).length === 0)
         rej();
       else
         res();
-      // if (context.)
     }
     else if (where === 'room') {
-      if ((Object.keys(context.props.roomReducer).length === 0 && Object.keys(context.props.homeReducer.home).length === 0) || Object.keys(context.props.socketConnector.socket).length === 0)
+      if ((Object.keys(props.roomReducer).length === 0 && Object.keys(props.homeReducer.home).length === 0) || Object.keys(props.socketConnector.socket).length === 0)
         rej();
       else
         res();

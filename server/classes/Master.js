@@ -192,8 +192,11 @@ module.exports = class Master {
 
     if (url && clientId && (room = this.getRoom(url)) && room.getListPlayers(clientId) && room.isInGame() === false && room.isPending()) {
       room.addReadyToStart(clientId);
-      if (this.tryToStart(room.getReadyToStart(), room.getNbPlayer()))
+      console.log(room.getReadyToStart())
+      if (this.tryToStart(room.getReadyToStart(), room.getNbPlayer())) {
+        console.log('hop ca launch')
         room.launchGame(this.getSioListFromRoom(url));
+      }
       if (res !== undefined)
         res();
     }
