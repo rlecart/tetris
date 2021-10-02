@@ -3,12 +3,9 @@ import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import openSocket from 'socket.io-client';
 
-import Accueil from "./vues/Accueil";
+import Home from "./vues/Home";
 
 class App extends Component {
-  state = {
-  };
-
   componentDidMount() {
     let sock;
 
@@ -22,7 +19,7 @@ class App extends Component {
   render() {
     return (
       <Fragment>
-        <Accueil history={this.props.history} />
+        <Home history={this.props.history} />
       </Fragment>
     );
   }

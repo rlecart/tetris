@@ -4,7 +4,7 @@ describe('Server File test', () => {
   let master;
 
   before(() => {
-    master = require('../server/server');
+    master = require('../../server/server');
   });
 
   after(() => {
