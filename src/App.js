@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import openSocket from 'socket.io-client';
 
-import Home from "./vues/Home";
+import Home from "./components/Home";
 
 class App extends Component {
   componentDidMount() {

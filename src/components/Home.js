@@ -1,72 +1,75 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import api from "../api/clientApi";
 import nav from '../misc/nav';
 
-class Accueil extends Component {
-  state = {
-    profil: {
-      name: '',
+const handleChange = (props, event, [profil, setProfil], [roomUrl, setRoomUrl]) => {
+  let newProfil = profil;
+  let newRoomUrl = roomUrl;
+
+  if (event.target.name === 'name')
+    newProfil = { name: event.target.value };
+  else if (event.target.name === 'roomUrl')
+    newRoomUrl = event.target.value;
+  let action = {
+    type: 'SYNC_HOME_DATA',
+    value: {
+      profil: newProfil,
+      roomUrl: newRoomUrl,
     },
-    roomUrl: '',
   };
+  props.dispatch(action);
+  setProfil(newProfil);
+  setRoomUrl(newRoomUrl);
+};
 
-  handleChange(event) {
-    let state = this.state;
+const Home = (props) => {
+  const [profil, setProfil] = React.useState({ name: '' });
+  const [roomUrl, setRoomUrl] = React.useState('');
 
-    if (event.target.name === 'name')
-      state.profil.name = event.target.value;
-    else if (event.target.name === 'roomUrl')
-      state.roomUrl = event.target.value;
-    let action = {
-      type: 'SYNC_HOME_DATA',
-      value: state,
-    };
-    this.props.dispatch(action);
-    this.setState(state);
-  }
-
-  render() {
-    return (
-      <div className="display">
-        <div className="homeMenu">
-          <div className="topPanel">
-            <span className="title">Super Tetris 3000</span>
+  return (
+    <div className="display">
+      <div className="homeMenu">
+        <div className="topPanel">
+          <span className="title">Super Tetris 3000</span>
+        </div>
+        <div className="bottomPanel">
+          <div className="blocMenu" id="home">
+            <div className="avatarSelector">
+              <div className="avatarButton" />
+              <div className="avatar" />
+              <div className="avatarButton" />
+            </div>
+            <input className='nickname' type="text" name="name" required onChange={
+              (event) => handleChange(props, event, [profil, setProfil], [roomUrl, setRoomUrl])
+            } />
           </div>
-          <div className="bottomPanel">
-            <div className="blocMenu" id="home">
-              <div className="avatarSelector">
-                <div className="avatarButton" />
-                <div className="avatar" />
-                <div className="avatarButton" />
-              </div>
-              <input className='nickname' type="text" name="name" required onChange={(event) => this.handleChange(event)} />
-            </div>
-            <div className="blocMenu" id="home">
-              <input className='roomUrl' type="text" name="roomUrl" required onChange={(event) => this.handleChange(event)} placeHolder='URL' />
-              <button className="roomButton" onClick={() => {
-                api.joinRoom(this.props.socketConnector.socket, this.state.profil, this.state.roomUrl)
-                  .then((url) => { nav(this.props.history, `/#${url}[${this.state.profil.name}]`); });
-              }}>
-                <span className="textButton">Join room</span>
-              </button>
-              <button className="roomButton" onClick={() => {
-                api.createRoom(this.props.socketConnector.socket, this.state.profil)
-                  .then((url) => { nav(this.props.history, `/#${url}[${this.state.profil.name}]`); });
-              }}>
-                <span className="textButton">Create Room</span>
-              </button>
-            </div>
+          <div className="blocMenu" id="home">
+            <input className='roomUrl' type="text" name="roomUrl" required onChange={
+              (event) => handleChange(props, event, [profil, setProfil], [roomUrl, setRoomUrl])
+            } placeHolder='URL' />
+            <button className="roomButton" onClick={() => {
+              api.joinRoom(props.socketConnector.socket, profil, roomUrl)
+                .then((url) => { nav(props.history, `/#${url}[${profil.name}]`); });
+            }}>
+              <span className="textButton">Join room</span>
+            </button>
+            <button className="roomButton" onClick={() => {
+              api.createRoom(props.socketConnector.socket, profil)
+                .then((url) => { nav(props.history, `/#${url}[${profil.name}]`); });
+            }}>
+              <span className="textButton">Create Room</span>
+            </button>
           </div>
         </div>
       </div>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return state;
+    </div>
+  );
 };
 
-export default connect(mapStateToProps)(Accueil);
+const mapStateToProps = (state) => {
+  return (state);
+};
+
+export default connect(mapStateToProps)(Home);
