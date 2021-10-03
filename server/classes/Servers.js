@@ -47,7 +47,7 @@ module.exports = class mainServer {
     this._io.on('connection', (client) => {
       master.addNewSio(client);
       client.on('move', (clientId, url, dir, res) => {
-        if (master.getRoom(url).isInGame() === true)
+        if (master.getRoom(url) && master.getRoom(url).isInGame() === true)
           master.askToMove(clientId, url, dir, res);
       });
       client.on('createRoom', (clientId, profil, res) => { master.createRoom(clientId, profil, res); });

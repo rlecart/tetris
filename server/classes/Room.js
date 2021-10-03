@@ -108,26 +108,26 @@ module.exports = class Room {
     if (this._isOut !== undefined)
       return (this._isOut[id]);
   }
-
-  addSio(sio) {
-    if (sio && sio.id)
-      this._sioList = { ...this._sioList, [sio.id]: sio };
-  }
-
+  
   isInGame() {
     return (this._inGame);
   }
-
+  
   isPending() {
     return (this._pending);
   }
-
+  
   isOwner(id) {
     if (this._owner === id)
-      return (true);
+    return (true);
     return (false);
   }
-
+  
+    addSio(sio) {
+      if (sio && sio.id)
+        this._sioList = { ...this._sioList, [sio.id]: sio };
+    }
+  
   removeSio(id) {
     this._sioList = { ...this._sioList, [id]: undefined };
     delete this._sioList[id];
