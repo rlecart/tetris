@@ -1,58 +1,87 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { connect } from "react-redux";
 
 import colors from '../ressources/colors.js';
 import api from '../api/clientApi.js';
 import { canIStayHere, isEmpty } from '../misc/utils.js';
 import nav from "../misc/nav";
+import defaultGame from '../ressources/game';
 
-class Game extends Component {
-  socket = this.props.socketConnector.socket;
-  state = {
-    lines: [
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ],
-    spec: [],
-    winner: undefined,
-    isOut: false,
-    isOwner: false,
-    showGoBack: false,
-  };
+const Game = (props) => {
+  const socket = props.socketConnector.socket;
+  const [displayLines, setDisplayLines] = React.useState([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]);
+  const [spec, setSpec] = React.useState([]);
+  const [winner, setWinner] = React.useState(undefined);
+  const [isOut, setIsOut] = React.useState(false);
+  const [showGoBack, setShowGoBack] = React.useState(false);
+  const [tetri, setTetri] = React.useState(defaultGame.tetri);
+  const [interval, setInterval] = React.useState(undefined);
+  // state = {
+  //   lines: [
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //   ],
+  //   spec: [],
+  //   winner: undefined,
+  //   isOut: false,
+  //   isOwner: false,
+  //   showGoBack: false,
+  // };
 
-  createbloc(bloc, blocClass, id, idTetri) {
+  const createbloc = (bloc, blocClass, id, idTetri) => {
     let col = (idTetri && bloc !== 0) ? idTetri : bloc;
 
     return (<div className={blocClass} id={id} style={{ backgroundColor: colors[col] }} />);
-  }
+  };
 
-  createLine(line, blocClass, id, idTetri) {
+  const createLine = (line, blocClass, id, idTetri) => {
     let ret = [];
 
     for (let bloc of line)
-      ret.push(this.createbloc(bloc, blocClass, id, idTetri));
+      ret.push(createbloc(bloc, blocClass, id, idTetri));
     return (ret);
-  }
+  };
 
-  createLines(lines, lineClass, blocClass, id, idTetri) {
+  const createLines = (lines, lineClass, blocClass, id, idTetri) => {
     let ret = [];
 
     if (idTetri === 5 && lines.length < 3)
@@ -60,30 +89,30 @@ class Game extends Component {
     for (let line of lines) {
       ret.push(
         <div className={lineClass}>
-          {this.createLine(line, blocClass, id, idTetri)}
+          {createLine(line, blocClass, id, idTetri)}
         </div>
       );
     }
     return (ret);
-  }
+  };
 
-  acidMode(state) {
-    for (let line in state.lines) {
-      for (let char in state.lines[line]) {
-        state.lines[line][char]++;
-        state.lines[line][char] = (state.lines[line][char] % 9);
+  const acidMode = () => {
+    let newDisplayLines = displayLines;
+
+    for (let line in newDisplayLines) {
+      for (let char in newDisplayLines[line]) {
+        newDisplayLines[line][char]++;
+        newDisplayLines[line][char] = (newDisplayLines[line][char] % 9);
       }
     }
-    this.setState(state);
-  }
+    setDisplayLines(newDisplayLines);
+  };
 
-  eventDispatcher = (event) => {
-    const state = this.state;
-    const socket = this.socket;
-    const url = this.props.roomReducer.roomInfo.url;
+  const eventDispatcher = (event) => {
+    const url = props.roomReducer.roomInfo.url;
 
     if (event.key === "z")
-      this.acidMode(state);
+      acidMode();
     else if (event.key === 'ArrowRight')
       api.move('right', url, socket);
     else if (event.key === 'ArrowLeft')
@@ -99,18 +128,23 @@ class Game extends Component {
     }
   };
 
-  refreshGame(game, spec, context) {
-    const state = context.state;
+  const refreshGame = (game, spec) => {
+    let newDisplayLines = displayLines;
+    let newTetri = tetri;
+    let newInterval = interval;
+    let newSpec = spec;
 
-    state.lines = game._lines;
-    state.tetri = game._tetri;
-    state.interval = game._interval;
-    state.spec = spec;
-    context.setState(state);
-  }
+    newDisplayLines = game._lines;
+    newTetri = game._tetri;
+    newInterval = game._interval;
+    newSpec = spec;
+    setDisplayLines(newDisplayLines);
+    setTetri(newTetri);
+    setInterval(newInterval);
+    setSpec(newSpec);
+  };
 
-  refreshRoomInfo(newRoomInfo, context) {
-    let stateTmp = context.state;
+  const refreshRoomInfo = (newRoomInfo) => {
     let action = {
       type: 'SYNC_ROOM_DATA',
       value: newRoomInfo,
@@ -118,98 +152,103 @@ class Game extends Component {
 
     if (!newRoomInfo || isEmpty(newRoomInfo))
       return (-1);
-    stateTmp = {
-      ...stateTmp,
-      isOwner: (newRoomInfo.owner === this.socket.id) ? true : false
-    };
-    context.setState(stateTmp);
-    this.props.dispatch(action);
-  }
+    setSpec(newRoomInfo.spec);
+    setWinner(newRoomInfo.winner);
+    setIsOut(newRoomInfo.isOut);
+    setTetri(newRoomInfo.tetri);
+    setInterval(newRoomInfo.interval);
+    props.dispatch(action);
+  };
 
-  componentDidMount() {
-    canIStayHere('game', this.props)
+  React.useEffect(() => {
+    socket.removeAllListeners();
+    canIStayHere('game', props)
       .then(
         () => {
-          this.socket.on('disconnect', () => nav(this.props.history, '/'));
-          this.socket.on('refreshVue', (game, spec) => { this.refreshGame(game, spec, this); });
-          this.socket.on('refreshRoomInfo', (game) => {
-            console.log('refresh', game);
-            this.refreshRoomInfo(game, this);
+          socket.on('disconnect', () => {
+            pleaseUnmountGame();
+            nav(props.history, '/');
           });
-          this.socket.on('nowChillOutDude', (path) => this.props.history.replace(path));
-          this.socket.on('endGame', () => {
-            if (this.props.socketConnector.areGameEventsLoaded === true) {
-              window.removeEventListener('keydown', this.eventDispatcher);
-              const action = { type: 'GAME_EVENTS_UNLOADED' };
-              this.props.dispatch(action);
-            }
-            this.setState({ ...this.state, isOut: true });
+          socket.on('refreshVue', (game, spec) => { refreshGame(game, spec); });
+          socket.on('refreshRoomInfo', (newRoomInfo) => { refreshRoomInfo(newRoomInfo); });
+          socket.on('nowChillOutDude', (path) => {
+            pleaseUnmountGame();
+            props.history.replace(path);
           });
-          this.socket.on('theEnd', ({ winnerInfo, owner }) => {
-            setTimeout(() => { this.setState({ showGoBack: true }); }, 5000);
-            this.setState({
-              ...this.state, winner: winnerInfo,
-              isOwner: (owner === this.socket.id) ? true : false
-            });
+          socket.on('endGame', () => {
+            keydownLoader('UNLOAD');
+            setIsOut(true); // pour faire un ptit 'mdr t mor'
           });
-          if (this.props.socketConnector.areGameEventsLoaded === false) {
-            window.addEventListener("keydown", this.eventDispatcher);
-            const action = { type: 'GAME_EVENTS_LOADED' };
-            this.props.dispatch(action);
-          }
-          api.readyToStart(this.socket, this.props.roomReducer.roomInfo.url);
+          socket.on('theEnd', ({ winnerInfo }) => {
+            setTimeout(() => { setShowGoBack(true); }, 5000);
+            setWinner(winnerInfo);
+          });
+          console.log('DidMount du game')
+          keydownLoader('LOAD');
+          api.readyToStart(socket, props.roomReducer.roomInfo.url);
         },
-        () => { nav(this.props.history, '/'); });
-  }
+        () => { nav(props.history, '/'); });
+    return (() => console.log('real unmount game'));
+  }, []);
 
-  componentWillUnmount() {
-    if (!isEmpty(this.props.socketConnector)) {
-      if (!isEmpty(this.props.socketConnector.socket))
-        this.props.socketConnector.socket.removeAllListeners();
-      if (this.props.socketConnector.areGameEventsLoaded === true) {
-        window.removeEventListener('keydown', this.eventDispatcher);
-        const action = { type: 'GAME_EVENTS_UNLOADED' };
-        this.props.dispatch(action);
+  const keydownLoader = (toLoad) => {
+    const alreadyLoaded = (toLoad === 'LOAD') ? false : true;
+    const gameEvents = (toLoad === 'LOAD') ? 'GAME_EVENTS_LOADED' : 'GAME_EVENTS_UNLOADED';
+    const eventFunction = (toLoad === 'LOAD') ? window.addEventListener : window.removeEventListener;
+
+    if (toLoad === 'LOAD' || toLoad === 'UNLOAD') {
+      if (props.socketConnector.areGameEventsLoaded === alreadyLoaded) {
+        eventFunction("keydown", eventDispatcher);
+        const action = { type: gameEvents };
+        props.dispatch(action);
       }
     }
-  }
+  };
 
-  createSpec(players) {
+  const pleaseUnmountGame = () => {
+    if (!isEmpty(props.socketConnector)) {
+      if (!isEmpty(props.socketConnector.socket))
+        props.socketConnector.socket.removeAllListeners();
+      keydownLoader('UNLOAD');
+    }
+  };
+
+  const createSpec = (players) => {
     let ret = [];
 
     for (let player of players) {
       ret.push(
         <div className='blocSpec'>
           <div className="board" id='spec'>
-            {this.createLines(player.lines, 'line', 'lineBloc', 'spec')}
+            {createLines(player.lines, 'line', 'lineBloc', 'spec')}
           </div>
           <div className="nicknameSpec">{player.name}</div>
         </div>
       );
     }
     return (ret);
-  }
+  };
 
-  createGameOverDisplay() {
-    let returnToRoomButton = (this.props.roomReducer.roomInfo.owner === this.props.socketConnector.socket.id) ? (
+  const createGameOverDisplay = () => {
+    let returnToRoomButton = (props.roomReducer.roomInfo.owner === socket.id) ? (
       <button className="roomButton" id="leaveGame" onClick={() => {
-        api.askEverybodyToCalmDown(this.socket, this.props.roomReducer.roomInfo.url);
+        api.askEverybodyToCalmDown(socket, props.roomReducer.roomInfo.url);
       }}>
         <span className="textButton">flex</span>
       </button>) : undefined;
-    let goBack = (this.state.showGoBack === true && !(this.props.roomReducer.roomInfo.owner === this.props.socketConnector.socket.id)) ? (
+    let goBack = (showGoBack === true && !(props.roomReducer.roomInfo.owner === socket.id)) ? (
       <button className="roomButton" id="leaveGame" onClick={() => {
-        let profil = this.props.roomReducer.roomInfo.listPlayers[this.socket.id]._profil;
-        this.props.history.replace(`/${profil.url}[${profil.name}]`);
+        let profil = props.roomReducer.roomInfo.listPlayers[socket.id]._profil;
+        props.history.replace(`/${profil.url}[${profil.name}]`);
       }}>
         <span className="textButton">Go back</span>
       </button>) : undefined;
 
-    if (this.state.winner !== undefined) {
+    if (winner !== undefined) {
       var finalText;
 
-      if (Object.keys(this.state.winner).length !== 0) {
-        finalText = (this.state.winner.id === this.props.socketConnector.socket.id) ? (
+      if (!isEmpty(winner)) {
+        finalText = (winner.id === socket.id) ? (
           <Fragment>
             <span className="textButton" id="gameOverTextReveal">what a pro you are, such a nice musculature!!! :Q</span>
             <span className="textButton" id="gameOverTextReveal">YOU are the real beaugosse!</span>
@@ -217,7 +256,7 @@ class Game extends Component {
         ) : (
           <Fragment>
             <span className="textButton" id="gameOverTextReveal">but you lose, like the looser you are! :(((</span>
-            <span className="textButton" id="gameOverTextReveal">{this.state.winner.name} is the real beaugosse!</span>
+            <span className="textButton" id="gameOverTextReveal">{winner.name} is the real beaugosse!</span>
           </Fragment>);
       }
 
@@ -236,46 +275,44 @@ class Game extends Component {
         </div>
       );
     }
-  }
+  };
 
-  render() {
-    let spec = (this.state.spec.length !== 0) ? [
-      this.state.spec.slice(0, this.state.spec.length / 2),
-      this.state.spec.slice(this.state.spec.length / 2)
-    ] : undefined;
-    let gameOverDisplay = this.createGameOverDisplay();
+  const specList = (spec.length !== 0) ? [
+    spec.slice(0, spec.length / 2),
+    spec.slice(spec.length / 2)
+  ] : undefined;
+  const gameOverDisplay = createGameOverDisplay();
 
-    return (
-      <Fragment>
-        <div className='display'>
-          <div className="game" id="spec">
-            <div className="spec">
-              {spec ? this.createSpec(spec[0]) : undefined}
-            </div>
-          </div>
-          <div className="game">
-            <div className="board">
-              {this.createLines(this.state.lines, 'line', 'lineBloc')}
-            </div>
-            <div className="rightPanel">
-              <div className="nextText">NEXT :</div>
-              <div className="nextPiece">
-                {this.state.tetri !== undefined ? this.createLines(this.state.tetri.nextShape, 'lineNext', 'lineBlocNext', undefined, this.state.tetri.nextId) : undefined}
-              </div>
-              <div className="score">Score :<br />00</div>
-            </div>
-          </div>
-          <div className="game" id="spec">
-            <div className="spec">
-              {spec ? this.createSpec(spec[1]) : undefined}
-            </div>
+  return (
+    <Fragment>
+      <div className='display'>
+        <div className="game" id="spec">
+          <div className="spec">
+            {specList ? createSpec(specList[0]) : undefined}
           </div>
         </div>
-        {gameOverDisplay}
-      </Fragment>
-    );
-  }
-}
+        <div className="game">
+          <div className="board">
+            {createLines(displayLines, 'line', 'lineBloc')}
+          </div>
+          <div className="rightPanel">
+            <div className="nextText">NEXT :</div>
+            <div className="nextPiece">
+              {tetri !== undefined ? createLines(tetri.nextShape, 'lineNext', 'lineBlocNext', undefined, tetri.nextId) : undefined}
+            </div>
+            <div className="score">Score :<br />00</div>
+          </div>
+        </div>
+        <div className="game" id="spec">
+          <div className="spec">
+            {specList ? createSpec(specList[1]) : undefined}
+          </div>
+        </div>
+      </div>
+      {gameOverDisplay}
+    </Fragment>
+  );
+};
 
 
 const mapStateToProps = (state) => {
