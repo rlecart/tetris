@@ -9,8 +9,6 @@ const Home = (props) => {
   const socket = props.socketConnector.socket;
   const profil = (props.homeReducer && props.homeReducer.home && props.homeReducer.home.profil) ? props.homeReducer.home.profil : undefined;
   const roomUrl = (props.homeReducer && props.homeReducer.home && props.homeReducer.home.roomUrl) ? props.homeReducer.home.roomUrl : undefined;
-  // const [profil, setProfil] = React.useState({ name: '' });
-  // const [roomUrl, setRoomUrl] = React.useState('');
 
   const handleChange = (event) => {
     let newProfil;
@@ -21,8 +19,6 @@ const Home = (props) => {
     else if (event.target.name === 'roomUrl')
       newRoomUrl = event.target.value;
     setNewHomeInfo(newProfil, newRoomUrl, undefined);
-    // setProfil(newProfil);
-    // setRoomUrl(newRoomUrl);
   };
 
   const setNewHomeInfo = (newProfil, newRoomUrl, newOwner) => {

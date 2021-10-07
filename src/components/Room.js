@@ -4,21 +4,13 @@ import { connect } from "react-redux";
 import api from '../api/clientApi';
 import nav from "../misc/nav";
 import { canIStayHere, isEmpty } from '../misc/utils.js';
-
+import { setNewRoomInfo } from '../Store/Reducers/roomReducer';
 
 const Room = (props) => {
   const [loaded, setLoaded] = useState(false);
   const socket = (props.socketConnector) ? props.socketConnector.socket : undefined;
-  // const profil = props.homeReducer.home.profil;
   const roomInfo = (props.roomReducer) ? props.roomReducer.roomInfo : undefined;
   const roomUrl = (props.homeReducer && props.homeReducer.home) ? props.homeReducer.home.roomUrl : undefined;
-  // const [profil, setProfil] = React.useState({
-  //   name: '',
-  //   owner: false,
-  // });
-  // const [roomUrl, setRoomUrl] = React.useState('');
-  // const [roomInfo, setRoomInfo] = React.useState(undefined);
-  console.log('bonjour', roomInfo);
 
   const createList = () => {
     let ret = [];
@@ -40,18 +32,6 @@ const Room = (props) => {
       );
   };
 
-  const setNewRoomInfo = (newRoomInfo, isAsked) => {
-    let action = {
-      type: 'SYNC_ROOM_DATA',
-      value: newRoomInfo,
-    };
-
-    if ((!newRoomInfo || isEmpty(newRoomInfo)) && !isAsked)
-      return (-1);
-    // setRoomInfo(newRoomInfo);
-    // setProfil(newProfil);
-    props.dispatch(action);
-  };
 
   const pleaseUnmountRoom = (completly) => {
     if (!isEmpty(props.socketConnector) && !isEmpty(socket)) {
@@ -59,22 +39,14 @@ const Room = (props) => {
       setLoaded(false);
     }
     if (completly)
-      setNewRoomInfo(undefined, 'delete');
+      setNewRoomInfo(props.dispatch, undefined, 'delete');
     console.log('unmount room', roomInfo);
   };
 
   React.useEffect(() => {
-    // socket.removeAllListeners();
     canIStayHere('room', props)
       .then(
         () => {
-          // let url = props.match.url;
-          // let newProfil = {
-          //   ...profil,
-          //   name: url.substring(url.search(/\[[0-9a-zA-Z]+\]/) + 1, url.length - 1),
-          // };
-          // let newRoomUrl = url.substring(1, url.search(/\[/));
-          // let newRoomInfo = roomInfo;
           if (!loaded) {
             socket.on('disconnect', () => {
               pleaseUnmountRoom('completly');
@@ -84,16 +56,13 @@ const Room = (props) => {
               pleaseUnmountRoom();
               nav(props.history, `${props.location.pathname}/game`);
             });
-            socket.on('refreshRoomInfo', (newRoomInfo) => { setNewRoomInfo(newRoomInfo); });
+            socket.on('refreshRoomInfo', (newRoomInfo) => { setNewRoomInfo(props.dispatch, newRoomInfo); });
             setLoaded(true);
           }
           if (!roomInfo) {
             console.log('ca va getRoomInfo');
-            api.getRoomInfo(socket, roomUrl).then((newRoomInfo) => { console.log('ca getroom'); setNewRoomInfo(newRoomInfo); });
+            api.getRoomInfo(socket, roomUrl).then((newRoomInfo) => { console.log('ca getroom'); setNewRoomInfo(props.dispatch, newRoomInfo); });
           }
-          // setProfil(newProfil);
-          // setRoomUrl(newRoomUrl);
-          // setRoomInfo(newRoomInfo);
         },
         () => { nav(props.history, '/'); });
 

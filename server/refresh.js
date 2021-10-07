@@ -211,10 +211,10 @@ const checkFilledLine = (game) => {
 };
 
 const endGame = (room, id, res) => {
-  room.addOut(id);
   room.emitOnly('endGame', id);
-  if (res !== undefined)
-    res();
+  room.addOut(id);
+  // if (res !== undefined)
+  //   res();
 };
 
 function addFilledLine(room, exception, amount) {
