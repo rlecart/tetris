@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from "react-redux";
 
 import api from '../api/clientApi';
@@ -7,14 +7,18 @@ import { canIStayHere, isEmpty } from '../misc/utils.js';
 
 
 const Room = (props) => {
-  const socket = props.socketConnector.socket;
-  const [profil, setProfil] = React.useState({
-    name: '',
-    owner: false,
-  });
-  const [roomUrl, setRoomUrl] = React.useState('');
-  const [roomInfo, setRoomInfo] = React.useState(undefined);
-  console.log('bonjour')
+  const [loaded, setLoaded] = useState(false);
+  const socket = (props.socketConnector) ? props.socketConnector.socket : undefined;
+  // const profil = props.homeReducer.home.profil;
+  const roomInfo = (props.roomReducer) ? props.roomReducer.roomInfo : undefined;
+  const roomUrl = (props.homeReducer && props.homeReducer.home) ? props.homeReducer.home.roomUrl : undefined;
+  // const [profil, setProfil] = React.useState({
+  //   name: '',
+  //   owner: false,
+  // });
+  // const [roomUrl, setRoomUrl] = React.useState('');
+  // const [roomInfo, setRoomInfo] = React.useState(undefined);
+  console.log('bonjour', roomInfo);
 
   const createList = () => {
     let ret = [];
@@ -27,7 +31,7 @@ const Room = (props) => {
     return (ret);
   };
 
-  const isOwner = () => {
+  const ifOwner = () => {
     if (roomInfo && roomInfo.owner && socket.id === roomInfo.owner)
       return (
         <button className="roomButton" id="leaveLaunch" onClick={() => { api.askToStartGame(socket, roomUrl); }}>
@@ -36,55 +40,60 @@ const Room = (props) => {
       );
   };
 
-  const syncRoomData = (newRoomInfo) => {
-    let newProfil = profil;
+  const setNewRoomInfo = (newRoomInfo, isAsked) => {
     let action = {
       type: 'SYNC_ROOM_DATA',
       value: newRoomInfo,
     };
 
-    if (!newRoomInfo || isEmpty(newRoomInfo))
+    if ((!newRoomInfo || isEmpty(newRoomInfo)) && !isAsked)
       return (-1);
-    console.log(newRoomInfo);
-    setRoomInfo(newRoomInfo);
-    setProfil(newProfil);
+    // setRoomInfo(newRoomInfo);
+    // setProfil(newProfil);
     props.dispatch(action);
   };
 
-  const pleaseUnmountRoom = () => {
-    if (!isEmpty(props.socketConnector) && !isEmpty(socket))
+  const pleaseUnmountRoom = (completly) => {
+    if (!isEmpty(props.socketConnector) && !isEmpty(socket)) {
       socket.removeAllListeners();
-    console.log('unmount room');
+      setLoaded(false);
+    }
+    if (completly)
+      setNewRoomInfo(undefined, 'delete');
+    console.log('unmount room', roomInfo);
   };
 
   React.useEffect(() => {
-    socket.removeAllListeners();
+    // socket.removeAllListeners();
     canIStayHere('room', props)
       .then(
         () => {
-          let url = props.match.url;
-          let newProfil = {
-            ...profil,
-            name: url.substring(url.search(/\[[0-9a-zA-Z]+\]/) + 1, url.length - 1),
-          };
-          let newRoomUrl = url.substring(1, url.search(/\[/));
-          let newRoomInfo = roomInfo;
-          socket.on('disconnect', () => {
-            pleaseUnmountRoom();
-            nav(props.history, '/');
-          });
-          socket.on('goToGame', () => {
-            pleaseUnmountRoom();
-            nav(props.history, `${props.location.pathname}/game`);
-          });
-          socket.on('refreshRoomInfo', (newRoomInfo) => { syncRoomData(newRoomInfo); });
-          if (!roomInfo)
-            api.getRoomInfo(socket, newRoomUrl).then((newRoomInfo) => syncRoomData(newRoomInfo));
-          else
-            newRoomInfo = props.roomReducer.roomInfo;
-          setProfil(newProfil);
-          setRoomUrl(newRoomUrl);
-          setRoomInfo(newRoomInfo);
+          // let url = props.match.url;
+          // let newProfil = {
+          //   ...profil,
+          //   name: url.substring(url.search(/\[[0-9a-zA-Z]+\]/) + 1, url.length - 1),
+          // };
+          // let newRoomUrl = url.substring(1, url.search(/\[/));
+          // let newRoomInfo = roomInfo;
+          if (!loaded) {
+            socket.on('disconnect', () => {
+              pleaseUnmountRoom('completly');
+              nav(props.history, '/');
+            });
+            socket.on('goToGame', () => {
+              pleaseUnmountRoom();
+              nav(props.history, `${props.location.pathname}/game`);
+            });
+            socket.on('refreshRoomInfo', (newRoomInfo) => { setNewRoomInfo(newRoomInfo); });
+            setLoaded(true);
+          }
+          if (!roomInfo) {
+            console.log('ca va getRoomInfo');
+            api.getRoomInfo(socket, roomUrl).then((newRoomInfo) => { console.log('ca getroom'); setNewRoomInfo(newRoomInfo); });
+          }
+          // setProfil(newProfil);
+          // setRoomUrl(newRoomUrl);
+          // setRoomInfo(newRoomInfo);
         },
         () => { nav(props.history, '/'); });
 
@@ -94,7 +103,7 @@ const Room = (props) => {
   }, []);
 
   let players = createList();
-  let startGame = isOwner();
+  let startGame = ifOwner();
 
   return (
     <div className="display">
@@ -113,7 +122,7 @@ const Room = (props) => {
               <button className="roomButton" id="leaveLaunch" onClick={() => {
                 api.leaveRoom(socket, roomUrl)
                   .then(() => {
-                    pleaseUnmountRoom();
+                    pleaseUnmountRoom('completly');
                     props.history.replace('/');
                   });
               }}>

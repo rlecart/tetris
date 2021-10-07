@@ -7,27 +7,34 @@ import { isEmpty } from '../misc/utils';
 
 const Home = (props) => {
   const socket = props.socketConnector.socket;
-  const [profil, setProfil] = React.useState({ name: '' });
-  const [roomUrl, setRoomUrl] = React.useState('');
+  const profil = (props.homeReducer && props.homeReducer.home && props.homeReducer.home.profil) ? props.homeReducer.home.profil : undefined;
+  const roomUrl = (props.homeReducer && props.homeReducer.home && props.homeReducer.home.roomUrl) ? props.homeReducer.home.roomUrl : undefined;
+  // const [profil, setProfil] = React.useState({ name: '' });
+  // const [roomUrl, setRoomUrl] = React.useState('');
 
   const handleChange = (event) => {
-    let newProfil = profil;
-    let newRoomUrl = roomUrl;
+    let newProfil;
+    let newRoomUrl;
 
     if (event.target.name === 'name')
       newProfil = { name: event.target.value };
     else if (event.target.name === 'roomUrl')
       newRoomUrl = event.target.value;
+    setNewHomeInfo(newProfil, newRoomUrl, undefined);
+    // setProfil(newProfil);
+    // setRoomUrl(newRoomUrl);
+  };
+
+  const setNewHomeInfo = (newProfil, newRoomUrl, newOwner) => {
     let action = {
       type: 'SYNC_HOME_DATA',
       value: {
         profil: newProfil,
         roomUrl: newRoomUrl,
+        owner: newOwner,
       },
     };
     props.dispatch(action);
-    setProfil(newProfil);
-    setRoomUrl(newRoomUrl);
   };
 
   React.useEffect(() => {
@@ -59,6 +66,7 @@ const Home = (props) => {
             <button className="roomButton" onClick={() => {
               api.joinRoom(socket, profil, roomUrl)
                 .then((url) => {
+                  setNewHomeInfo(profil, url, false);
                   nav(props.history, `/#${url}[${profil.name}]`);
                 });
             }}>
@@ -69,6 +77,7 @@ const Home = (props) => {
               api.createRoom(socket, profil)
                 .then((url) => {
                   console.log('coucou ca nav');
+                  setNewHomeInfo(profil, url, true);
                   nav(props.history, `/#${url}[${profil.name}]`);
                 });
             }}>
