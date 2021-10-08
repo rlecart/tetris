@@ -5,40 +5,44 @@ import api from "../api/clientApi";
 import nav from '../misc/nav';
 import { isEmpty } from '../misc/utils';
 
-const Home = (props) => {
-  const socket = props.socketConnector.socket;
-  const profil = (props.homeReducer && props.homeReducer.home && props.homeReducer.home.profil) ? props.homeReducer.home.profil : undefined;
-  const roomUrl = (props.homeReducer && props.homeReducer.home && props.homeReducer.home.roomUrl) ? props.homeReducer.home.roomUrl : undefined;
-
+const Home = ({
+  dispatch,
+  history,
+  location,
+  match,
+  socketReducer,
+  roomReducer,
+  homeReducer,
+  gameReducer,
+}) => {
   const handleChange = (event) => {
-    let newProfil;
-    let newRoomUrl;
+    let newProfil = homeReducer.profil;
+    let newJoinUrl = homeReducer.joinUrl;
 
     if (event.target.name === 'name')
       newProfil = { name: event.target.value };
     else if (event.target.name === 'roomUrl')
-      newRoomUrl = event.target.value;
-    setNewHomeInfo(newProfil, newRoomUrl, undefined);
+      newJoinUrl = event.target.value;
+    setNewHomeInfo(newProfil, newJoinUrl, undefined);
   };
 
-  const setNewHomeInfo = (newProfil, newRoomUrl, newOwner) => {
+  const setNewHomeInfo = (newProfil, newJoinUrl, newOwner) => {
     let action = {
       type: 'SYNC_HOME_DATA',
       value: {
         profil: newProfil,
-        roomUrl: newRoomUrl,
+        joinUrl: newJoinUrl,
         owner: newOwner,
       },
     };
-    props.dispatch(action);
+    dispatch(action);
   };
 
   React.useEffect(() => {
-    console.log(socket);
-    if (socket && !isEmpty(socket))
-      socket.removeAllListeners();
+    // if (socketReducer && !isEmpty(socketReducer))
+    //   socketReducer.removeAllListeners();
     return (() => console.log('real unmount home'));
-  }, []);
+  }, [homeReducer]);
 
   return (
     <div className="display">
@@ -53,28 +57,30 @@ const Home = (props) => {
               <div className="avatar" />
               <div className="avatarButton" />
             </div>
-            <input className='nickname' type="text" name="name" required
+            <input className='nickname' type="text" name="name" required value={homeReducer.profil.name}
               onChange={(event) => handleChange(event)} />
           </div>
           <div className="blocMenu" id="home">
-            <input className='roomUrl' type="text" name="roomUrl" required
+            <input className='roomUrl' type="text" name="roomUrl" required value={homeReducer.joinUrl}
               onChange={(event) => handleChange(event)} placeholder='URL' />
             <button className="roomButton" onClick={() => {
-              api.joinRoom(socket, profil, roomUrl)
+              console.log('try to hoin', homeReducer.profil, homeReducer.joinUrl);
+              api.joinRoom(socketReducer.socket, homeReducer.profil, homeReducer.joinUrl)
                 .then((url) => {
-                  setNewHomeInfo(profil, url, false);
-                  nav(props.history, `/#${url}[${profil.name}]`);
+                  console.log('join front', url);
+                  setNewHomeInfo(homeReducer.profil, url, false);
+                  nav(history, `/#${url}[${homeReducer.profil.name}]`);
                 });
             }}>
               <span className="textButton">Join room</span>
             </button>
             <button className="roomButton" onClick={() => {
-              console.log(profil);
-              api.createRoom(socket, profil)
+              console.log(homeReducer.profil);
+              api.createRoom(socketReducer.socket, homeReducer.profil)
                 .then((url) => {
                   console.log('coucou ca nav');
-                  setNewHomeInfo(profil, url, true);
-                  nav(props.history, `/#${url}[${profil.name}]`);
+                  setNewHomeInfo(homeReducer.profil, url, true);
+                  nav(history, `/#${url}[${homeReducer.profil.name}]`);
                 });
             }}>
               <span className="textButton">Create Room</span>

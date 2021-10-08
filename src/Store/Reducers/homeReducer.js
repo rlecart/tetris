@@ -1,4 +1,10 @@
-const initialState = {};
+const initialState = {
+  owner: undefined,
+  profil: {
+    name: '',
+  },
+  joinUrl: '',
+};
 
 const homeReducer = (state = initialState, action) => {
   let nextState;
@@ -8,7 +14,7 @@ const homeReducer = (state = initialState, action) => {
       case 'SYNC_HOME_DATA':
         nextState = {
           ...state,
-          home: action.value
+          ...action.value
         };
         return nextState || state;
       default:

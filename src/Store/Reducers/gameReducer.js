@@ -1,4 +1,8 @@
-const initialState = {};
+import { defaultGame } from '../../ressources/game';
+
+const initialState = {
+  ...defaultGame,
+};
 
 const gameReducer = (state = initialState, action) => {
   let nextState;
@@ -8,24 +12,19 @@ const gameReducer = (state = initialState, action) => {
       case 'SYNC_GAME_DATA':
         nextState = {
           ...state,
-          game: action.value
+          ...action.value
         };
-        return nextState || state;
-      case 'DELETE_GAME_INFO':
-        nextState = {
-          ...state,
-          game: undefined,
-          winner: undefined
-        };
-        return nextState || state;
+        return (nextState || state);
+      case 'DELETE_GAME_DATA':
+        return (initialState);
       case 'ADD_WINNER':
         nextState = {
           ...state,
-          winner: action.value
+          winner: { ...action.value },
         };
-        return nextState || state;
+        return (nextState || state);
       default:
-        return state;
+        return (state);
     }
   }
 };

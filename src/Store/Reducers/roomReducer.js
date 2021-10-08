@@ -1,14 +1,17 @@
+import { defaultRoom } from "../../ressources/room";
 import { isEmpty } from "../../misc/utils";
 
-const initialState = {};
+const initialState = {
+  ...defaultRoom,
+};
 
-const setNewRoomInfo = (dispatch, newRoomInfo, isAsked) => {
+const setNewRoomInfo = (dispatch, newRoomInfo) => {
   let action = {
     type: 'SYNC_ROOM_DATA',
     value: newRoomInfo,
   };
 
-  if ((!newRoomInfo || isEmpty(newRoomInfo)) && !isAsked)
+  if (!newRoomInfo || isEmpty(newRoomInfo))
     return (-1);
   dispatch(action);
 };
@@ -21,11 +24,13 @@ const roomReducer = (state = initialState, action) => {
       case 'SYNC_ROOM_DATA':
         nextState = {
           ...state,
-          roomInfo: action.value
+          ...action.value
         };
-        return nextState || state;
+        return (nextState || state);
+      case 'DELETE_ROOM_DATA':
+        return (initialState);
       default:
-        return state;
+        return (state);
     }
   }
 };

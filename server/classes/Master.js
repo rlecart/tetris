@@ -127,7 +127,7 @@ module.exports = class Master {
         room.addSio(this.getSioList(clientId));
         room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo());
         res(url);
-        // console.log('room joined')
+        console.log('room joined', room)
       }
     }
   }
@@ -190,6 +190,7 @@ module.exports = class Master {
   readyToStart(clientId, url, res) {
     let room;
 
+    console.log('ready to start')
     if (url && clientId && (room = this.getRoom(url)) && room.getListPlayers(clientId) && room.isInGame() === false && room.isPending()) {
       room.addReadyToStart(clientId);
       console.log(room.getReadyToStart())

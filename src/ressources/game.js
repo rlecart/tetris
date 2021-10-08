@@ -33,4 +33,4 @@ const defaultGame = {
   placed: -1,
 };
 
-module.exports = defaultGame;
+exports.defaultGame = defaultGame;

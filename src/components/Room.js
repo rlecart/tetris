@@ -6,17 +6,26 @@ import nav from "../misc/nav";
 import { canIStayHere, isEmpty } from '../misc/utils.js';
 import { setNewRoomInfo } from '../Store/Reducers/roomReducer';
 
-const Room = (props) => {
+const Room = ({
+  dispatch,
+  history,
+  location,
+  match,
+  socketReducer,
+  roomReducer,
+  homeReducer,
+  gameReducer,
+}) => {
   const [loaded, setLoaded] = useState(false);
-  const socket = (props.socketConnector) ? props.socketConnector.socket : undefined;
-  const roomInfo = (props.roomReducer) ? props.roomReducer.roomInfo : undefined;
-  const roomUrl = (props.homeReducer && props.homeReducer.home) ? props.homeReducer.home.roomUrl : undefined;
+
+  // React.useEffect(() => {
+  // }, []);
 
   const createList = () => {
     let ret = [];
 
-    if (roomInfo && roomInfo.listPlayers) {
-      for (let player of Object.values(roomInfo.listPlayers)) {
+    if (roomReducer && roomReducer.listPlayers) {
+      for (let player of Object.values(roomReducer.listPlayers)) {
         ret.push(<div className="player">{player._profil.name}</div>);
       }
     }
@@ -24,47 +33,51 @@ const Room = (props) => {
   };
 
   const ifOwner = () => {
-    if (roomInfo && roomInfo.owner && socket.id === roomInfo.owner)
+    if (roomReducer && roomReducer.owner && socketReducer.socket.id === roomReducer.owner)
       return (
-        <button className="roomButton" id="leaveLaunch" onClick={() => { api.askToStartGame(socket, roomUrl); }}>
+        <button className="roomButton" id="leaveLaunch" onClick={() => { api.askToStartGame(socketReducer.socket, roomReducer.url); }}>
           <span className="textButton">Lancer la partie</span>
         </button>
       );
   };
 
-
   const pleaseUnmountRoom = (completly) => {
-    if (!isEmpty(props.socketConnector) && !isEmpty(socket)) {
-      socket.removeAllListeners();
+    if (!isEmpty(socketReducer) && !isEmpty(socketReducer.socket)) {
+      socketReducer.socket.removeAllListeners();
       setLoaded(false);
     }
     if (completly)
-      setNewRoomInfo(props.dispatch, undefined, 'delete');
-    console.log('unmount room', roomInfo);
+      dispatch({ type: 'DELETE_ROOM_DATA' });
+    console.log('unmount room', roomReducer);
   };
 
   React.useEffect(() => {
-    canIStayHere('room', props)
+    console.log('try to mount room');
+    console.log('socketReducer = ', socketReducer);
+    console.log('homeReducer', homeReducer);
+    console.log('roomReducer', roomReducer);
+    console.log('gameReducer', gameReducer);
+
+    canIStayHere('room', { roomReducer, homeReducer, socketReducer })
       .then(
         () => {
+          console.log('mount room');
           if (!loaded) {
-            socket.on('disconnect', () => {
+            socketReducer.socket.on('disconnect', () => {
               pleaseUnmountRoom('completly');
-              nav(props.history, '/');
+              nav(history, '/');
             });
-            socket.on('goToGame', () => {
+            socketReducer.socket.on('goToGame', () => {
               pleaseUnmountRoom();
-              nav(props.history, `${props.location.pathname}/game`);
+              nav(history, `${location.pathname}/game`);
             });
-            socket.on('refreshRoomInfo', (newRoomInfo) => { setNewRoomInfo(props.dispatch, newRoomInfo); });
+            socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) => { setNewRoomInfo(dispatch, newRoomInfo); });
+            console.log('ca va getRoomInfo');
+            api.getRoomInfo(socketReducer.socket, homeReducer.joinUrl).then((newRoomInfo) => { console.log('ca getroom'); setNewRoomInfo(dispatch, newRoomInfo); });
             setLoaded(true);
           }
-          if (!roomInfo) {
-            console.log('ca va getRoomInfo');
-            api.getRoomInfo(socket, roomUrl).then((newRoomInfo) => { console.log('ca getroom'); setNewRoomInfo(props.dispatch, newRoomInfo); });
-          }
         },
-        () => { nav(props.history, '/'); });
+        () => { nav(history, '/'); });
 
     return (() => {
       console.log('real unmount room');
@@ -89,10 +102,10 @@ const Room = (props) => {
             </div>
             <div className="bottomButtons">
               <button className="roomButton" id="leaveLaunch" onClick={() => {
-                api.leaveRoom(socket, roomUrl)
+                api.leaveRoom(socketReducer.socket, roomReducer.url)
                   .then(() => {
                     pleaseUnmountRoom('completly');
-                    props.history.replace('/');
+                    history.replace('/');
                   });
               }}>
                 <span className="textButton">Quitter</span>

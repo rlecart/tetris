@@ -1,13 +1,13 @@
 const canIStayHere = (where, props) => {
   return (new Promise((res, rej) => {
     if (where === 'game') {
-      if (isEmpty(props.roomReducer) || isEmpty(props.socketConnector.socket))
+      if (isEmpty(props.roomReducer) || isEmpty(props.socketReducer.socket))
         rej();
       else
         res();
     }
     else if (where === 'room') {
-      if ((isEmpty(props.roomReducer) && isEmpty(props.homeReducer.home)) || isEmpty(props.socketConnector.socket))
+      if ((isEmpty(props.roomReducer) && isEmpty(props.homeReducer.home)) || isEmpty(props.socketReducer.socket))
         rej();
       else
         res();
