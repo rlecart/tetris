@@ -1,5 +1,5 @@
 let clonedeep = require('lodash.clonedeep');
-let defaultGame = require('../../src/ressources/game.js');
+let { defaultGame } = require('../../src/ressources/game.js');
 
 module.exports = class Game {
   constructor(shapes, shapesId) {

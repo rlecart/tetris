@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import api from "../api/clientApi";
 import nav from '../misc/nav';
+import openSocket from 'socket.io-client';
 import { isEmpty } from '../misc/utils';
 
 const Home = ({
@@ -39,8 +40,14 @@ const Home = ({
   };
 
   React.useEffect(() => {
-    // if (socketReducer && !isEmpty(socketReducer))
-    //   socketReducer.removeAllListeners();
+    let socket;
+
+    if (!socketReducer.socket) {
+      console.log('socket vide');
+      socket = openSocket('http://localhost:8000');
+      const action = { type: 'CONNECT_SOCKET', value: socket };
+      dispatch(action);
+    }
     return (() => console.log('real unmount home'));
   }, [homeReducer]);
 

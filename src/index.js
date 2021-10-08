@@ -1,3 +1,4 @@
+import './App.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
@@ -7,9 +8,9 @@ import { Provider } from 'react-redux';
 import Store from './Store/configureStore';
 
 import NotFound from './components/NotFound';
-import App from './App';
 import Room from './components/Room';
 import Game from './components/Game';
+import Home from './components/Home';
 
 import {
   HashRouter,
@@ -21,7 +22,7 @@ const Root = () => (
   <Provider store={Store}>
     <HashRouter hashType='noslash'>
       <Switch>
-        <Route exact path='/' component={App} />
+        <Route exact path='/' component={Home} />
         <Route exact path='/:room' component={Room} />
         <Route exact path='/:room/:game' component={Game} />
         <Route component={NotFound} />
