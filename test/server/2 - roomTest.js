@@ -1,8 +1,8 @@
 let _ = require('lodash');
 let { expect } = require('chai');
 
-let Master = require('../server/classes/Master.js');
-let { expectNewRoom, expectJoinRoom } = require('./helpers/helper.js');
+let Master = require('../../server/classes/Master.js');
+let { expectNewRoom, expectJoinRoom } = require('../helpers/helper.js');
 
 describe('Room Tests', () => {
 	const playersId = [475, 307, 184467440737615];

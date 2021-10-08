@@ -1,9 +1,9 @@
 let { expect } = require('chai');
 const _ = require('lodash');
 
-let { addNewClients, waitAMinute } = require('./helpers/helper.js');
-let Master = require('../server/classes/Master.js');
-let api = require('../src/api/clientApi');
+let { addNewClients, waitAMinute } = require('../helpers/helper.js');
+let Master = require('../../server/classes/Master.js');
+let api = require('../../src/api/clientApi');
 
 describe('Game Tests', () => {
   const cb = () => { };

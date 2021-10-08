@@ -1,6 +1,6 @@
 let { expect, assert } = require('chai');
-let Master = require('../server/classes/Master.js');
-const { addNewClients, removeEveryClients, waitAMinute } = require('./helpers/helper.js');
+let Master = require('../../server/classes/Master.js');
+const { addNewClients, removeEveryClients, waitAMinute } = require('../helpers/helper.js');
 
 describe('Server tests', () => {
   let server;
