@@ -11,6 +11,19 @@ const gameReducer = (state = initialState, action) => {
           game: action.value
         };
         return nextState || state;
+      case 'DELETE_GAME_INFO':
+        nextState = {
+          ...state,
+          game: undefined,
+          winner: undefined
+        };
+        return nextState || state;
+      case 'ADD_WINNER':
+        nextState = {
+          ...state,
+          winner: action.value
+        };
+        return nextState || state;
       default:
         return state;
     }
