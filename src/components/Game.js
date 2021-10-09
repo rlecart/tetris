@@ -84,7 +84,7 @@ const Game = ({
         newDisplayLines[line][char] = (newDisplayLines[line][char] % 9);
       }
     }
-    setNewGameInfo({ ...gameReducer, lines: newDisplayLines });
+    setNewGameInfo({ ...gameReducer, _lines: newDisplayLines });
   };
 
   const eventDispatcher = (event) => {
