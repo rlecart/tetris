@@ -53,8 +53,10 @@ module.exports = class Player {
     else if (dir === 'turn')
       reponse = moveTetri(this.getGame(), 0, 0);
     else if (dir === 'stash') {
-      while (reponse !== 1)
+      while (reponse !== 1 && reponse !== 0) {
+        console.log('stash', reponse);
         reponse = moveTetri(this.getGame(), 0, 1);
+      }
     }
     if (reponse !== 0)
       room.emitOnly('refreshVue', this.getId(), room.flatGames(this.getId()), room.createSpecList(this.getId()));
