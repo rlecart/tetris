@@ -108,26 +108,26 @@ module.exports = class Room {
     if (this._isOut !== undefined)
       return (this._isOut[id]);
   }
-  
+
   isInGame() {
     return (this._inGame);
   }
-  
+
   isPending() {
     return (this._pending);
   }
-  
+
   isOwner(id) {
     if (this._owner === id)
-    return (true);
+      return (true);
     return (false);
   }
-  
-    addSio(sio) {
-      if (sio && sio.id)
-        this._sioList = { ...this._sioList, [sio.id]: sio };
-    }
-  
+
+  addSio(sio) {
+    if (sio && sio.id)
+      this._sioList = { ...this._sioList, [sio.id]: sio };
+  }
+
   removeSio(id) {
     this._sioList = { ...this._sioList, [id]: undefined };
     delete this._sioList[id];
@@ -307,7 +307,7 @@ module.exports = class Room {
       if (this.isInGame() === true && id !== exception) {
         let flatGame = this.flatGames(id);
         client.emit('refreshVue', flatGame, this.createSpecList(id));
-        console.log('c bien refresh cote server')
+        console.log('c bien refresh cote server');
       }
     }
   }

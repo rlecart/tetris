@@ -49,7 +49,7 @@ const Home = ({
       dispatch(action);
     }
     return (() => console.log('real unmount home'));
-  }, [homeReducer]);
+  }, []);
 
   return (
     <div className="display">

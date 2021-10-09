@@ -44,20 +44,14 @@ const Room = ({
   const pleaseUnmountRoom = (completly) => {
     if (!isEmpty(socketReducer) && !isEmpty(socketReducer.socket)) {
       socketReducer.socket.removeAllListeners();
-      setLoaded(false);
     }
     if (completly)
       dispatch({ type: 'DELETE_ROOM_DATA' });
+    setLoaded(false);
     console.log('unmount room', roomReducer);
   };
 
   React.useEffect(() => {
-    console.log('try to mount room');
-    console.log('socketReducer = ', socketReducer);
-    console.log('homeReducer', homeReducer);
-    console.log('roomReducer', roomReducer);
-    console.log('gameReducer', gameReducer);
-
     canIStayHere('room', { roomReducer, homeReducer, socketReducer })
       .then(
         () => {

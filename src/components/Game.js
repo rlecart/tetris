@@ -132,17 +132,17 @@ const Game = ({
               // keydownLoader('UNLOAD');
               window.removeEventListener('keydown', eventDispatcher);
               setIsOut(true); // pour faire un ptit 'mdr t mor'
-              setLoaded(false);
+              // setLoaded(false); 
               // dispatch({ type: 'UNLOAD_GAME' });
             });
             socketReducer.socket.on('theEnd', ({ winnerInfo }) => {
-              console.log('the nd', winnerInfo);
+              console.log('the end', winnerInfo);
               setTimeout(() => { setShowGoBack(true); }, 5000);
               dispatch({ type: "ADD_WINNER", value: winnerInfo });
               // setNewGameInfo({ ...gameReducer, winner: winnerInfo });
             });
             console.log('DidMount du game');
-            if (!loaded && !gameReducer._isWaiting) {
+            if (!loaded) {
               window.addEventListener('keydown', eventDispatcher);
               // dispatch({ type: 'LOAD_GAME' });
               // keydownLoader('LOAD');

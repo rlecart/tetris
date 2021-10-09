@@ -201,7 +201,7 @@ module.exports = class Master {
       if (res !== undefined)
         res();
     }
-    else if (room !== undefined && !room.isPending())
+    else if (room !== undefined && room.getListPlayers(clientId) && !room.isPending())
       room.emitOnly('nowChillOutDude', clientId, `/${url}[${String(room.getListPlayers(clientId).getName())}]`);
   }
 
