@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import api from "../api/clientApi";
+import api, { joinRoom } from "../api/clientApi";
 import nav from '../misc/nav';
 import openSocket from 'socket.io-client';
-import { isEmpty } from '../misc/utils';
 
 const Home = ({
   dispatch,
@@ -16,6 +15,8 @@ const Home = ({
   homeReducer,
   gameReducer,
 }) => {
+  const [whichButton, setWhichButton] = React.useState(undefined);
+
   const handleChange = (event) => {
     let newProfil = homeReducer.profil;
     let newJoinUrl = homeReducer.joinUrl;
@@ -51,6 +52,30 @@ const Home = ({
     return (() => console.log('real unmount home'));
   }, []);
 
+  const submitForm = (event) => {
+    console.log('submit');
+    event.preventDefault();
+    if (whichButton === 'joinRoom') {
+      api.joinRoom(socketReducer.socket, homeReducer.profil, homeReducer.joinUrl)
+        .then((url) => {
+          setNewHomeInfo(homeReducer.profil, url, false);
+          nav(history, `/#${url}[${homeReducer.profil.name}]`);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    else if (whichButton === 'createRoom') {
+      console.log(homeReducer.profil);
+      api.createRoom(socketReducer.socket, homeReducer.profil)
+        .then((url) => {
+          setNewHomeInfo(homeReducer.profil, url, true);
+          nav(history, `/#${url}[${homeReducer.profil.name}]`);
+        });
+    }
+    setWhichButton(undefined);
+  };
+
   return (
     <div className="display">
       <div className="homeMenu">
@@ -58,41 +83,27 @@ const Home = ({
           <span className="title">Super Tetris 3000</span>
         </div>
         <div className="bottomPanel">
-          <div className="blocMenu" id="home">
-            <div className="avatarSelector">
-              <div className="avatarButton" />
-              <div className="avatar" />
-              <div className="avatarButton" />
+          <form onSubmit={(event) => submitForm(event)}>
+            <div className="blocMenu" id="home">
+              <div className="avatarSelector">
+                <div className="avatarButton" />
+                <div className="avatar" />
+                <div className="avatarButton" />
+              </div>
+              <input className='nickname' type="text" name="name" pattern='[A-Za-z-]{1,}' required value={homeReducer.profil.name}
+                onChange={(event) => handleChange(event)} />
             </div>
-            <input className='nickname' type="text" name="name" required value={homeReducer.profil.name}
-              onChange={(event) => handleChange(event)} />
-          </div>
-          <div className="blocMenu" id="home">
-            <input className='roomUrl' type="text" name="roomUrl" required value={homeReducer.joinUrl}
-              onChange={(event) => handleChange(event)} placeholder='URL' />
-            <button className="roomButton" onClick={() => {
-              console.log('try to hoin', homeReducer.profil, homeReducer.joinUrl);
-              api.joinRoom(socketReducer.socket, homeReducer.profil, homeReducer.joinUrl)
-                .then((url) => {
-                  console.log('join front', url);
-                  setNewHomeInfo(homeReducer.profil, url, false);
-                  nav(history, `/#${url}[${homeReducer.profil.name}]`);
-                });
-            }}>
-              <span className="textButton">Join room</span>
-            </button>
-            <button className="roomButton" onClick={() => {
-              console.log(homeReducer.profil);
-              api.createRoom(socketReducer.socket, homeReducer.profil)
-                .then((url) => {
-                  console.log('coucou ca nav');
-                  setNewHomeInfo(homeReducer.profil, url, true);
-                  nav(history, `/#${url}[${homeReducer.profil.name}]`);
-                });
-            }}>
-              <span className="textButton">Create Room</span>
-            </button>
-          </div>
+            <div className="blocMenu" id="home">
+              <input className='roomUrl' type="text" name="roomUrl" required={whichButton === 'joinRoom'} value={homeReducer.joinUrl}
+                onChange={(event) => handleChange(event)} placeholder='URL' />
+              <button type="submit" className="roomButton" onClick={() => setWhichButton('joinRoom')}>
+                <span className="textButton">Join room</span>
+              </button>
+              <button type="submit" className="roomButton" onClick={() => setWhichButton('createRoom')}>
+                <span className="textButton">Create Room</span>
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div >

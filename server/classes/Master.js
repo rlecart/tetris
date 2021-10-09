@@ -115,7 +115,7 @@ module.exports = class Master {
     }
   }
 
-  joinRoom(clientId, profil, url, res) {
+  joinRoom(clientId, profil, url, cb) {
     let room;
 
     if (profil && profil !== undefined && profil.name) {
@@ -126,9 +126,11 @@ module.exports = class Master {
         room.addNewPlayer(clientId, profil);
         room.addSio(this.getSioList(clientId));
         room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo());
-        res(url);
-        console.log('room joined', room)
+        cb({ type: 'ok', value: url });
+        console.log('room joined', room);
       }
+      else
+        cb({ type: 'err', value: 'room full' });
     }
   }
 
@@ -190,12 +192,12 @@ module.exports = class Master {
   readyToStart(clientId, url, res) {
     let room;
 
-    console.log('ready to start')
+    console.log('ready to start');
     if (url && clientId && (room = this.getRoom(url)) && room.getListPlayers(clientId) && room.isInGame() === false && room.isPending()) {
       room.addReadyToStart(clientId);
-      console.log(room.getReadyToStart())
+      console.log(room.getReadyToStart());
       if (this.tryToStart(room.getReadyToStart(), room.getNbPlayer())) {
-        console.log('hop ca launch')
+        console.log('hop ca launch');
         room.launchGame(this.getSioListFromRoom(url));
       }
       if (res !== undefined)

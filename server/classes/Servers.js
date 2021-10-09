@@ -51,7 +51,7 @@ module.exports = class mainServer {
           master.askToMove(clientId, url, dir, res);
       });
       client.on('createRoom', (clientId, profil, res) => { master.createRoom(clientId, profil, res); });
-      client.on('joinRoom', (clientId, profil, url, res) => { master.joinRoom(clientId, profil, url, res); });
+      client.on('joinRoom', (clientId, profil, url, cb) => { master.joinRoom(clientId, profil, url, cb); });
       client.on('leaveRoom', (clientId, url, res) => { master.leaveRoom(clientId, url, res); });
       client.on('getRoomInfo', (url, res) => {
         let room;

@@ -394,3 +394,7 @@ button#leaveGame {
 	margin: 0px 15px 15px 15px;
 	max-width: 200px;
 }
+
+form {
+	display: contents;
+}

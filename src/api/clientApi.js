@@ -19,7 +19,12 @@ const getRoomInfo = (socket, idRoom) => {
 const createRoom = (socket, profil) => {
   return (new Promise((res, rej) => {
     if (socket && socket.connected && socket.id)
-      socket.emit('createRoom', socket.id, profil, res);
+      socket.emit('createRoom', socket.id, profil, (reponse) => {
+        if (reponse && reponse.type === 'ok')
+          res(reponse.value);
+        else
+          rej(reponse.value);
+      });
     else
       rej('socket not connected');
   }));
@@ -28,7 +33,12 @@ const createRoom = (socket, profil) => {
 const joinRoom = (socket, profil, idRoom) => {
   return (new Promise((res, rej) => {
     if (socket && socket.connected && socket.id)
-      socket.emit('joinRoom', socket.id, profil, idRoom, res);
+      socket.emit('joinRoom', socket.id, profil, idRoom, (reponse) => {
+        if (reponse && reponse.type === 'ok')
+          res(reponse.value);
+        else
+          rej(reponse.value);
+      });
     else
       rej('socket not connected');
   }));
