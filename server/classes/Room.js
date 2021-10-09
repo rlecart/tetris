@@ -313,7 +313,8 @@ module.exports = class Room {
   }
 
   gameLoop(socketClients, url) {
-    let gamesTmp = _.cloneDeep(this.getAllGames());
+    // let gamesTmp = _.cloneDeep(this.getAllGames());
+    let gamesTmp = this.getAllGames();
 
     for (let id of Object.keys(socketClients)) {
       if (this.isInGame() === true && !this.isOut(id))

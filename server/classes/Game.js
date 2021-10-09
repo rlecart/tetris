@@ -13,11 +13,11 @@ module.exports = class Game {
     this._tetri.x = Math.trunc(this._lines[0].length / 2 - this._tetri.actualShape[0].length / 2);
     this._tetri.y = -1;
     this._placed = clonedeep(defaultGame.placed);
-    this._isWaiting = false
+    this._isWaiting = false;
   }
 
   isWaiting() {
-    return (this._isWaiting)
+    return (this._isWaiting);
   }
 
   getTetri() {
@@ -66,7 +66,7 @@ module.exports = class Game {
   }
 
   setWaiting(value) {
-    this._isWaiting = value
+    this._isWaiting = value;
   }
 
   setTetri(tetri) {
@@ -143,6 +143,7 @@ module.exports = class Game {
   fillLine() {
     this._lines.push(new Array(this.getLines(0).length).fill(1));
     this._lines.shift();
+    this.refreshSpec(this.getLines());
   }
 
   refreshSpec(lines) {
