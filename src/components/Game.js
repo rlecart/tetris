@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { connect } from "react-redux";
 
 import colors from '../ressources/colors.js';
@@ -17,7 +17,8 @@ const Game = ({
   homeReducer,
   gameReducer,
 }) => {
-  const [loaded, setLoaded] = useState(false);
+  const isMounted = React.useRef(false);
+  const loaded = React.useRef(false);
   let [isOut, setIsOut] = React.useState(false);
   let [showGoBack, setShowGoBack] = React.useState(false);
 
@@ -65,9 +66,10 @@ const Game = ({
         tetri: newGameInfo._tetri,
         isWaiting: newGameInfo._isWaiting,
         placed: newGameInfo._placed,
-        // spec: newGameInfo._spec,
+        spec: newGameInfo.spec,
       },
     };
+    console.log('value = ', action.value);
 
     console.log('newGameInfo = ', newGameInfo);
     dispatch(action);
@@ -105,11 +107,12 @@ const Game = ({
   };
 
   React.useEffect(() => {
+    isMounted.current = true;
     canIStayHere('game', { roomReducer, socketReducer })
       .then(
         () => {
           console.log('ca useEffectttttttttttttttttttttttttttttttttttttttt');
-          if (!loaded) {
+          if (!loaded.current) {
             socketReducer.socket.on('disconnect', () => {
               pleaseUnmountGame();
               nav(history, '/');
@@ -117,7 +120,7 @@ const Game = ({
             socketReducer.socket.on('refreshVue', (newGame, newSpec) => {
               console.log('ca refresh front');
               setNewGameInfo({
-                ...gameReducer,
+                // ...gameReducer,
                 ...newGame,
                 spec: newSpec,
               });
@@ -132,42 +135,45 @@ const Game = ({
               // keydownLoader('UNLOAD');
               window.removeEventListener('keydown', eventDispatcher);
               setIsOut(true); // pour faire un ptit 'mdr t mor'
-              // setLoaded(false); 
+              // loaded.current = false) 
               // dispatch({ type: 'UNLOAD_GAME' });
             });
             socketReducer.socket.on('theEnd', ({ winnerInfo }) => {
               console.log('the end', winnerInfo);
-              setTimeout(() => { setShowGoBack(true); }, 5000);
+              setTimeout(() => {
+                if (isMounted.current)
+                  setShowGoBack(true);
+              }, 5000);
               dispatch({ type: "ADD_WINNER", value: winnerInfo });
               // setNewGameInfo({ ...gameReducer, winner: winnerInfo });
             });
             console.log('DidMount du game');
-            if (!loaded) {
+            if (!loaded.current) {
               window.addEventListener('keydown', eventDispatcher);
               // dispatch({ type: 'LOAD_GAME' });
               // keydownLoader('LOAD');
               console.log('url', roomReducer.url);
               api.readyToStart(socketReducer.socket, roomReducer.url);
-              setLoaded(true);
+              loaded.current = true;
             }
           }
         },
         () => { nav(history, '/'); });
-    return (() => console.log('real unmount game'));
+    return (() => isMounted.current = false);
   }, []);
 
   const pleaseUnmountGame = () => {
     if (!isEmpty(socketReducer)) {
       if (!isEmpty(socketReducer.socket))
         socketReducer.socket.removeAllListeners();
-      if (loaded) {
+      if (loaded.current) {
         window.removeEventListener('keydown', eventDispatcher);
-        setLoaded(false);
+        loaded.current = false;
         // dispatch({ type: 'UNLOAD_GAME' });
       }
       dispatch({ type: 'DELETE_GAME_DATA' });
       // keydownLoader('UNLOAD');
-      // setLoaded(false);
+      // loaded.current = false;
     }
   };
 

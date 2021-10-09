@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { connect } from "react-redux";
 
 import api from '../api/clientApi';
@@ -16,7 +16,7 @@ const Room = ({
   homeReducer,
   gameReducer,
 }) => {
-  const [loaded, setLoaded] = useState(false);
+  const loaded = useRef(false);
 
   // React.useEffect(() => {
   // }, []);
@@ -47,7 +47,7 @@ const Room = ({
     }
     if (completly)
       dispatch({ type: 'DELETE_ROOM_DATA' });
-    setLoaded(false);
+    loaded.current = false;
     console.log('unmount room', roomReducer);
   };
 
@@ -56,7 +56,7 @@ const Room = ({
       .then(
         () => {
           console.log('mount room');
-          if (!loaded) {
+          if (!loaded.current) {
             socketReducer.socket.on('disconnect', () => {
               pleaseUnmountRoom('completly');
               nav(history, '/');
@@ -68,7 +68,7 @@ const Room = ({
             socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) => { setNewRoomInfo(dispatch, newRoomInfo); });
             console.log('ca va getRoomInfo');
             api.getRoomInfo(socketReducer.socket, homeReducer.joinUrl).then((newRoomInfo) => { console.log('ca getroom'); setNewRoomInfo(dispatch, newRoomInfo); });
-            setLoaded(true);
+            loaded.current = true;
           }
         },
         () => { nav(history, '/'); });
