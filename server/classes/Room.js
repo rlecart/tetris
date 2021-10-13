@@ -298,7 +298,7 @@ module.exports = class Room {
     if (only !== undefined) {
       ret = _.cloneDeep(this.getAllGames(only));
       addTetri(ret);
-      return (ret);
+      return (ret.formatIt());
     }
   }
 

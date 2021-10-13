@@ -62,10 +62,10 @@ const Game = ({
     let action = {
       type: 'SYNC_GAME_DATA',
       value: {
-        lines: newGameInfo._lines,
-        tetri: newGameInfo._tetri,
-        isWaiting: newGameInfo._isWaiting,
-        placed: newGameInfo._placed,
+        lines: newGameInfo.lines,
+        tetri: newGameInfo.tetri,
+        isWaiting: newGameInfo.isWaiting,
+        placed: newGameInfo.placed,
         spec: newGameInfo.spec,
       },
     };
@@ -84,7 +84,7 @@ const Game = ({
         newDisplayLines[line][char] = (newDisplayLines[line][char] % 9);
       }
     }
-    setNewGameInfo({ ...gameReducer, _lines: newDisplayLines });
+    setNewGameInfo({ ...gameReducer, lines: newDisplayLines });
   };
 
   const eventDispatcher = (event) => {

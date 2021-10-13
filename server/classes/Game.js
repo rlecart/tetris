@@ -16,6 +16,15 @@ module.exports = class Game {
     this._isWaiting = false;
   }
 
+  formatIt() {
+    let ret = {};
+
+    ret.lines = this.getLines();
+    ret.tetri = this.getTetri();
+    ret.placed = this.getPlaced();
+    return (ret);
+  }
+
   isWaiting() {
     return (this._isWaiting);
   }

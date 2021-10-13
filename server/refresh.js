@@ -233,7 +233,7 @@ function addFilledLine(room, exception, amount) {
           room.getListPlayers(id).getGame().subY(1);
           room.getListPlayers(id).getGame().fillLine();
           refresh(room.getListPlayers(id).getGame(), room, id);
-          room.emitOnly('refreshVue', id, room.getListPlayers(id).getGame(), room.createSpecList(id));
+          room.emitOnly('refreshVue', id, room.getListPlayers(id).getGame().formatIt(), room.createSpecList(id));
         }
       }
     }
