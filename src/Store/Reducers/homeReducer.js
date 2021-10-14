@@ -21,7 +21,6 @@ const setNewHomeInfo = (dispatch, newHomeInfo) => {
 const homeReducer = (state = initialHomeState, action) => {
   let nextState;
 
-  console.log(state, action)
   switch (action.type) {
     case 'SYNC_HOME_DATA':
       nextState = {

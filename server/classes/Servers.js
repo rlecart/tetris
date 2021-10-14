@@ -55,12 +55,9 @@ module.exports = class mainServer {
       client.on('leaveRoom', (clientId, url, res) => { master.leaveRoom(clientId, url, res); });
       client.on('getRoomInfo', (url, res) => {
         let room;
-        room = master.getRoom(url);
-        console.log('ca a getroom', url, master.getRoomsList());
-        if (room) {
-          console.log('ca rentre');
+
+        if ((room = master.getRoom(url)))
           res({ type: 'ok', value: room.getRoomInfo() });
-        }
       });
       client.on('askToStartGame', (clientId, url, res) => { master.askToStartGame(clientId, url, res); });
       client.on('readyToStart', (clientId, url, res) => { master.readyToStart(clientId, url, res); });

@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const { socketReducer, initialSocketState } = require('../../src/Store/Reducers/socketReducer.js');
 const openSocket = require('socket.io-client');
 
-describe.only('Socket reducer tests', () => {
+describe('Socket reducer tests', () => {
   let store;
   let socket;
 

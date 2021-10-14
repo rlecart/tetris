@@ -31,6 +31,7 @@ const defaultGame = {
     y: 0,
   },
   placed: -1,
+  isWaiting: true,
 };
 
 exports.defaultGame = defaultGame;

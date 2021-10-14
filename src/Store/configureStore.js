@@ -10,4 +10,3 @@ const configureStore = (reducer, initialState, types) => createStore(
 );
 
 module.exports = { configureStore };
-// export default configureStore;

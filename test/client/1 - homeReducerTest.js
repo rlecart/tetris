@@ -2,7 +2,7 @@ const { configureStore } = require('../../src/Store/configureStore.js');
 const { expect } = require('chai');
 const { homeReducer, initialHomeState, setNewHomeInfo } = require('../../src/Store/Reducers/homeReducer.js');
 
-describe.only('Home reducer tests', () => {
+describe('Home reducer tests', () => {
   let exampleOfUsername = 'bonjourLesAmis';
   let exampleOfJoinUrl = 'bonjourLaRoom';
   let exampleOfOwner = true;

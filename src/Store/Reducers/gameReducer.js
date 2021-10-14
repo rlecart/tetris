@@ -4,6 +4,20 @@ const initialGameState = {
   ...defaultGame,
 };
 
+const setNewGameInfo = (dispatch, newGameInfo) => {
+  let action = {
+    type: 'SYNC_GAME_DATA',
+    value: {
+      lines: newGameInfo.lines,
+      tetri: newGameInfo.tetri,
+      isWaiting: newGameInfo.isWaiting,
+      placed: newGameInfo.placed,
+      spec: newGameInfo.spec,
+    },
+  };
+  dispatch(action);
+};
+
 const gameReducer = (state = initialGameState, action) => {
   let nextState;
 
@@ -13,7 +27,7 @@ const gameReducer = (state = initialGameState, action) => {
         ...state,
         ...action.value
       };
-      return (nextState || state);
+      return (nextState);
     case 'DELETE_GAME_DATA':
       return (initialGameState);
     case 'ADD_WINNER':
@@ -21,10 +35,10 @@ const gameReducer = (state = initialGameState, action) => {
         ...state,
         winner: { ...action.value },
       };
-      return (nextState || state);
+      return (nextState);
     default:
       return (state);
   }
 };
 
-module.exports = { gameReducer, initialGameState };
+module.exports = { gameReducer, initialGameState, setNewGameInfo };

@@ -1,6 +1,6 @@
 const isFunction = arg => { return typeof arg === 'function'; };
 
-const myMiddleware = (types = {}) => {
+const myMiddleware = (types) => {
   const fired = {};
 
   return store => next => action => {

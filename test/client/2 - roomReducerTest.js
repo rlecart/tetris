@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const { roomReducer, initialRoomState, setNewRoomInfo } = require('../../src/Store/Reducers/roomReducer.js');
 const Player = require('../../server/classes/Player');
 
-describe.only('Room reducer tests', () => {
+describe('Room reducer tests', () => {
   let exampleOfUrl = '12hui235';
   let exampleOfInGame = true;
   let exampleOfNbPlayer = 7;

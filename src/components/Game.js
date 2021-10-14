@@ -4,7 +4,9 @@ import { connect } from "react-redux";
 import colors from '../ressources/colors.js';
 import api from '../api/clientApi.js';
 import { canIStayHere, isEmpty } from '../misc/utils.js';
-import { setNewRoomInfo } from '../Store/Reducers/roomReducer.js';
+
+const { setNewRoomInfo } = require('../Store/Reducers/roomReducer.js');
+const { setNewGameInfo } = require('../Store/Reducers/gameReducer.js');
 
 const Game = ({
   dispatch,
@@ -20,12 +22,6 @@ const Game = ({
   const loaded = React.useRef(false);
   let [isOut, setIsOut] = React.useState(false);
   let [showGoBack, setShowGoBack] = React.useState(false);
-
-  // let tetri = (gameReducer) ? gameReducer._tetri : defaultGame.tetri;
-  // let displayLines = (gameReducer) ? gameReducer.lines : defaultGame.lines;
-  // React.useEffect(() => {
-  //   console.log('re set var');
-  // }, []);
 
   const createbloc = (bloc, blocClass, id, idTetri) => {
     let col = (idTetri && bloc !== 0) ? idTetri : bloc;
@@ -56,24 +52,6 @@ const Game = ({
     return (ret);
   };
 
-  const setNewGameInfo = (newGameInfo) => {
-    console.log('newGameInfo = ', newGameInfo);
-    let action = {
-      type: 'SYNC_GAME_DATA',
-      value: {
-        lines: newGameInfo.lines,
-        tetri: newGameInfo.tetri,
-        isWaiting: newGameInfo.isWaiting,
-        placed: newGameInfo.placed,
-        spec: newGameInfo.spec,
-      },
-    };
-    console.log('value = ', action.value);
-
-    console.log('newGameInfo = ', newGameInfo);
-    dispatch(action);
-  };
-
   const acidMode = () => {
     console.log('gamereduc = ', gameReducer);
     let newDisplayLines = gameReducer.lines;
@@ -84,7 +62,7 @@ const Game = ({
         newDisplayLines[line][char] = (newDisplayLines[line][char] + 1) % 9;
       }
     }
-    setNewGameInfo({ ...gameReducer, lines: newDisplayLines });
+    setNewGameInfo(dispatch, { ...gameReducer, lines: newDisplayLines });
   };
 
   const eventDispatcher = (event) => {
@@ -119,7 +97,7 @@ const Game = ({
             });
             socketReducer.socket.on('refreshVue', (newGame, newSpec) => {
               console.log('ca refresh front', gameReducer);
-              setNewGameInfo({
+              setNewGameInfo(dispatch, {
                 ...newGame,
                 spec: newSpec,
               });
@@ -145,7 +123,7 @@ const Game = ({
                   setShowGoBack(true);
               }, 5000);
               dispatch({ type: "ADD_WINNER", value: winnerInfo });
-              // setNewGameInfo({ ...gameReducer, winner: winnerInfo });
+              // setNewGameInfo(dispatch, { ...gameReducer, winner: winnerInfo });
             });
             console.log('DidMount du game');
             if (!loaded.current)
