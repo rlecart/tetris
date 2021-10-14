@@ -2,9 +2,8 @@ import React, { useRef } from 'react';
 import { connect } from "react-redux";
 
 import api from '../api/clientApi';
-import nav from "../misc/nav";
 import { canIStayHere, isEmpty } from '../misc/utils.js';
-import { setNewRoomInfo } from '../Store/Reducers/roomReducer';
+const { setNewRoomInfo } = require('../Store/Reducers/roomReducer');
 
 const Room = ({
   dispatch,
@@ -55,23 +54,22 @@ const Room = ({
     canIStayHere('room', { roomReducer, homeReducer, socketReducer })
       .then(
         () => {
-          console.log('mount room');
+          console.log('mount room', roomReducer);
           if (!loaded.current) {
             socketReducer.socket.on('disconnect', () => {
               pleaseUnmountRoom('completly');
-              nav(history, '/');
+              history.push('/');
             });
             socketReducer.socket.on('goToGame', () => {
               pleaseUnmountRoom();
-              nav(history, `${location.pathname}/game`);
+              history.push(`${location.pathname}/game`);
             });
             socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) => { setNewRoomInfo(dispatch, newRoomInfo); });
-            console.log('ca va getRoomInfo');
-            api.getRoomInfo(socketReducer.socket, homeReducer.joinUrl).then((newRoomInfo) => { console.log('ca getroom'); setNewRoomInfo(dispatch, newRoomInfo); });
+            api.getRoomInfo(socketReducer.socket, homeReducer.joinUrl).then((newRoomInfo) => { setNewRoomInfo(dispatch, newRoomInfo); });
             loaded.current = true;
           }
         },
-        () => { nav(history, '/'); });
+        () => { history.push('/'); });
 
     return (() => {
       console.log('real unmount room');

@@ -1,7 +1,7 @@
-import { defaultRoom } from "../../ressources/room";
-import { isEmpty } from "../../misc/utils";
+const { defaultRoom } = require("../../ressources/room");
+const { isEmpty } = require("../../misc/utils");
 
-const initialState = {
+const initialRoomState = {
   ...defaultRoom,
 };
 
@@ -16,24 +16,21 @@ const setNewRoomInfo = (dispatch, newRoomInfo) => {
   dispatch(action);
 };
 
-const roomReducer = (state = initialState, action) => {
+const roomReducer = (state = initialRoomState, action) => {
   let nextState;
 
-  if (action) {
-    switch (action.type) {
-      case 'SYNC_ROOM_DATA':
-        nextState = {
-          ...state,
-          ...action.value
-        };
-        return (nextState || state);
-      case 'DELETE_ROOM_DATA':
-        return (initialState);
-      default:
-        return (state);
-    }
+  switch (action.type) {
+    case 'SYNC_ROOM_DATA':
+      nextState = {
+        ...state,
+        ...action.value
+      };
+      return (nextState);
+    case 'DELETE_ROOM_DATA':
+      return (initialRoomState);
+    default:
+      return (state);
   }
 };
 
-export { setNewRoomInfo };
-export default roomReducer;
+module.exports = { roomReducer, setNewRoomInfo, initialRoomState };

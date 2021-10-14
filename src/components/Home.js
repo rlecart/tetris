@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import api, { joinRoom } from "../api/clientApi";
-import nav from '../misc/nav';
+import api from "../api/clientApi";
 import openSocket from 'socket.io-client';
+import { setNewHomeInfo } from '../Store/Reducers/homeReducer';
 
 const Home = ({
   dispatch,
@@ -25,19 +25,11 @@ const Home = ({
       newProfil = { name: event.target.value };
     else if (event.target.name === 'roomUrl')
       newJoinUrl = event.target.value;
-    setNewHomeInfo(newProfil, newJoinUrl, undefined);
-  };
-
-  const setNewHomeInfo = (newProfil, newJoinUrl, newOwner) => {
-    let action = {
-      type: 'SYNC_HOME_DATA',
-      value: {
-        profil: newProfil,
-        joinUrl: newJoinUrl,
-        owner: newOwner,
-      },
-    };
-    dispatch(action);
+    setNewHomeInfo(dispatch, {
+      newProfil: newProfil,
+      newJoinUrl: newJoinUrl,
+      newOwner: undefined,
+    });
   };
 
   React.useEffect(() => {
@@ -58,8 +50,12 @@ const Home = ({
     if (whichButton === 'joinRoom') {
       api.joinRoom(socketReducer.socket, homeReducer.profil, homeReducer.joinUrl)
         .then((url) => {
-          setNewHomeInfo(homeReducer.profil, url, false);
-          nav(history, `/#${url}[${homeReducer.profil.name}]`);
+          setNewHomeInfo(dispatch, {
+            newProfil: homeReducer.profil,
+            newJoinUrl: url,
+            newOwner: false
+          });
+          history.push(`/#${url}[${homeReducer.profil.name}]`);
         })
         .catch((err) => {
           console.log(err);
@@ -69,8 +65,12 @@ const Home = ({
       console.log(homeReducer.profil);
       api.createRoom(socketReducer.socket, homeReducer.profil)
         .then((url) => {
-          setNewHomeInfo(homeReducer.profil, url, true);
-          nav(history, `/#${url}[${homeReducer.profil.name}]`);
+          setNewHomeInfo(dispatch, {
+            newProfil: homeReducer.profil,
+            newJoinUrl: url,
+            newOwner: true
+          });
+          history.push(`/#${url}[${homeReducer.profil.name}]`);
         });
     }
     setWhichButton(undefined);

@@ -5,7 +5,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 
 import { Provider } from 'react-redux';
-import Store from './Store/configureStore';
+import { combineReducers } from 'redux';
 
 import NotFound from './components/NotFound';
 import Room from './components/Room';
@@ -18,18 +18,34 @@ import {
   Switch
 } from 'react-router-dom';
 
-const Root = () => (
-  <Provider store={Store}>
-    <HashRouter hashType='noslash'>
-      <Switch>
-        <Route exact path='/' component={Home} />
-        <Route exact path='/:room' component={Room} />
-        <Route exact path='/:room/:game' component={Game} />
-        <Route component={NotFound} />
-      </Switch>
-    </HashRouter>
-  </Provider>
-);
+const { socketReducer } = require('./Store/Reducers/socketReducer');
+const { roomReducer } = require("./Store/Reducers/roomReducer");
+const { homeReducer } = require("./Store/Reducers/homeReducer");
+const { gameReducer } = require("./Store/Reducers/gameReducer");
+
+const { configureStore } = require('./Store/configureStore');
+
+const Root = () => {
+  const Store = configureStore(combineReducers({
+    socketReducer,
+    roomReducer,
+    homeReducer,
+    gameReducer,
+  }, undefined, {}));
+
+  return (
+    <Provider store={Store}>
+      <HashRouter hashType='noslash'>
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route exact path='/:room' component={Room} />
+          <Route exact path='/:room/:game' component={Game} />
+          <Route component={NotFound} />
+        </Switch>
+      </HashRouter>
+    </Provider>
+  );
+};
 
 ReactDOM.render(<Root />, document.getElementById('root'));
 

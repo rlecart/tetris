@@ -295,7 +295,7 @@ module.exports = class Room {
   flatGames(only) {
     let ret;
 
-    if (only !== undefined) {
+    if (only !== undefined && !this.isOut(only)) {
       ret = _.cloneDeep(this.getAllGames(only));
       addTetri(ret);
       return (ret.formatIt());
@@ -307,7 +307,6 @@ module.exports = class Room {
       if (this.isInGame() === true && id !== exception) {
         let flatGame = this.flatGames(id);
         client.emit('refreshVue', flatGame, this.createSpecList(id));
-        console.log('c bien refresh cote server');
       }
     }
   }

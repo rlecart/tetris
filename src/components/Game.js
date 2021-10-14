@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import colors from '../ressources/colors.js';
 import api from '../api/clientApi.js';
 import { canIStayHere, isEmpty } from '../misc/utils.js';
-import nav from "../misc/nav";
 import { setNewRoomInfo } from '../Store/Reducers/roomReducer.js';
 
 const Game = ({
@@ -76,12 +75,13 @@ const Game = ({
   };
 
   const acidMode = () => {
+    console.log('gamereduc = ', gameReducer);
     let newDisplayLines = gameReducer.lines;
 
     for (let line in newDisplayLines) {
       for (let char in newDisplayLines[line]) {
-        newDisplayLines[line][char]++;
-        newDisplayLines[line][char] = (newDisplayLines[line][char] % 9);
+        // newDisplayLines[line][char]++;
+        newDisplayLines[line][char] = (newDisplayLines[line][char] + 1) % 9;
       }
     }
     setNewGameInfo({ ...gameReducer, lines: newDisplayLines });
@@ -115,15 +115,18 @@ const Game = ({
           if (!loaded.current) {
             socketReducer.socket.on('disconnect', () => {
               pleaseUnmountGame();
-              nav(history, '/');
+              history.push('/');
             });
             socketReducer.socket.on('refreshVue', (newGame, newSpec) => {
-              console.log('ca refresh front');
+              console.log('ca refresh front', gameReducer);
               setNewGameInfo({
-                // ...gameReducer,
                 ...newGame,
                 spec: newSpec,
               });
+              if (!loaded.current) {
+                window.addEventListener('keydown', eventDispatcher);
+                loaded.current = true;
+              }
             });
             socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) => { setNewRoomInfo(dispatch, newRoomInfo); });
             socketReducer.socket.on('nowChillOutDude', (path) => {
@@ -132,11 +135,8 @@ const Game = ({
             });
             socketReducer.socket.on('endGame', () => {
               console.log('unload', gameReducer);
-              // keydownLoader('UNLOAD');
               window.removeEventListener('keydown', eventDispatcher);
               setIsOut(true); // pour faire un ptit 'mdr t mor'
-              // loaded.current = false) 
-              // dispatch({ type: 'UNLOAD_GAME' });
             });
             socketReducer.socket.on('theEnd', ({ winnerInfo }) => {
               console.log('the end', winnerInfo);
@@ -148,17 +148,11 @@ const Game = ({
               // setNewGameInfo({ ...gameReducer, winner: winnerInfo });
             });
             console.log('DidMount du game');
-            if (!loaded.current) {
-              window.addEventListener('keydown', eventDispatcher);
-              // dispatch({ type: 'LOAD_GAME' });
-              // keydownLoader('LOAD');
-              console.log('url', roomReducer.url);
+            if (!loaded.current)
               api.readyToStart(socketReducer.socket, roomReducer.url);
-              loaded.current = true;
-            }
           }
         },
-        () => { nav(history, '/'); });
+        () => { history.push('/'); });
     return (() => isMounted.current = false);
   }, []);
 

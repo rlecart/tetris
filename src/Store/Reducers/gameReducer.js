@@ -1,32 +1,30 @@
-import { defaultGame } from '../../ressources/game';
+const { defaultGame } = require('../../ressources/game');
 
-const initialState = {
+const initialGameState = {
   ...defaultGame,
 };
 
-const gameReducer = (state = initialState, action) => {
+const gameReducer = (state = initialGameState, action) => {
   let nextState;
 
-  if (action) {
-    switch (action.type) {
-      case 'SYNC_GAME_DATA':
-        nextState = {
-          ...state,
-          ...action.value
-        };
-        return (nextState || state);
-      case 'DELETE_GAME_DATA':
-        return (initialState);
-      case 'ADD_WINNER':
-        nextState = {
-          ...state,
-          winner: { ...action.value },
-        };
-        return (nextState || state);
-      default:
-        return (state);
-    }
+  switch (action.type) {
+    case 'SYNC_GAME_DATA':
+      nextState = {
+        ...state,
+        ...action.value
+      };
+      return (nextState || state);
+    case 'DELETE_GAME_DATA':
+      return (initialGameState);
+    case 'ADD_WINNER':
+      nextState = {
+        ...state,
+        winner: { ...action.value },
+      };
+      return (nextState || state);
+    default:
+      return (state);
   }
 };
 
-export default gameReducer;
+module.exports = { gameReducer, initialGameState };

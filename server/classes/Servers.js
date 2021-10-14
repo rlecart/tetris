@@ -8,7 +8,7 @@ module.exports = class mainServer {
     this._server = {};
     this._io = {};
   }
-  
+
   getHttpServer() {
     return (this._server);
   }
@@ -55,9 +55,12 @@ module.exports = class mainServer {
       client.on('leaveRoom', (clientId, url, res) => { master.leaveRoom(clientId, url, res); });
       client.on('getRoomInfo', (url, res) => {
         let room;
-
-        if ((room = master.getRoom(url)))
-          res(room.getRoomInfo());
+        room = master.getRoom(url);
+        console.log('ca a getroom', url, master.getRoomsList());
+        if (room) {
+          console.log('ca rentre');
+          res({ type: 'ok', value: room.getRoomInfo() });
+        }
       });
       client.on('askToStartGame', (clientId, url, res) => { master.askToStartGame(clientId, url, res); });
       client.on('readyToStart', (clientId, url, res) => { master.readyToStart(clientId, url, res); });
@@ -80,7 +83,7 @@ module.exports = class mainServer {
           now = null;
         }, 6000);
       });
-      console.log('connected')
+      // console.log('connected')
     });
     this._io.listen(this._port);
     // console.log(`[Io listening on port ${this._port}]`);

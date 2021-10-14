@@ -1,25 +1,20 @@
-const initialState = {
+const initialSocketState = {
   socket: undefined,
-  // isSocketConnected: false,
 };
 
-function socketReducer(state = initialState, action) {
+const socketReducer = (state = initialSocketState, action) => {
   let nextState;
 
-  if (action) {
-    switch (action.type) {
-      case 'CONNECT_SOCKET':
-        nextState = {
-          ...state,
-          socket: action.value,
-          // isSocketConnected: true,
-        };
-        console.log('connect_socket', nextState);
-        return nextState || state;
-      default:
-        return state;
-    }
+  switch (action.type) {
+    case 'CONNECT_SOCKET':
+      nextState = {
+        ...state,
+        socket: action.value,
+      };
+      return (nextState);
+    default:
+      return (state);
   }
-}
+};
 
-export default socketReducer;
+module.exports = { socketReducer, initialSocketState };

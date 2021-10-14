@@ -1,12 +1,13 @@
-import { combineReducers, createStore } from "redux";
-import socketReducer from './Reducers/socketReducer';
-import roomReducer from "./Reducers/roomReducer";
-import homeReducer from "./Reducers/homeReducer";
-import gameReducer from "./Reducers/gameReducer";
+const { applyMiddleware, createStore } = require("redux");
+const { myMiddleware } = require('./myMiddleware');
 
-export default createStore(combineReducers({
-  socketReducer,
-  roomReducer,
-  homeReducer,
-  gameReducer,
-}));
+const configureStore = (reducer, initialState, types) => createStore(
+  reducer,
+  initialState,
+  applyMiddleware(
+    myMiddleware(types)
+  )
+);
+
+module.exports = { configureStore };
+// export default configureStore;

@@ -127,7 +127,6 @@ module.exports = class Master {
         room.addSio(this.getSioList(clientId));
         room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo());
         cb({ type: 'ok', value: url });
-        console.log('room joined', room);
       }
       else
         cb({ type: 'err', value: 'room full' });
@@ -158,7 +157,6 @@ module.exports = class Master {
     room.resetUrl();
     this._roomsList[url] = undefined;
     delete this._roomsList[url];
-    // console.log(`room ${url} closed`)
   }
 
   askToStartGame(clientId, url, res) {
@@ -192,12 +190,9 @@ module.exports = class Master {
   readyToStart(clientId, url, res) {
     let room;
 
-    console.log('ready to start');
     if (url && clientId && (room = this.getRoom(url)) && room.getListPlayers(clientId) && room.isInGame() === false && room.isPending()) {
       room.addReadyToStart(clientId);
-      console.log(room.getReadyToStart());
       if (this.tryToStart(room.getReadyToStart(), room.getNbPlayer())) {
-        console.log('hop ca launch');
         room.launchGame(this.getSioListFromRoom(url));
       }
       if (res !== undefined)

@@ -1,4 +1,4 @@
-const initialState = {
+const initialHomeState = {
   owner: undefined,
   profil: {
     name: '',
@@ -6,21 +6,32 @@ const initialState = {
   joinUrl: '',
 };
 
-const homeReducer = (state = initialState, action) => {
+const setNewHomeInfo = (dispatch, newHomeInfo) => {
+  let action = {
+    type: 'SYNC_HOME_DATA',
+    value: {
+      profil: newHomeInfo.newProfil,
+      joinUrl: newHomeInfo.newJoinUrl,
+      owner: newHomeInfo.newOwner,
+    },
+  };
+  dispatch(action);
+};
+
+const homeReducer = (state = initialHomeState, action) => {
   let nextState;
 
-  if (action) {
-    switch (action.type) {
-      case 'SYNC_HOME_DATA':
-        nextState = {
-          ...state,
-          ...action.value
-        };
-        return nextState || state;
-      default:
-        return state;
-    }
+  console.log(state, action)
+  switch (action.type) {
+    case 'SYNC_HOME_DATA':
+      nextState = {
+        ...state,
+        ...action.value
+      };
+      return nextState;
+    default:
+      return state;
   }
 };
 
-export default homeReducer;
+module.exports = { homeReducer, initialHomeState, setNewHomeInfo };

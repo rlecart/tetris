@@ -89,8 +89,8 @@ module.exports = class Game {
   }
 
   setLines(i, j, value) {
-    if (i !== undefined) {
-      if (j !== undefined) {
+    if (this._lines && i !== undefined) {
+      if (this._lines[i] && j !== undefined) {
         this._lines[i][j] = value;
       }
       else
