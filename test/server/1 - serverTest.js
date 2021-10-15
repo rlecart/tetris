@@ -1,6 +1,6 @@
 import { expect, assert } from 'chai';
 import Master from '../../server/classes/Master.js';
-import { addNewClients, removeEveryClients, waitAMinute } from '../helpers/helper.js';
+import { addNewClients, removeEveryClients, waitAMinute } from '../helpers/helpers.js';
 
 describe('Server tests', () => {
   let server;

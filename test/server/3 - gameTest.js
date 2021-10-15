@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import _ from 'lodash';
 
-import { addNewClients, waitAMinute } from '../helpers/helper.js';
+import { addNewClients, waitAMinute } from '../helpers/helpers.js';
 import Master from '../../server/classes/Master.js';
 import api from '../../src/api/clientApi.js';
 

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { expect } from 'chai';
 
 import Master from '../../server/classes/Master.js';
-import { expectNewRoom, expectJoinRoom } from '../helpers/helper.js';
+import { expectNewRoom, expectJoinRoom } from '../helpers/helpers.js';
 
 describe('Room Tests', () => {
 	const playersId = [475, 307, 184467440737615];
