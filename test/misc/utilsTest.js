@@ -1,10 +1,10 @@
-let { expect } = require('chai');
-const { isEmpty, canIStayHere, createNewUrl } = require('../../src/misc/utils');
-const { initialSocketState } = require('../../src/Store/Reducers/socketReducer');
-const { initialHomeState } = require('../../src/Store/Reducers/homeReducer');
-const { initialRoomState } = require('../../src/Store/Reducers/roomReducer');
-const openSocket = require('socket.io-client');
-const _ = require('lodash');
+import { expect } from 'chai';
+import { isEmpty, canIStayHere, createNewUrl } from '../../src/misc/utils.js';
+import { initialSocketState } from '../../src/Store/Reducers/socketReducer.js';
+import { initialHomeState } from '../../src/Store/Reducers/homeReducer.js';
+import { initialRoomState } from '../../src/Store/Reducers/roomReducer.js';
+import openSocket from 'socket.io-client';
+import _ from 'lodash';
 
 describe('Utils tests', () => {
   describe('isEmpty tests', () => {

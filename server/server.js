@@ -1,6 +1,6 @@
-let Master = require('./classes/Master.js');
+import Master from './classes/Master.js';
 let master = new Master();
 
 master.startServer();
 
-module.exports = master;
+export default master;

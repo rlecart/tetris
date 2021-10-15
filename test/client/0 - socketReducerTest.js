@@ -1,7 +1,7 @@
-const { configureStore } = require('../../src/Store/configureStore.js');
-const { expect } = require('chai');
-const { socketReducer, initialSocketState } = require('../../src/Store/Reducers/socketReducer.js');
-const openSocket = require('socket.io-client');
+import configureStore from '../../src/Store/configureStore.js';
+import { expect } from 'chai';
+import { socketReducer, initialSocketState } from '../../src/Store/Reducers/socketReducer.js';
+import openSocket from 'socket.io-client';
 
 describe('Socket reducer tests', () => {
   let store;
@@ -18,7 +18,7 @@ describe('Socket reducer tests', () => {
     });
   });
 
-  after(() => socket.disconnect())
+  after(() => socket.disconnect());
 
   it('Should be created', () => {
     const state = store.getState();

@@ -1,4 +1,4 @@
-const { defaultRules } = require('./rules.js');
+import defaultRules from './rules.js';
 
 const defaultRoom = {
   url: '',
@@ -8,4 +8,4 @@ const defaultRoom = {
   rules: defaultRules,
 };
 
-exports.defaultRoom = defaultRoom;
+export default defaultRoom;

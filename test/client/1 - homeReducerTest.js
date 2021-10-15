@@ -1,6 +1,6 @@
-const { configureStore } = require('../../src/Store/configureStore.js');
-const { expect } = require('chai');
-const { homeReducer, initialHomeState, setNewHomeInfo } = require('../../src/Store/Reducers/homeReducer.js');
+import configureStore from '../../src/Store/configureStore.js';
+import { expect } from 'chai';
+import { homeReducer, initialHomeState, setNewHomeInfo } from '../../src/Store/Reducers/homeReducer.js';
 
 describe('Home reducer tests', () => {
   let exampleOfUsername = 'bonjourLesAmis';

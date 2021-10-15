@@ -1,7 +1,6 @@
-const { configureStore } = require('../../src/Store/configureStore.js');
-const { expect } = require('chai');
-const { gameReducer, initialGameState, setNewGameInfo } = require('../../src/Store/Reducers/gameReducer.js');
-const Player = require('../../server/classes/Player');
+import configureStore from '../../src/Store/configureStore.js';
+import { expect } from 'chai';
+import { gameReducer, initialGameState, setNewGameInfo } from '../../src/Store/Reducers/gameReducer.js';
 
 describe('Game reducer tests', () => {
   let exampleOfLines = initialGameState.lines;

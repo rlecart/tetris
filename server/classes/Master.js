@@ -1,11 +1,11 @@
-let Room = require('./Room.js');
-let mainServer = require('./Servers.js');
-let { createNewUrl } = require('../../src/misc/utils.js');
-let { endGame } = require('../refresh.js');
+import Room from './Room.js';
+import mainServer from './Servers.js';
+import { createNewUrl } from '../../src/misc/utils.js';
+import { endGame } from '../refresh.js';
 
-let _ = require('lodash');
+import _ from 'lodash';
 
-module.exports = class Master {
+export default class Master {
   constructor() {
     this._roomsList = {};
     this._sioClientList = {};

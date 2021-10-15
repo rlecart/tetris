@@ -1,6 +1,6 @@
-let { expect } = require('chai');
-let { defaultRules } = require('../../src/ressources/rules.js');
-const openSocket = require('socket.io-client');
+import { expect } from 'chai';
+import defaultRules from '../../src/ressources/rules.js';
+import openSocket from 'socket.io-client';
 
 const expectNewRoom = (room, playerId) => {
   expect(room.isInGame()).to.be.eql(false);
@@ -62,4 +62,4 @@ const waitAMinute = (ms) => {
   }));
 };
 
-module.exports = { expectNewRoom, expectJoinRoom, addNewClients, removeEveryClients, waitAMinute };
+export { expectNewRoom, expectJoinRoom, addNewClients, removeEveryClients, waitAMinute };

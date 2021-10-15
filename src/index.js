@@ -18,12 +18,12 @@ import {
   Switch
 } from 'react-router-dom';
 
-const { socketReducer } = require('./Store/Reducers/socketReducer');
-const { roomReducer } = require("./Store/Reducers/roomReducer");
-const { homeReducer } = require("./Store/Reducers/homeReducer");
-const { gameReducer } = require("./Store/Reducers/gameReducer");
+import socketReducer from './Store/Reducers/socketReducer';
+import roomReducer from "./Store/Reducers/roomReducer";
+import homeReducer from "./Store/Reducers/homeReducer";
+import gameReducer from "./Store/Reducers/gameReducer";
 
-const { configureStore } = require('./Store/configureStore');
+import configureStore from './Store/configureStore';
 
 const Root = () => {
   const Store = configureStore(combineReducers({

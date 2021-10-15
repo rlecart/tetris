@@ -17,4 +17,5 @@ const socketReducer = (state = initialSocketState, action) => {
   }
 };
 
-module.exports = { socketReducer, initialSocketState };
+export default socketReducer;
+export { socketReducer, initialSocketState };

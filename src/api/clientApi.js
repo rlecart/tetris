@@ -95,4 +95,4 @@ const askEverybodyToCalmDown = (socket, idRoom) => {
   }));
 };
 
-module.exports = { move, getRoomInfo, createRoom, joinRoom, askToEndGame, askToStartGame, leaveRoom, readyToStart, askEverybodyToCalmDown };
+export default { move, getRoomInfo, createRoom, joinRoom, askToEndGame, askToStartGame, leaveRoom, readyToStart, askEverybodyToCalmDown };

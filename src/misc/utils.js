@@ -33,4 +33,4 @@ const createNewUrl = (roomsList) => {
   return (url);
 };
 
-module.exports = { canIStayHere, isEmpty, generateUrl, createNewUrl };
+export { canIStayHere, isEmpty, generateUrl, createNewUrl };

@@ -37,4 +37,4 @@ const tetriminos = [
     ],
 ];
 
-module.exports = tetriminos;
+export default tetriminos;

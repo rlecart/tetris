@@ -1,7 +1,7 @@
-const { configureStore } = require('../../src/Store/configureStore.js');
-const { expect } = require('chai');
-const { roomReducer, initialRoomState, setNewRoomInfo } = require('../../src/Store/Reducers/roomReducer.js');
-const Player = require('../../server/classes/Player');
+import configureStore from '../../src/Store/configureStore.js';
+import { expect } from 'chai';
+import { roomReducer, initialRoomState, setNewRoomInfo } from '../../src/Store/Reducers/roomReducer.js';
+import Player from '../../server/classes/Player.js';
 
 describe('Room reducer tests', () => {
   let exampleOfUrl = '12hui235';

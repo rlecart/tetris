@@ -1,9 +1,9 @@
-let { expect } = require('chai');
-const _ = require('lodash');
+import { expect } from 'chai';
+import _ from 'lodash';
 
-let { addNewClients, waitAMinute } = require('../helpers/helper.js');
-let Master = require('../../server/classes/Master.js');
-let api = require('../../src/api/clientApi');
+import { addNewClients, waitAMinute } from '../helpers/helper.js';
+import Master from '../../server/classes/Master.js';
+import api from '../../src/api/clientApi.js';
 
 describe('Game Tests', () => {
   const cb = () => { };

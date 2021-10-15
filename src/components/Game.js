@@ -5,8 +5,8 @@ import colors from '../ressources/colors.js';
 import api from '../api/clientApi.js';
 import { canIStayHere, isEmpty } from '../misc/utils.js';
 
-const { setNewRoomInfo } = require('../Store/Reducers/roomReducer.js');
-const { setNewGameInfo } = require('../Store/Reducers/gameReducer.js');
+import { setNewRoomInfo } from '../Store/Reducers/roomReducer.js';
+import { setNewGameInfo } from '../Store/Reducers/gameReducer.js';
 
 const Game = ({
   dispatch,

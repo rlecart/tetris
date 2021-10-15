@@ -7,6 +7,6 @@ const config = {
         url: '',
         port: 8000,
     },
-}
+};
 
-module.exports = { config }
+export default config;

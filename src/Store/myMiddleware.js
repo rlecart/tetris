@@ -16,4 +16,4 @@ const myMiddleware = (types = {}) => {
   };
 };
 
-module.exports = { myMiddleware };
+export default myMiddleware;

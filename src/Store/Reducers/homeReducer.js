@@ -33,4 +33,5 @@ const homeReducer = (state = initialHomeState, action) => {
   }
 };
 
-module.exports = { homeReducer, initialHomeState, setNewHomeInfo };
+export default homeReducer;
+export { homeReducer, initialHomeState, setNewHomeInfo };

@@ -1,5 +1,5 @@
-const { defaultRoom } = require("../../ressources/room");
-const { isEmpty } = require("../../misc/utils");
+import defaultRoom from "../../ressources/room.js";
+import { isEmpty } from "../../misc/utils.js";
 
 const initialRoomState = {
   ...defaultRoom,
@@ -33,4 +33,5 @@ const roomReducer = (state = initialRoomState, action) => {
   }
 };
 
-module.exports = { roomReducer, setNewRoomInfo, initialRoomState };
+export default roomReducer;
+export { roomReducer, setNewRoomInfo, initialRoomState };

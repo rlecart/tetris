@@ -1,8 +1,8 @@
-let { config } = require('../../serverConfig.js');
-let http = require('http');
-let { Server } = require('socket.io');
+import config from '../../serverConfig.js';
+import http from 'http';
+import { Server } from 'socket.io';
 
-module.exports = class mainServer {
+export default class mainServer {
   constructor() {
     this._port = config.back.port;
     this._server = {};

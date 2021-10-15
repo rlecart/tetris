@@ -1,4 +1,4 @@
-let tetriminos = require('../src/ressources/tetriminos.js');
+import tetriminos from '../src/ressources/tetriminos.js';
 
 const newRand = (min, max) => {
   return (Math.floor(Math.random() * (max - min + 1)) + min);
@@ -261,4 +261,4 @@ function refresh(game, room, id) {
 }
 
 
-module.exports = { refresh, moveTetri, initShapes, endGame, addTetri };
+export { refresh, moveTetri, initShapes, endGame, addTetri };

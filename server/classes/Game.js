@@ -1,7 +1,7 @@
-let clonedeep = require('lodash.clonedeep');
-let { defaultGame } = require('../../src/ressources/game.js');
+import clonedeep from 'lodash.clonedeep';
+import defaultGame from '../../src/ressources/game.js';
 
-module.exports = class Game {
+export default class Game {
   constructor(shapes, shapesId) {
     this._lines = clonedeep(defaultGame.lines);
     this._spec = clonedeep(defaultGame.lines);

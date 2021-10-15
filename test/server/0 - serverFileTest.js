@@ -1,10 +1,9 @@
-const { expect } = require('chai');
+import { expect } from 'chai';
+import master from '../../server/server.js';
 
 describe('Server File test', () => {
-  let master;
-
   before(() => {
-    master = require('../../server/server');
+    // master = require('../../server/server');
   });
 
   after(() => {

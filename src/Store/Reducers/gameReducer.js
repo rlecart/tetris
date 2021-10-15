@@ -1,4 +1,4 @@
-const { defaultGame } = require('../../ressources/game');
+import defaultGame from '../../ressources/game.js';
 
 const initialGameState = {
   ...defaultGame,
@@ -41,4 +41,5 @@ const gameReducer = (state = initialGameState, action) => {
   }
 };
 
-module.exports = { gameReducer, initialGameState, setNewGameInfo };
+export default gameReducer;
+export { gameReducer, initialGameState, setNewGameInfo };

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import api from '../api/clientApi';
 import { canIStayHere, isEmpty } from '../misc/utils.js';
-const { setNewRoomInfo } = require('../Store/Reducers/roomReducer');
+import { setNewRoomInfo } from '../Store/Reducers/roomReducer';
 
 const Room = ({
   dispatch,

@@ -1,5 +1,5 @@
-let { expect, assert } = require('chai');
+// let { expect, assert } = require('chai');
 
-describe.skip('Components loading', () => {
+// describe.skip('Components loading', () => {
   
-})
+// })

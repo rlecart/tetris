@@ -34,4 +34,4 @@ const defaultGame = {
   isWaiting: true,
 };
 
-exports.defaultGame = defaultGame;
+export default defaultGame;

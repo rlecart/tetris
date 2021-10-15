@@ -1,9 +1,9 @@
-let { defaultRules } = require('../../src/ressources/rules.js');
-let Player = require('./Player.js');
-let _ = require('lodash');
-let { refresh, initShapes, addTetri } = require('../refresh.js');
+import defaultRules from '../../src/ressources/rules.js';
+import Player from './Player.js';
+import _ from 'lodash';
+import { refresh, initShapes, addTetri } from '../refresh.js';
 
-module.exports = class Room {
+export default class Room {
   constructor() {
     this._url = '';
     this._inGame = false;

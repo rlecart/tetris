@@ -1,5 +1,5 @@
-const { applyMiddleware, createStore } = require("redux");
-const { myMiddleware } = require('./myMiddleware');
+import { applyMiddleware, createStore } from "redux";
+import myMiddleware from './myMiddleware.js';
 
 const configureStore = (reducer, initialState, types) => createStore(
   reducer,
@@ -9,4 +9,4 @@ const configureStore = (reducer, initialState, types) => createStore(
   )
 );
 
-module.exports = { configureStore };
+export default configureStore;

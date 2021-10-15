@@ -1,7 +1,7 @@
-let { moveTetri } = require('../refresh.js');
-let Game = require('./Game.js');
+import { moveTetri } from '../refresh.js';
+import Game from './Game.js';
 
-module.exports = class Player {
+export default class Player {
   constructor(profil, clientId) {
 
     this._clientId = clientId;
