@@ -8,13 +8,9 @@ const move = (dir, idRoom, socket) => {
 };
 
 const getRoomInfo = (socket, idRoom) => {
-  console.log('aa', idRoom);
   return (new Promise((res, rej) => {
-    console.log('bb');
     if (socket && socket.connected && socket.id) {
-      console.log('cc');
       socket.emit('getRoomInfo', idRoom, (reponse) => {
-        console.log('dd');
         if (reponse && reponse.type === 'ok')
           res(reponse.value);
         else

@@ -16,14 +16,14 @@ const canIStayHere = (where, props) => {
 };
 
 const isEmpty = (obj) => {
-  if (Object.keys(obj).length === 0)
+  if (!obj || Object.keys(obj).length === 0)
     return (true);
   else
     return (false);
 };
 
 const generateUrl = () => {
-  return (Math.random().toString(36).substring(7));
+  return (Math.random().toString(36).substring(2));
 };
 
 const createNewUrl = (roomsList) => {
@@ -33,13 +33,4 @@ const createNewUrl = (roomsList) => {
   return (url);
 };
 
-const getArrayFromObject = (obj) => {
-  let ret = [];
-
-  for (let value of Object.values(obj))
-    ret.push(value);
-  return (ret);
-};
-
-
-module.exports = { canIStayHere, isEmpty, generateUrl, createNewUrl, getArrayFromObject };
+module.exports = { canIStayHere, isEmpty, generateUrl, createNewUrl };
