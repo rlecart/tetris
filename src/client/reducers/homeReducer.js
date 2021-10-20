@@ -1,4 +1,4 @@
-import SYNC_HOME_DATA from '../actions/homeAction.js';
+import { SYNC_HOME_DATA } from '../actions/homeAction.js';
 
 const initialHomeState = {
   owner: undefined,
@@ -13,6 +13,7 @@ const homeReducer = (state = initialHomeState, action) => {
 
   switch (action.type) {
     case SYNC_HOME_DATA:
+      console.log('ca sync')
       nextState = {
         ...state,
         ...action.value

@@ -19,4 +19,4 @@ const deleteRoomData = (dispatch) => {
   dispatch(action);
 };
 
-export default { setNewRoomInfo, deleteRoomData };
+export { setNewRoomInfo, deleteRoomData };

@@ -139,7 +139,7 @@ const Game = ({
         loaded.current = false;
         // dispatch({ type: 'UNLOAD_GAME' });
       }
-      deleteGameData();
+      deleteGameData(dispatch);
       // keydownLoader('UNLOAD');
       // loaded.current = false;
     }

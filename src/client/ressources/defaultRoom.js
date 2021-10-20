@@ -1,4 +1,4 @@
-import defaultRules from './defautlRules.js';
+import defaultRules from './defaultRules.js';
 
 const defaultRoom = {
   url: '',

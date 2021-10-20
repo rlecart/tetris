@@ -2,7 +2,7 @@ export const SYNC_HOME_DATA = 'SYNC_HOME_DATA';
 
 const setNewHomeInfo = (dispatch, newHomeInfo) => {
   let action = {
-    type: 'SYNC_HOME_DATA',
+    type: SYNC_HOME_DATA,
     value: {
       profil: newHomeInfo.newProfil,
       joinUrl: newHomeInfo.newJoinUrl,
@@ -12,4 +12,4 @@ const setNewHomeInfo = (dispatch, newHomeInfo) => {
   dispatch(action);
 };
 
-export default { setNewHomeInfo };
+export { setNewHomeInfo };

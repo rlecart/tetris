@@ -2,12 +2,12 @@ import fs from 'fs';
 import debug from 'debug';
 import http from 'http';
 import Server from 'socket.io';
-import params from '../../../params';
+import params from '../../../params.js';
 
 export default class mainServer {
   constructor() {
-    this._host = params.host;
-    this._port = params.port;
+    this._host = params.server.host;
+    this._port = params.server.port;
     this._app = {};
     this._server = {};
     this._io = {};
@@ -22,15 +22,17 @@ export default class mainServer {
   }
 
   initApp(cb) {
-    const { host, port } = params;
+    const { host, port } = params.server;
     const handler = (req, res) => {
-      const file = req.url === '/bundle.js' ? '/../../build/bundle.js' : '/../../index.html';
+      const file = req.url === '/bundle.js' ? '/../../../build/bundle.js' : '/../../../index.html';
       fs.readFile(__dirname + file, (err, data) => {
         if (err) {
+          console.log(err)
           // logerror(err);
           res.writeHead(500);
           return res.end('Error loading index.html');
         }
+        console.log(data)
         res.writeHead(200);
         res.end(data);
       });
@@ -49,7 +51,7 @@ export default class mainServer {
     this.initApp(() => {
       this._io = Server(this._app, {
         cors: {
-          origin: params.url,
+          origin: params.server.url2,
           methods: ["GET", "POST"],
           credentials: true
         },
@@ -110,9 +112,9 @@ export default class mainServer {
           now = null;
         }, 6000);
       });
-      // console.log('connected')
+      console.log('connected')
     });
     this._io.listen(this._port);
-    // console.log(`[Io listening on port ${this._port}]`);
+    console.log(`[Io listening on port ${this._port}]`);
   }
 };

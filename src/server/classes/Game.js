@@ -1,18 +1,18 @@
-import clonedeep from 'lodash/clonedeep';
+import cloneDeep from 'lodash/cloneDeep.js';
 import defaultGame from '../../client/ressources/defaultGame.js';
 
 export default class Game {
   constructor(shapes, shapesId) {
-    this._lines = clonedeep(defaultGame.lines);
-    this._spec = clonedeep(defaultGame.lines);
-    this._tetri = clonedeep(defaultGame.tetri);
+    this._lines = cloneDeep(defaultGame.lines);
+    this._spec = cloneDeep(defaultGame.lines);
+    this._tetri = cloneDeep(defaultGame.tetri);
     this._tetri.id = shapesId[0];
     this._tetri.nextId = shapesId[1];
     this._tetri.actualShape = shapes[0];
     this._tetri.nextShape = shapes[1];
     this._tetri.x = Math.trunc(this._lines[0].length / 2 - this._tetri.actualShape[0].length / 2);
     this._tetri.y = -1;
-    this._placed = clonedeep(defaultGame.placed);
+    this._placed = cloneDeep(defaultGame.placed);
     this._isWaiting = false;
   }
 
@@ -156,6 +156,6 @@ export default class Game {
   }
 
   refreshSpec(lines) {
-    this._spec = clonedeep(lines);
+    this._spec = cloneDeep(lines);
   }
 };

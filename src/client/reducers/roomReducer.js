@@ -1,4 +1,5 @@
 import defaultRoom from "../ressources/defaultRoom.js";
+import { SYNC_ROOM_DATA, DELETE_ROOM_DATA } from '../actions/roomAction.js';
 
 const initialRoomState = {
   ...defaultRoom,

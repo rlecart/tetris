@@ -29,4 +29,4 @@ const addWinner = (dispatch, winnerInfo) => {
   dispatch(action);
 };
 
-export default { setNewGameInfo, deleteGameData, addWinner };
+export { setNewGameInfo, deleteGameData, addWinner };

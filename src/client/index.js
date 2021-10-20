@@ -1,4 +1,3 @@
-// import './App.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -16,11 +15,11 @@ import {
   Switch
 } from 'react-router-dom';
 
-import socketReducer from './reducers/socketReducer';
-import homeReducer from "./reducers/homeReducer";
-import roomReducer from "./reducers/roomReducer";
-import gameReducer from "./reducers/gameReducer";
-import configureStore from './middleware/configureStore';
+import socketReducer from './reducers/socketReducer.js';
+import homeReducer from "./reducers/homeReducer.js";
+import roomReducer from "./reducers/roomReducer.js";
+import gameReducer from "./reducers/gameReducer.js";
+import configureStore from './middleware/configureStore.js';
 
 const Store = configureStore(combineReducers({
   socketReducer,

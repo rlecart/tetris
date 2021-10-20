@@ -42,7 +42,7 @@ const Room = ({
       socketReducer.socket.removeAllListeners();
     }
     if (completly)
-      deleteRoomData();
+      deleteRoomData(dispatch);
     loaded.current = false;
     console.log('unmount room', roomReducer);
   };
