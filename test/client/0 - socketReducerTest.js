@@ -1,17 +1,19 @@
-import configureStore from '../../src/Store/configureStore.js';
+import configureStore from '../../src/client/middleware/configureStore.js';
 import { expect } from 'chai';
-import { socketReducer, initialSocketState } from '../../src/Store/Reducers/socketReducer.js';
+import { socketReducer, initialSocketState } from '../../src/client/reducers/socketReducer.js';
 import openSocket from 'socket.io-client';
+import params from '../../params'
+import { CONNECT_SOCKET } from '../../src/client/actions/socketAction.js'
 
-describe('Socket reducer tests', () => {
+describe.only('Socket reducer tests', () => {
   let store;
   let socket;
 
   before(() => {
-    socket = openSocket('http://localhost:8000');
+    socket = openSocket(params.server.url2);
     store = configureStore(socketReducer, undefined, {});
     store = configureStore(socketReducer, initialSocketState, {
-      'CONNECT_SOCKET': ({ dispatch, getState }) => {
+      CONNECT_SOCKET: ({ dispatch, getState }) => {
         const state = getState();
         expect(state.socket).to.be.eql(socket);
       }
@@ -26,11 +28,11 @@ describe('Socket reducer tests', () => {
   });
 
   it('Should update', () => {
-    store.dispatch({ type: 'CONNECT_SOCKET', value: socket });
+    store.dispatch({ type: CONNECT_SOCKET, value: socket });
   });
 
   it('Should not update', () => {
-    store.dispatch({ type: 'CONNECT_SOCKET' });
+    store.dispatch({ type: CONNECT_SOCKET });
     store.dispatch({ type: 'DOESNT_EXIST' });
   });
 

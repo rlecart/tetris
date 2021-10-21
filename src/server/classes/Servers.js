@@ -52,7 +52,7 @@ export default class mainServer {
       this._io = Server(this._app, {
         cors: {
           origin: params.server.url2,
-          methods: ["GET", "POST"],
+          methods: ["GET", "POST"], 
           credentials: true
         },
         'pingInterval': 5000

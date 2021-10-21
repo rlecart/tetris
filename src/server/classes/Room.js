@@ -1,4 +1,4 @@
-import defaultRules from '../../client/ressources/defaultRules.js';
+import defaultRules from '../../ressources/defaultRules.js';
 import Player from './Player.js';
 import _ from 'lodash';
 import { refresh, initShapes, addTetri } from '../refresh.js';

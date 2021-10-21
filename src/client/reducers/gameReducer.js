@@ -3,7 +3,7 @@ import {
   DELETE_GAME_DATA,
   ADD_WINNER
 } from '../actions/gameAction.js';
-import defaultGame from '../ressources/defaultGame.js';
+import defaultGame from '../../ressources/defaultGame.js';
 
 const initialGameState = {
   ...defaultGame,
@@ -32,5 +32,5 @@ const gameReducer = (state = initialGameState, action) => {
   }
 };
 
-export { initialGameState };
+export { gameReducer, initialGameState };
 export default gameReducer;

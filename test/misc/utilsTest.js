@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { isEmpty, canIStayHere, createNewUrl } from '../../src/misc/utils.js';
-import { initialSocketState } from '../../src/Store/Reducers/socketReducer.js';
-import { initialHomeState } from '../../src/Store/Reducers/homeReducer.js';
-import { initialRoomState } from '../../src/Store/Reducers/roomReducer.js';
+import { initialSocketState } from '../../src/client/reducers/socketReducer.js';
+import { initialHomeState } from '../../src/client/reducers/homeReducer.js';
+import { initialRoomState } from '../../src/client/reducers/roomReducer.js';
 import openSocket from 'socket.io-client';
 import _ from 'lodash';
 

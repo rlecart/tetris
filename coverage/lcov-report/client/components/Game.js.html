@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for client/components/Game.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">client/components/</a> Game.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/153</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/80</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/23</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/112</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { Fragment } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { connect } from "react-redux";</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >import colors from '../ressources/defaultColors.js';</span>
+<span class="cstat-no" title="statement not covered" >import api from '../api/clientApi.js';</span>
+<span class="cstat-no" title="statement not covered" >import { canIStayHere, isEmpty } from '../misc/utils.js';</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >import { setNewRoomInfo } from '../actions/roomAction.js';</span>
+<span class="cstat-no" title="statement not covered" >import { setNewGameInfo, addWinner, deleteGameData } from '../actions/gameAction.js';</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >const Game = <span class="fstat-no" title="function not covered" >({</span></span>
+  dispatch,
+  history,
+  location,
+  match,
+  socketReducer,
+  roomReducer,
+  homeReducer,
+  gameReducer,
+}) =&gt; <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >{</span></span></span>
+<span class="cstat-no" title="statement not covered" >  const isMounted = React.useRef(false);</span>
+<span class="cstat-no" title="statement not covered" >  const loaded = React.useRef(false);</span>
+  let [isOut, setIsOut] = React.useState(false);
+  let [showGoBack, setShowGoBack] = React.useState(false);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  const createbloc = <span class="fstat-no" title="function not covered" >(bloc, blocClass, id, idTetri) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >    let col = (idTetri &amp;&amp; bloc !== 0) ? idTetri : bloc;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return (&lt;div className={blocClass} id={id} style={{ backgroundColor: colors[col] }} /&gt;);</span>
+  };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  const createLine = <span class="fstat-no" title="function not covered" >(line, blocClass, id, idTetri) =&gt; <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >{</span></span></span></span></span></span></span></span></span></span></span></span></span>
+<span class="cstat-no" title="statement not covered" >    let ret = [];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >    for (let bloc of line)</span></span>
+<span class="cstat-no" title="statement not covered" >      ret.push(createbloc(bloc, blocClass, id, idTetri));</span>
+<span class="cstat-no" title="statement not covered" >    return (ret);</span>
+  };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  const createLines = <span class="fstat-no" title="function not covered" >(lines, lineClass, blocClass, id, idTetri) =&gt; <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >{</span></span></span></span></span></span></span></span></span></span></span></span></span>
+<span class="cstat-no" title="statement not covered" >    let ret = [];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (idTetri === 5 &amp;&amp; lines.length &lt; 3)</span>
+<span class="cstat-no" title="statement not covered" >      lines.unshift(new Array(lines[0].length).fill(0));</span>
+<span class="cstat-no" title="statement not covered" >    for (let line of lines) <span class="cstat-no" title="statement not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >      ret.push(</span>
+        &lt;div className={lineClass}&gt;
+          {createLine(line, blocClass, id, idTetri)}
+        &lt;/div&gt;
+      );
+    }
+<span class="cstat-no" title="statement not covered" >    return (ret);</span>
+  };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  const acidMode = <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >    console.log('gamereduc = ', gameReducer);</span>
+<span class="cstat-no" title="statement not covered" >    let newDisplayLines = gameReducer.lines;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    for (let line in newDisplayLines) {</span>
+<span class="cstat-no" title="statement not covered" >      for (let char in newDisplayLines[line]) {</span>
+        // newDisplayLines[line][char]++;
+<span class="cstat-no" title="statement not covered" >        newDisplayLines[line][char] = (newDisplayLines[line][char] + 1) % 9;</span>
+      }
+    }
+<span class="cstat-no" title="statement not covered" >    setNewGameInfo(dispatch, { ...gameReducer, lines: newDisplayLines });</span>
+  };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  const eventDispatcher = <span class="fstat-no" title="function not covered" >(event) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >    console.log(event.key);</span>
+<span class="cstat-no" title="statement not covered" >    if (event.key === "z")</span>
+<span class="cstat-no" title="statement not covered" >      acidMode();</span>
+    else <span class="cstat-no" title="statement not covered" >if (event.key === 'ArrowRight')</span>
+<span class="cstat-no" title="statement not covered" >      api.move('right', roomReducer.url, socketReducer.socket);</span>
+    else <span class="cstat-no" title="statement not covered" >if (event.key === 'ArrowLeft')</span>
+<span class="cstat-no" title="statement not covered" >      api.move('left', roomReducer.url, socketReducer.socket);</span>
+    else <span class="cstat-no" title="statement not covered" >if (event.key === ' ')</span>
+<span class="cstat-no" title="statement not covered" >      api.move('down', roomReducer.url, socketReducer.socket);</span>
+    else <span class="cstat-no" title="statement not covered" >if (event.key === 'ArrowUp')</span>
+<span class="cstat-no" title="statement not covered" >      api.move('turn', roomReducer.url, socketReducer.socket);</span>
+    else <span class="cstat-no" title="statement not covered" >if (event.key === 'ArrowDown')</span>
+<span class="cstat-no" title="statement not covered" >      api.move('stash', roomReducer.url, socketReducer.socket);</span>
+    else <span class="cstat-no" title="statement not covered" >if (event.key === 'c') {</span>
+<span class="cstat-no" title="statement not covered" >      api.askToEndGame(socketReducer.socket, roomReducer.url);</span>
+    }
+  };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  React.useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >    isMounted.current = true;</span>
+<span class="cstat-no" title="statement not covered" >    canIStayHere('game', { roomReducer, socketReducer })</span>
+      .then(
+<span class="fstat-no" title="function not covered" >        () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >          console.log('ca useEffectttttttttttttttttttttttttttttttttttttttt');</span>
+<span class="cstat-no" title="statement not covered" >          if (!loaded.current) {</span>
+<span class="cstat-no" title="statement not covered" >            socketReducer.socket.on('disconnect', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >              pleaseUnmountGame();</span>
+<span class="cstat-no" title="statement not covered" >              history.push('/');</span>
+            });
+<span class="cstat-no" title="statement not covered" >            socketReducer.socket.on('refreshVue', <span class="fstat-no" title="function not covered" >(newGame, newSpec) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >              console.log('ca refresh front', gameReducer);</span>
+<span class="cstat-no" title="statement not covered" >              setNewGameInfo(dispatch, { ...newGame, spec: newSpec, });</span>
+<span class="cstat-no" title="statement not covered" >              if (!loaded.current) {</span>
+<span class="cstat-no" title="statement not covered" >                window.addEventListener('keydown', eventDispatcher);</span>
+<span class="cstat-no" title="statement not covered" >                loaded.current = true;</span>
+              }
+            });
+<span class="cstat-no" title="statement not covered" >            socketReducer.socket.on('refreshRoomInfo', <span class="fstat-no" title="function not covered" >(newRoomInfo) =&gt; {</span> <span class="cstat-no" title="statement not covered" >setNewRoomInfo(dispatch, newRoomInfo); });</span></span>
+<span class="cstat-no" title="statement not covered" >            socketReducer.socket.on('nowChillOutDude', <span class="fstat-no" title="function not covered" >(path) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >              pleaseUnmountGame();</span>
+<span class="cstat-no" title="statement not covered" >              history.replace(path);</span>
+            });
+<span class="cstat-no" title="statement not covered" >            socketReducer.socket.on('endGame', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >              console.log('unload', gameReducer);</span>
+<span class="cstat-no" title="statement not covered" >              window.removeEventListener('keydown', eventDispatcher);</span>
+<span class="cstat-no" title="statement not covered" >              setIsOut(true); // pour faire un ptit 'mdr t mor'</span>
+            });
+<span class="cstat-no" title="statement not covered" >            socketReducer.socket.on('theEnd', <span class="fstat-no" title="function not covered" >({ winnerInfo }) =&gt; <span class="cstat-no" title="statement not covered" >{</span></span></span>
+<span class="cstat-no" title="statement not covered" >              console.log('the end', winnerInfo);</span>
+<span class="cstat-no" title="statement not covered" >              setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >                if (isMounted.current)</span>
+<span class="cstat-no" title="statement not covered" >                  setShowGoBack(true);</span>
+              }, 5000);
+<span class="cstat-no" title="statement not covered" >              addWinner(dispatch, winnerInfo);</span>
+            });
+<span class="cstat-no" title="statement not covered" >            console.log('DidMount du game');</span>
+<span class="cstat-no" title="statement not covered" >            if (!loaded.current)</span>
+<span class="cstat-no" title="statement not covered" >              api.readyToStart(socketReducer.socket, roomReducer.url);</span>
+          }
+        },
+<span class="fstat-no" title="function not covered" >        () =&gt; {</span> <span class="cstat-no" title="statement not covered" >history.push('/'); });</span>
+<span class="cstat-no" title="statement not covered" >    return (<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; isMounted.current = false);</span></span></span>
+  }, []);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  const pleaseUnmountGame = <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >    if (!isEmpty(socketReducer)) {</span>
+<span class="cstat-no" title="statement not covered" >      if (!isEmpty(socketReducer.socket))</span>
+<span class="cstat-no" title="statement not covered" >        socketReducer.socket.removeAllListeners();</span>
+<span class="cstat-no" title="statement not covered" >      if (loaded.current) {</span>
+<span class="cstat-no" title="statement not covered" >        window.removeEventListener('keydown', eventDispatcher);</span>
+<span class="cstat-no" title="statement not covered" >        loaded.current = false;</span>
+        // dispatch({ type: 'UNLOAD_GAME' });
+      }
+<span class="cstat-no" title="statement not covered" >      deleteGameData(dispatch);</span>
+      // keydownLoader('UNLOAD');
+      // loaded.current = false;
+    }
+  };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  const createSpec = <span class="fstat-no" title="function not covered" >(players) =&gt; <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >{</span></span></span></span></span></span></span></span></span></span></span></span></span>
+<span class="cstat-no" title="statement not covered" >    let ret = [];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    for (let player of players) <span class="cstat-no" title="statement not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >      ret.push(</span>
+        &lt;div className='blocSpec'&gt;
+          &lt;div className="board" id='spec'&gt;
+            {createLines(player.lines, 'line', 'lineBloc', 'spec')}
+          &lt;/div&gt;
+          &lt;div className="nicknameSpec"&gt;{player.name}&lt;/div&gt;
+        &lt;/div&gt;
+      );
+    }
+<span class="cstat-no" title="statement not covered" >    return (ret);</span>
+  };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  const createGameOverDisplay = <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >    let returnToRoomButton = (roomReducer.owner === socketReducer.socket.id) ? (</span>
+      &lt;button className="roomButton" id="leaveGame" onClick={<span class="fstat-no" title="function not covered" >() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        api.askEverybodyToCalmDown(socketReducer.socket, roomReducer.url);</span>
+        // pleaseUnmountGame();
+      }}&gt;
+        &lt;span className="textButton"&gt;flex&lt;/span&gt;
+      &lt;/button&gt;) : undefined;
+<span class="cstat-no" title="statement not covered" >    let goBack = (showGoBack === true &amp;&amp; !(roomReducer.owner === socketReducer.socket.id)) ? (</span>
+      &lt;button className="roomButton" id="leaveGame" onClick={<span class="fstat-no" title="function not covered" >() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        let profil = roomReducer.listPlayers[socketReducer.socket.id]._profil;</span>
+<span class="cstat-no" title="statement not covered" >        pleaseUnmountGame();</span>
+<span class="cstat-no" title="statement not covered" >        history.replace(`/${roomReducer.url}[${profil.name}]`);</span>
+      }}&gt;
+        &lt;span className="textButton"&gt;Go back&lt;/span&gt;
+      &lt;/button&gt;) : undefined;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (gameReducer.winner !== undefined) {</span>
+<span class="cstat-no" title="statement not covered" >      var finalText;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (!isEmpty(gameReducer.winner)) {</span>
+<span class="cstat-no" title="statement not covered" >        finalText = (gameReducer.winner.id === socketReducer.socket.id) ? (</span>
+          &lt;Fragment&gt;
+            &lt;span className="textButton" id="gameOverTextReveal"&gt;what a pro you are, such a nice musculature!!! :Q&lt;/span&gt;
+            &lt;span className="textButton" id="gameOverTextReveal"&gt;YOU are the real beaugosse!&lt;/span&gt;
+          &lt;/Fragment&gt;
+        ) : (
+          &lt;Fragment&gt;
+            &lt;span className="textButton" id="gameOverTextReveal"&gt;but you lose, like the looser you are! :(((&lt;/span&gt;
+            &lt;span className="textButton" id="gameOverTextReveal"&gt;{gameReducer.winner.name} is the real beaugosse!&lt;/span&gt;
+          &lt;/Fragment&gt;);
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      return (</span>
+        &lt;div className="gameOverDisplay"&gt;
+          &lt;div className="gameOverLayout"&gt;
+            &lt;div className="gameOverTitle"&gt;
+              &lt;span className="textButton" id="gameOverText"&gt;OMG GG WP DUUUDE&lt;/span&gt;
+              {finalText}
+            &lt;/div&gt;
+            &lt;div className="bottomButtons"&gt;
+              {returnToRoomButton}
+              {goBack}
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      );
+    }
+  };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  const specList = (gameReducer.spec &amp;&amp; gameReducer.spec.length !== 0) ? [</span>
+    gameReducer.spec.slice(0, gameReducer.spec.length / 2),
+    gameReducer.spec.slice(gameReducer.spec.length / 2)
+  ] : undefined;
+<span class="cstat-no" title="statement not covered" >  const gameOverDisplay = (gameReducer.winner !== undefined) ? createGameOverDisplay() : undefined;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return (</span>
+    &lt;Fragment&gt;
+      &lt;div className='display'&gt;
+        &lt;div className="game" id="spec"&gt;
+          &lt;div className="spec"&gt;
+            {specList ? createSpec(specList[0]) : undefined}
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div className="game"&gt;
+          &lt;div className="board"&gt;
+            {(gameReducer.lines) ? createLines(gameReducer.lines, 'line', 'lineBloc') : undefined}
+          &lt;/div&gt;
+          &lt;div className="rightPanel"&gt;
+            &lt;div className="nextText"&gt;NEXT :&lt;/div&gt;
+            &lt;div className="nextPiece"&gt;
+              {gameReducer.tetri !== undefined ? createLines(gameReducer.tetri.nextShape, 'lineNext', 'lineBlocNext', undefined, gameReducer.tetri.nextId) : undefined}
+            &lt;/div&gt;
+            &lt;div className="score"&gt;Score :&lt;br /&gt;00&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div className="game" id="spec"&gt;
+          &lt;div className="spec"&gt;
+            {specList ? createSpec(specList[1]) : undefined}
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      {gameOverDisplay}
+    &lt;/Fragment&gt;
+  );
+};
+&nbsp;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >const mapStateToProps = <span class="fstat-no" title="function not covered" >(state) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >  return state;</span>
+};
+&nbsp;
+export default connect(mapStateToProps)(Game);</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Oct 20 2021 20:54:28 GMT+0200 (heure d’été d’Europe centrale)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

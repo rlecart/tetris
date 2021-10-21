@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { expect } from 'chai';
 
-import Master from '../../server/classes/Master.js';
+import Master from '../../src/server/classes/Master.js';
 import { expectNewRoom, expectJoinRoom } from '../helpers/helpers.js';
 
 describe('Room Tests', () => {

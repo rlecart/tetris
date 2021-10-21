@@ -1,4 +1,4 @@
-import defaultTetriminos from '../client/ressources/defaultTetriminos.js';
+import defaultTetriminos from '../ressources/defaultTetriminos.js';
 
 const newRand = (min, max) => {
   return (Math.floor(Math.random() * (max - min + 1)) + min);

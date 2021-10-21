@@ -1,5 +1,5 @@
 import { expect, assert } from 'chai';
-import Master from '../../server/classes/Master.js';
+import Master from '../../src/server/classes/Master.js';
 import { addNewClients, removeEveryClients, waitAMinute } from '../helpers/helpers.js';
 
 describe('Server tests', () => {

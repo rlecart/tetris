@@ -1,6 +1,6 @@
-import configureStore from '../../src/Store/configureStore.js';
+import configureStore from '../../src/client/middleware/configureStore.js';
 import { expect } from 'chai';
-import { homeReducer, initialHomeState, setNewHomeInfo } from '../../src/Store/Reducers/homeReducer.js';
+import { homeReducer, initialHomeState, setNewHomeInfo } from '../../src/client/reducers/homeReducer.js';
 
 describe('Home reducer tests', () => {
   let exampleOfUsername = 'bonjourLesAmis';

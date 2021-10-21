@@ -1,5 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep.js';
-import defaultGame from '../../client/ressources/defaultGame.js';
+import defaultGame from '../../ressources/defaultGame.js';
 
 export default class Game {
   constructor(shapes, shapesId) {

@@ -13,7 +13,6 @@ const homeReducer = (state = initialHomeState, action) => {
 
   switch (action.type) {
     case SYNC_HOME_DATA:
-      console.log('ca sync')
       nextState = {
         ...state,
         ...action.value
@@ -24,5 +23,5 @@ const homeReducer = (state = initialHomeState, action) => {
   }
 };
 
-export { initialHomeState };
+export { homeReducer, initialHomeState };
 export default homeReducer;

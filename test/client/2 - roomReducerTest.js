@@ -1,7 +1,7 @@
-import configureStore from '../../src/Store/configureStore.js';
+import configureStore from '../../src/client/middleware/configureStore.js';
 import { expect } from 'chai';
-import { roomReducer, initialRoomState, setNewRoomInfo } from '../../src/Store/Reducers/roomReducer.js';
-import Player from '../../server/classes/Player.js';
+import { roomReducer, initialRoomState, setNewRoomInfo } from '../../src/client/reducers/roomReducer.js';
+import Player from '../../src/server/classes/Player.js';
 
 describe('Room reducer tests', () => {
   let exampleOfUrl = '12hui235';

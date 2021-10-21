@@ -1,4 +1,4 @@
-import defaultRoom from "../ressources/defaultRoom.js";
+import defaultRoom from "../../ressources/defaultRoom.js";
 import { SYNC_ROOM_DATA, DELETE_ROOM_DATA } from '../actions/roomAction.js';
 
 const initialRoomState = {
@@ -22,5 +22,5 @@ const roomReducer = (state = initialRoomState, action) => {
   }
 };
 
-export { initialRoomState };
+export { roomReducer, initialRoomState };
 export default roomReducer;

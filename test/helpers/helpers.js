@@ -1,18 +1,18 @@
 import { expect } from 'chai';
-import defaultRules from '../../src/ressources/rules.js';
+import defaultRules from '../../src/ressources/defaultRules.js';
 import openSocket from 'socket.io-client';
 
-import pkg from 'enzyme';
-const { mount, render, shallow, configure } = pkg;
-import Adapter from 'enzyme-adapter-react-16';
+// import pkg from 'enzyme';
+// const { mount, render, shallow, configure } = pkg;
+// import Adapter from 'enzyme-adapter-react-16';
 
-configure({ adapter: new Adapter() });
+// configure({ adapter: new Adapter() });
 
-global.expect = expect;
+// global.expect = expect;
 
-global.mount = mount;
-global.render = render;
-global.shallow = shallow;
+// global.mount = mount;
+// global.render = render;
+// global.shallow = shallow;
 
 const expectNewRoom = (room, playerId) => {
   expect(room.isInGame()).to.be.eql(false);

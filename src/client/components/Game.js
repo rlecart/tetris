@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import { connect } from "react-redux";
 
-import colors from '../ressources/defaultColors.js';
+import colors from '../../ressources/defaultColors.js';
 import api from '../api/clientApi.js';
-import { canIStayHere, isEmpty } from '../misc/utils.js';
+import { canIStayHere, isEmpty } from '../../misc/utils.js';
 
 import { setNewRoomInfo } from '../actions/roomAction.js';
 import { setNewGameInfo, addWinner, deleteGameData } from '../actions/gameAction.js';

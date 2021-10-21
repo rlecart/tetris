@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for server/classes/Master.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">server/classes/</a> Master.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0.57% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>1/175</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/129</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/3</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0.79% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>1/126</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import Room from './Room.js';</span>
+<span class="cstat-no" title="statement not covered" >import mainServer from './Servers.js';</span>
+<span class="cstat-no" title="statement not covered" >import { createNewUrl } from '../../client/misc/utils.js';</span>
+<span class="cstat-no" title="statement not covered" >import { endGame } from '../refresh.js';</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >import _ from 'lodash';</span>
+&nbsp;
+export default class Master {
+<span class="fstat-no" title="function not covered" >  constructor() <span class="cstat-no" title="statement not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >    this._roomsList = {};</span>
+<span class="cstat-no" title="statement not covered" >    this._sioClientList = {};</span>
+<span class="cstat-no" title="statement not covered" >    this._server = {};</span>
+  }
+&nbsp;
+  startServer() <span class="cstat-no" title="statement not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >    return (new Promise(<span class="fstat-no" title="function not covered" >(res) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >      this._server = new mainServer(this);</span>
+<span class="cstat-no" title="statement not covered" >      this._server.startServer(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        this._server.listenSio(this);</span>
+<span class="cstat-no" title="statement not covered" >        console.log('c bien res')</span>
+<span class="cstat-no" title="statement not covered" >        res()</span>
+      });
+    }));
+    // console.log('[Server completely started]')
+  }
+&nbsp;
+  stopServer() {
+<span class="cstat-no" title="statement not covered" >    this._server.stopListenSio(this._sioClientList);</span>
+<span class="cstat-no" title="statement not covered" >    this._server.stopServer();</span>
+<span class="cstat-no" title="statement not covered" >    this._server = undefined;</span>
+    // console.log('[Server completely stopped]')
+  }
+&nbsp;
+  getServer() {
+<span class="cstat-no" title="statement not covered" >    return (this._server);</span>
+  }
+&nbsp;
+  getRoomsList() {
+<span class="cstat-no" title="statement not covered" >    return (this._roomsList);</span>
+  }
+&nbsp;
+  getRoom(url) {
+<span class="cstat-no" title="statement not covered" >    if (url !== undefined &amp;&amp; this._roomsList !== undefined &amp;&amp; this._roomsList[url] !== undefined)</span>
+<span class="cstat-no" title="statement not covered" >      return (this._roomsList[url]);</span>
+  }
+&nbsp;
+  getSioList(only) {
+<span class="cstat-no" title="statement not covered" >    if (only !== undefined)</span>
+<span class="cstat-no" title="statement not covered" >      return (this._sioClientList[only]);</span>
+<span class="cstat-no" title="statement not covered" >    return (this._sioClientList);</span>
+  }
+&nbsp;
+  getSioHbeat(id) {
+<span class="cstat-no" title="statement not covered" >    return (this._sioClientList[id].hbeat);</span>
+  }
+&nbsp;
+  getRoomFromPlayerId(id) {
+<span class="cstat-no" title="statement not covered" >    let room;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (id !== undefined) {</span>
+<span class="cstat-no" title="statement not covered" >      for (let url in this.getRoomsList()) {</span>
+<span class="cstat-no" title="statement not covered" >        room = this.getRoom(url);</span>
+<span class="cstat-no" title="statement not covered" >        if (room.getListPlayers(id) !== undefined)</span>
+<span class="cstat-no" title="statement not covered" >          return (room);</span>
+      }
+    }
+<span class="cstat-no" title="statement not covered" >    return (undefined);</span>
+  }
+&nbsp;
+  getSioListFromRoom(url) {
+<span class="cstat-no" title="statement not covered" >    let ret;</span>
+<span class="cstat-no" title="statement not covered" >    let room;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if ((room = this.getRoom(url)) &amp;&amp; room.getListPlayers()) <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >{</span></span></span></span></span></span></span></span></span></span></span></span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >      for (let id of Object.keys(room.getListPlayers()))</span></span>
+<span class="cstat-no" title="statement not covered" >        ret = { ...ret, [id]: this.getSioList(id) };</span>
+    }
+<span class="cstat-no" title="statement not covered" >    return (ret);</span>
+  }
+&nbsp;
+  isInRoom(clientId) {
+<span class="cstat-no" title="statement not covered" >    if (Object.keys(this.getRoomsList()).length &gt; 0) <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >{</span></span></span></span></span></span></span></span></span></span></span></span>
+<span class="cstat-no" title="statement not covered" >      for (let room of Object.values(this.getRoomsList())) <span class="cstat-no" title="statement not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >        if (room.getListPlayers(clientId) !== undefined)</span>
+<span class="cstat-no" title="statement not covered" >          return (true);</span>
+      }
+    }
+<span class="cstat-no" title="statement not covered" >    return (false);</span>
+  }
+&nbsp;
+  addNewRoom(room) {
+<span class="cstat-no" title="statement not covered" >    this._roomsList = { ...this._roomsList, [room.getUrl()]: room };</span>
+  }
+&nbsp;
+  setSioHbeat(id, value) {
+<span class="cstat-no" title="statement not covered" >    this._sioClientList[id].hbeat = value;</span>
+  }
+&nbsp;
+  addNewSio(client) {
+<span class="cstat-no" title="statement not covered" >    this._sioClientList = { ...this._sioClientList, [client.id]: client };</span>
+  }
+&nbsp;
+  removeSio(client) {
+<span class="cstat-no" title="statement not covered" >    if (this._sioClientList[client] !== undefined) {</span>
+<span class="cstat-no" title="statement not covered" >      this._sioClientList[client].disconnect();</span>
+<span class="cstat-no" title="statement not covered" >      delete this._sioClientList[client];</span>
+    }
+  }
+&nbsp;
+  createRoom(clientId, profil, res) {
+<span class="cstat-no" title="statement not covered" >    let room;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (profil &amp;&amp; profil !== undefined &amp;&amp; profil.name &amp;&amp; profil.name !== undefined &amp;&amp; profil.name.length &gt; 0 &amp;&amp; clientId !== undefined &amp;&amp; clientId !== null) {</span>
+<span class="cstat-no" title="statement not covered" >      if (this.isInRoom(clientId) &amp;&amp; (room = this.getRoomFromPlayerId(clientId)))</span>
+<span class="cstat-no" title="statement not covered" >        this.leaveRoom(clientId, room.getUrl());</span>
+<span class="cstat-no" title="statement not covered" >      room = new Room(this);</span>
+<span class="cstat-no" title="statement not covered" >      room.setUrl(createNewUrl(this.getRoomsList()));</span>
+<span class="cstat-no" title="statement not covered" >      this.addNewRoom(room);</span>
+<span class="cstat-no" title="statement not covered" >      this.joinRoom(clientId, profil, room.getUrl(), res);</span>
+    }
+  }
+&nbsp;
+  joinRoom(clientId, profil, url, cb) {
+<span class="cstat-no" title="statement not covered" >    let room;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (profil &amp;&amp; profil !== undefined &amp;&amp; profil.name) {</span>
+<span class="cstat-no" title="statement not covered" >      if (this.isInRoom(clientId) &amp;&amp; (room = this.getRoomFromPlayerId(clientId)))</span>
+<span class="cstat-no" title="statement not covered" >        this.leaveRoom(clientId, room.getUrl());</span>
+<span class="cstat-no" title="statement not covered" >      if ((room = this.getRoom(url)) &amp;&amp; room.isInGame() !== true &amp;&amp; room.getNbPlayer() &lt; 8) {</span>
+<span class="cstat-no" title="statement not covered" >        profil = { ...profil, url: url };</span>
+<span class="cstat-no" title="statement not covered" >        room.addNewPlayer(clientId, profil);</span>
+<span class="cstat-no" title="statement not covered" >        room.addSio(this.getSioList(clientId));</span>
+<span class="cstat-no" title="statement not covered" >        room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo());</span>
+<span class="cstat-no" title="statement not covered" >        cb({ type: 'ok', value: url });</span>
+      }
+      else
+<span class="cstat-no" title="statement not covered" >        cb({ type: 'err', value: 'room full' });</span>
+    }
+  }
+&nbsp;
+  leaveRoom(clientId, url, res) {
+<span class="cstat-no" title="statement not covered" >    let room;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if ((room = this.getRoom(url)) &amp;&amp; room.getListPlayers(clientId)) {</span>
+<span class="cstat-no" title="statement not covered" >      room.removePlayer(clientId);</span>
+<span class="cstat-no" title="statement not covered" >      if (room.getNbPlayer() &lt;= 0) {</span>
+<span class="cstat-no" title="statement not covered" >        this.closeRoom(room);</span>
+      }
+<span class="cstat-no" title="statement not covered" >      if (res !== undefined)</span>
+<span class="cstat-no" title="statement not covered" >        res();</span>
+    }
+  }
+&nbsp;
+  closeRoom(room) {
+<span class="cstat-no" title="statement not covered" >    let url = room.getUrl();</span>
+<span class="cstat-no" title="statement not covered" >    let clientsRoom;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if ((clientsRoom = this.getSioListFromRoom(url)) !== undefined) <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >{</span></span></span></span></span></span></span></span></span></span></span></span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >      for (let id of Object.keys(clientsRoom))</span></span>
+<span class="cstat-no" title="statement not covered" >        room.removePlayer(id);</span>
+    }
+<span class="cstat-no" title="statement not covered" >    room.resetUrl();</span>
+<span class="cstat-no" title="statement not covered" >    this._roomsList[url] = undefined;</span>
+<span class="cstat-no" title="statement not covered" >    delete this._roomsList[url];</span>
+  }
+&nbsp;
+  askToStartGame(clientId, url, res) {
+<span class="cstat-no" title="statement not covered" >    let room = {};</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if ((room = this.getRoom(url)) &amp;&amp; room.isOwner(clientId) &amp;&amp; room.isInGame() === false)</span>
+<span class="cstat-no" title="statement not covered" >      room.emitAll('goToGame');</span>
+<span class="cstat-no" title="statement not covered" >    if (res !== undefined)</span>
+<span class="cstat-no" title="statement not covered" >      res();</span>
+  }
+&nbsp;
+  askToEndGame(clientId, url, res) {
+<span class="cstat-no" title="statement not covered" >    let room = {};</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if ((room = this.getRoom(url)))</span>
+<span class="cstat-no" title="statement not covered" >      endGame(room, clientId, res);</span>
+<span class="cstat-no" title="statement not covered" >    if (res !== undefined)</span>
+<span class="cstat-no" title="statement not covered" >      res();</span>
+  }
+&nbsp;
+  tryToStart(clientsRTS, nbPlayers) {
+<span class="cstat-no" title="statement not covered" >    let i = 0;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    for (let client in clientsRTS)</span>
+<span class="cstat-no" title="statement not covered" >      i++;</span>
+<span class="cstat-no" title="statement not covered" >    if (i === nbPlayers)</span>
+<span class="cstat-no" title="statement not covered" >      return true;</span>
+<span class="cstat-no" title="statement not covered" >    return false;</span>
+  }
+&nbsp;
+  readyToStart(clientId, url, res) {
+<span class="cstat-no" title="statement not covered" >    let room;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (url &amp;&amp; clientId &amp;&amp; (room = this.getRoom(url)) &amp;&amp; room.getListPlayers(clientId) &amp;&amp; room.isInGame() === false &amp;&amp; room.isPending()) {</span>
+<span class="cstat-no" title="statement not covered" >      room.addReadyToStart(clientId);</span>
+<span class="cstat-no" title="statement not covered" >      if (this.tryToStart(room.getReadyToStart(), room.getNbPlayer())) {</span>
+<span class="cstat-no" title="statement not covered" >        room.launchGame(this.getSioListFromRoom(url));</span>
+      }
+<span class="cstat-no" title="statement not covered" >      if (res !== undefined)</span>
+<span class="cstat-no" title="statement not covered" >        res();</span>
+    }
+    else <span class="cstat-no" title="statement not covered" >if (room !== undefined &amp;&amp; room.getListPlayers(clientId) &amp;&amp; !room.isPending())</span>
+<span class="cstat-no" title="statement not covered" >      room.emitOnly('nowChillOutDude', clientId, `/${url}[${String(room.getListPlayers(clientId).getName())}]`);</span>
+  }
+&nbsp;
+  askToMove(clientId, url, dir, res) {
+<span class="cstat-no" title="statement not covered" >    let room = {};</span>
+<span class="cstat-no" title="statement not covered" >    let player = {};</span>
+<span class="cstat-no" title="statement not covered" >    let game = {};</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if ((room = this.getRoom(url)) &amp;&amp; (player = room.getListPlayers(clientId))) {</span>
+<span class="cstat-no" title="statement not covered" >      if ((game = player.getGame()) &amp;&amp; game.getY() !== -1)</span>
+<span class="cstat-no" title="statement not covered" >        player.move(dir, room);</span>
+<span class="cstat-no" title="statement not covered" >      if (res !== undefined)</span>
+<span class="cstat-no" title="statement not covered" >        res();</span>
+    }
+  }
+&nbsp;
+  askEverybodyToCalmDown(clientId, url, res) {
+<span class="cstat-no" title="statement not covered" >    let room = {};</span>
+<span class="cstat-no" title="statement not covered" >    let sioList = {};</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if ((room = this.getRoom(url)) &amp;&amp; room.getOwner() === clientId &amp;&amp; (sioList = room.getSio())) <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >{</span></span></span></span></span></span></span></span></span></span></span></span>
+<span class="cstat-no" title="statement not covered" >      for (let [id, client] of Object.entries(sioList)) <span class="cstat-no" title="statement not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >        client.emit('nowChillOutDude', `/${url}[${String(room.getListPlayers(id).getName())}]`);</span>
+      }
+<span class="cstat-no" title="statement not covered" >      room.setPending(true);</span>
+<span class="cstat-no" title="statement not covered" >      if (res !== undefined)</span>
+<span class="cstat-no" title="statement not covered" >        res();</span>
+    }
+  }
+};</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Oct 20 2021 20:54:28 GMT+0200 (heure d’été d’Europe centrale)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

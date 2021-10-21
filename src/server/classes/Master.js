@@ -1,6 +1,6 @@
 import Room from './Room.js';
 import mainServer from './Servers.js';
-import { createNewUrl } from '../../client/misc/utils.js';
+import { createNewUrl } from '../../misc/utils.js';
 import { endGame } from '../refresh.js';
 
 import _ from 'lodash';

@@ -1,4 +1,4 @@
-import { isEmpty } from "../misc/utils.js";
+import { isEmpty } from "../../misc/utils.js";
 
 export const SYNC_ROOM_DATA = 'SYNC_ROOM_DATA';
 export const DELETE_ROOM_DATA = 'DELETE_ROOM_DATA';

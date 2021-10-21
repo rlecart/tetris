@@ -1,6 +1,6 @@
-import configureStore from '../../src/Store/configureStore.js';
+import configureStore from '../../src/client/middleware/configureStore.js';
 import { expect } from 'chai';
-import { gameReducer, initialGameState, setNewGameInfo } from '../../src/Store/Reducers/gameReducer.js';
+import { gameReducer, initialGameState, setNewGameInfo } from '../../src/client/reducers/gameReducer.js';
 
 describe('Game reducer tests', () => {
   let exampleOfLines = initialGameState.lines;

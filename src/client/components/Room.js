@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { connect } from "react-redux";
 
 import api from '../api/clientApi';
-import { canIStayHere, isEmpty } from '../misc/utils.js';
+import { canIStayHere, isEmpty } from '../../misc/utils.js';
 import { setNewRoomInfo, deleteRoomData } from '../actions/roomAction';
 
 const Room = ({

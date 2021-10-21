@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for server/classes/Servers.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">server/classes/</a> Servers.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">1.1% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>1/91</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/22</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/20</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">1.45% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>1/69</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import fs from 'fs';</span>
+<span class="cstat-no" title="statement not covered" >import debug from 'debug';</span>
+<span class="cstat-no" title="statement not covered" >import http from 'http';</span>
+<span class="cstat-no" title="statement not covered" >import Server from 'socket.io';</span>
+<span class="cstat-no" title="statement not covered" >import params from '../../../params.js';</span>
+&nbsp;
+export default class mainServer {
+<span class="fstat-no" title="function not covered" >  constructor() <span class="cstat-no" title="statement not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >    this._host = params.server.host;</span>
+<span class="cstat-no" title="statement not covered" >    this._port = params.server.port;</span>
+<span class="cstat-no" title="statement not covered" >    this._app = {};</span>
+<span class="cstat-no" title="statement not covered" >    this._server = {};</span>
+<span class="cstat-no" title="statement not covered" >    this._io = {};</span>
+  }
+&nbsp;
+  getHttpServer() {
+<span class="cstat-no" title="statement not covered" >    return (this._server);</span>
+  }
+&nbsp;
+  getIoServer() {
+<span class="cstat-no" title="statement not covered" >    return (this._io);</span>
+  }
+&nbsp;
+  initApp(cb) <span class="cstat-no" title="statement not covered" >{</span>
+    const { host, port } = params.server;
+<span class="cstat-no" title="statement not covered" >    const handler = <span class="fstat-no" title="function not covered" >(req, res) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >      const file = req.url === '/bundle.js' ? '/../../../build/bundle.js' : '/../../../index.html';</span>
+<span class="cstat-no" title="statement not covered" >      fs.readFile(__dirname + file, <span class="fstat-no" title="function not covered" >(err, data) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        if (err) {</span>
+<span class="cstat-no" title="statement not covered" >          console.log(err)</span>
+          // logerror(err);
+<span class="cstat-no" title="statement not covered" >          res.writeHead(500);</span>
+<span class="cstat-no" title="statement not covered" >          return res.end('Error loading index.html');</span>
+        }
+<span class="cstat-no" title="statement not covered" >        console.log(data)</span>
+<span class="cstat-no" title="statement not covered" >        res.writeHead(200);</span>
+<span class="cstat-no" title="statement not covered" >        res.end(data);</span>
+      });
+    };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    this._app.on('request', handler);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    this._server = this._app.listen({ host, port }, <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+      // loginfo(`tetris listen on ${params.url}`);
+<span class="cstat-no" title="statement not covered" >      cb();</span>
+    });
+  }
+&nbsp;
+  startServer(cb) <span class="cstat-no" title="statement not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >    this._app = http.createServer();</span>
+<span class="cstat-no" title="statement not covered" >    this.initApp(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >      this._io = Server(this._app, {</span>
+        cors: {
+          origin: params.server.url2,
+          methods: ["GET", "POST"],
+          credentials: true
+        },
+        'pingInterval': 5000
+      });
+<span class="cstat-no" title="statement not covered" >      cb();</span>
+    });
+    // console.log('[HTTP server started]')
+  }
+&nbsp;
+  stopServer() {
+<span class="cstat-no" title="statement not covered" >    this._server.close();</span>
+  }
+&nbsp;
+  stopListenSio(sioList) {
+<span class="cstat-no" title="statement not covered" >    if (Object.values(sioList).length !== 0) <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >{</span></span></span></span></span></span></span></span></span></span></span></span>
+<span class="cstat-no" title="statement not covered" >      for (let client of Object.values(sioList)) <span class="cstat-no" title="statement not covered" >{</span></span>
+<span class="cstat-no" title="statement not covered" >        client.disconnect();</span>
+      }
+    }
+<span class="cstat-no" title="statement not covered" >    this._io.close();</span>
+  }
+&nbsp;
+  listenSio(master) {
+<span class="cstat-no" title="statement not covered" >    this._io.on('connection', <span class="fstat-no" title="function not covered" >(client) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >      master.addNewSio(client);</span>
+<span class="cstat-no" title="statement not covered" >      client.on('move', <span class="fstat-no" title="function not covered" >(clientId, url, dir, res) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        if (master.getRoom(url) &amp;&amp; master.getRoom(url).isInGame() === true)</span>
+<span class="cstat-no" title="statement not covered" >          master.askToMove(clientId, url, dir, res);</span>
+      });
+<span class="cstat-no" title="statement not covered" >      client.on('createRoom', <span class="fstat-no" title="function not covered" >(clientId, profil, res) =&gt; {</span> <span class="cstat-no" title="statement not covered" >master.createRoom(clientId, profil, res); });</span></span>
+<span class="cstat-no" title="statement not covered" >      client.on('joinRoom', <span class="fstat-no" title="function not covered" >(clientId, profil, url, cb) =&gt; {</span> <span class="cstat-no" title="statement not covered" >master.joinRoom(clientId, profil, url, cb); });</span></span>
+<span class="cstat-no" title="statement not covered" >      client.on('leaveRoom', <span class="fstat-no" title="function not covered" >(clientId, url, res) =&gt; {</span> <span class="cstat-no" title="statement not covered" >master.leaveRoom(clientId, url, res); });</span></span>
+<span class="cstat-no" title="statement not covered" >      client.on('getRoomInfo', <span class="fstat-no" title="function not covered" >(url, res) =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        let room;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        if ((room = master.getRoom(url)))</span>
+<span class="cstat-no" title="statement not covered" >          res({ type: 'ok', value: room.getRoomInfo() });</span>
+      });
+<span class="cstat-no" title="statement not covered" >      client.on('askToStartGame', <span class="fstat-no" title="function not covered" >(clientId, url, res) =&gt; {</span> <span class="cstat-no" title="statement not covered" >master.askToStartGame(clientId, url, res); });</span></span>
+<span class="cstat-no" title="statement not covered" >      client.on('readyToStart', <span class="fstat-no" title="function not covered" >(clientId, url, res) =&gt; {</span> <span class="cstat-no" title="statement not covered" >master.readyToStart(clientId, url, res); });</span></span>
+<span class="cstat-no" title="statement not covered" >      client.on('askToEndGame', <span class="fstat-no" title="function not covered" >(clientId, url, res) =&gt; {</span> <span class="cstat-no" title="statement not covered" >master.askToEndGame(clientId, url, res); });</span></span>
+<span class="cstat-no" title="statement not covered" >      client.on('askEverybodyToCalmDown', <span class="fstat-no" title="function not covered" >(clientId, url, res) =&gt; {</span> <span class="cstat-no" title="statement not covered" >master.askEverybodyToCalmDown(clientId, url, res); });</span></span>
+<span class="cstat-no" title="statement not covered" >      client.on('ping', <span class="fstat-no" title="function not covered" >() =&gt; {</span> <span class="cstat-no" title="statement not covered" >client.emit('pong'); });</span></span>
+<span class="cstat-no" title="statement not covered" >      client.conn.on('heartbeat', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >        console.log('heartbeat called!');</span>
+<span class="cstat-no" title="statement not covered" >        master.setSioHbeat(client.id, Date.now());</span>
+<span class="cstat-no" title="statement not covered" >        setTimeout(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >          let now = Date.now();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          if (now - master.getSioHbeat(client.id) &gt; 5000) {</span>
+<span class="cstat-no" title="statement not covered" >            console.log('this client id will be closed ' + client.id);</span>
+<span class="cstat-no" title="statement not covered" >            let room = master.getRoomFromPlayerId(client.id, master);</span>
+<span class="cstat-no" title="statement not covered" >            if (room !== undefined)</span>
+<span class="cstat-no" title="statement not covered" >              master.leaveRoom(client.id, room.getUrl(), <span class="fstat-no" title="function not covered" >() =&gt; {</span> });</span>
+<span class="cstat-no" title="statement not covered" >            setTimeout(<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; master.removeSio(client), 500);</span></span></span>
+          }
+<span class="cstat-no" title="statement not covered" >          now = null;</span>
+        }, 6000);
+      });
+<span class="cstat-no" title="statement not covered" >      console.log('connected')</span>
+    });
+<span class="cstat-no" title="statement not covered" >    this._io.listen(this._port);</span>
+<span class="cstat-no" title="statement not covered" >    console.log(`[Io listening on port ${this._port}]`);</span>
+  }
+};
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Oct 20 2021 20:54:28 GMT+0200 (heure d’été d’Europe centrale)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
