@@ -6,8 +6,8 @@ describe('Server File test', () => {
   before(() => {
     master = require('../../src/server/main.js').default;
   });
-  after(() => {
-    master.stopServer();
+  after((done) => {
+    master.stopServer().then(() => done());
   });
 
   it('Should master var exists', () => {

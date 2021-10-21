@@ -27,6 +27,7 @@ const gameReducer = (state = initialGameState, action) => {
         winner: { ...action.value },
       };
       return (nextState);
+      
     default:
       return (state);
   }

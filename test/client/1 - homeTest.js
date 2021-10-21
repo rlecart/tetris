@@ -1,18 +1,19 @@
-// const chai = require("chai");
-// const React = require('react');
-// const equalJSX = require('chai-equal-jsx');
-// const { createRenderer } = require('react-dom/test-utils');
-// const { Home } = require('../../src/components/Home.js');
+import chai, { expect } from "chai";
+import React from 'react';
+import Enzyme, { shallow, render, mount } from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import chaiEnzyme from 'chai-enzyme';
 
-// chai.should();
-// chai.use(equalJSX);
+import NotFound from '../../src/client/components/NotFound.js';
 
-// describe('Fake react test', function () {
-//   it('works', function () {
-//     const renderer = createRenderer();
-//     renderer.render(React.createElement(Home));
-//     const output = renderer.getRenderOutput();
-//     // output.should.equalJSX(<Home />);
-//   });
+chai.should()
+chai.use(chaiEnzyme())
 
-// });
+Enzyme.configure({ adapter: new Adapter() })
+
+describe('<Home /> component test', () => {
+  it('Should equal raw value', () => {
+    const output = render(<NotFound />);
+    output.should.have.html('<div>404</div>');
+  });
+});

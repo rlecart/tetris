@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import api from "../api/clientApi";
 import openSocket from 'socket.io-client';
-import addSocket from '../actions/socketAction';
+import { addSocket } from '../actions/socketAction';
 import { setNewHomeInfo } from '../actions/homeAction';
 
 const Home = ({

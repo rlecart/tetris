@@ -10,4 +10,4 @@ const addSocket = (dispatch, socket) => {
     dispatch(action);
 };
 
-export default addSocket;
+export { addSocket };

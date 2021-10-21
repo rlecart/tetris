@@ -25,10 +25,13 @@ export default class Master {
   }
 
   stopServer() {
-    this._server.stopListenSio(this._sioClientList);
-    this._server.stopServer();
-    this._server = undefined;
-    // console.log('[Server completely stopped]')
+    return (new Promise((res) => {
+      this._server.stopListenSio(this._sioClientList);
+      this._server.stopServer();
+      this._server = undefined;
+      res();
+      // console.log('[Server completely stopped]')
+    }))
   }
 
   getServer() {

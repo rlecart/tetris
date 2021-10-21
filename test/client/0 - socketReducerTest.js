@@ -2,8 +2,8 @@ import configureStore from '../../src/client/middleware/configureStore.js';
 import { expect } from 'chai';
 import { socketReducer, initialSocketState } from '../../src/client/reducers/socketReducer.js';
 import openSocket from 'socket.io-client';
-import params from '../../params'
-import { CONNECT_SOCKET } from '../../src/client/actions/socketAction.js'
+import params from '../../params.js';
+import { addSocket, CONNECT_SOCKET } from '../../src/client/actions/socketAction.js';
 
 describe('Socket reducer tests', () => {
   let store;
@@ -28,11 +28,11 @@ describe('Socket reducer tests', () => {
   });
 
   it('Should update', () => {
-    store.dispatch({ type: CONNECT_SOCKET, value: socket });
+    addSocket(store.dispatch, socket);
   });
 
   it('Should not update', () => {
-    store.dispatch({ type: CONNECT_SOCKET });
+    addSocket(store.dispatch, undefined);
     store.dispatch({ type: 'DOESNT_EXIST' });
   });
 

@@ -1,7 +1,7 @@
 import configureStore from '../../src/client/middleware/configureStore.js';
 import { expect } from 'chai';
 import { gameReducer, initialGameState } from '../../src/client/reducers/gameReducer.js';
-import { setNewGameInfo, SYNC_GAME_DATA, DELETE_GAME_DATA, ADD_WINNER } from '../../src/client/actions/gameAction.js';
+import { setNewGameInfo, addWinner, deleteGameData, SYNC_GAME_DATA, DELETE_GAME_DATA, ADD_WINNER } from '../../src/client/actions/gameAction.js';
 
 describe('Game reducer tests', () => {
   let exampleOfLines = initialGameState.lines;
@@ -49,7 +49,8 @@ describe('Game reducer tests', () => {
 
   it('Should add winner', () => {
     exampleOfWinner = 'abc';
-    store.dispatch({ type: ADD_WINNER, value: { winner: exampleOfWinner } });
+    addWinner(store.dispatch, { winner: exampleOfWinner });
+    // store.dispatch({ type: ADD_WINNER, value: { winner: exampleOfWinner } });
   });
 
   it('Should delete game data', () => {
@@ -59,7 +60,7 @@ describe('Game reducer tests', () => {
     exampleOfPlaced = initialGameState.placed;
     exampleOfSpec = initialGameState.lines;
     exampleOfWinner = undefined;
-    store.dispatch({ type: DELETE_GAME_DATA });
+    deleteGameData(store.dispatch);
   });
 
 });

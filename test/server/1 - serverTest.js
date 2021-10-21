@@ -7,7 +7,6 @@ describe('Server tests', () => {
   let master;
 
   before(() => {
-    console.log(Master)
     master = new Master();
     master.startServer();
     server = master.getServer();
@@ -87,8 +86,8 @@ describe('Server tests', () => {
         socket.emit('ping');
       }
     });
-    it('Remove 50 clients', () => {
-      removeEveryClients(master);
+    it('Remove 50 clients', async () => {
+      await removeEveryClients(master);
       expect(Object.keys(master.getSioList()).length).to.be.eql(0);
     });
   });

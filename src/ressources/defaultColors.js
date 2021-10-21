@@ -7,7 +7,7 @@ const defaultColors = [
     'yellow',
     'teal',
     'orange',
-    'purple'
+    'purple',
 ];
 
 export default defaultColors;
