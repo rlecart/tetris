@@ -1,6 +1,7 @@
 import configureStore from '../../src/client/middleware/configureStore.js';
 import { expect } from 'chai';
-import { roomReducer, initialRoomState, setNewRoomInfo } from '../../src/client/reducers/roomReducer.js';
+import { roomReducer, initialRoomState } from '../../src/client/reducers/roomReducer.js';
+import { setNewRoomInfo, SYNC_ROOM_DATA, DELETE_ROOM_DATA } from '../../src/client/actions/roomAction.js'
 import Player from '../../src/server/classes/Player.js';
 
 describe('Room reducer tests', () => {
@@ -15,7 +16,7 @@ describe('Room reducer tests', () => {
   before(() => {
     store = configureStore(roomReducer, undefined, {});
     store = configureStore(roomReducer, initialRoomState, {
-      'SYNC_ROOM_DATA': ({ dispatch, getState }) => {
+      SYNC_ROOM_DATA: ({ dispatch, getState }) => {
         const state = getState();
         expect(state.url).to.be.eql(exampleOfUrl);
         expect(state.inGame).to.be.eql(exampleOfInGame);
@@ -40,7 +41,7 @@ describe('Room reducer tests', () => {
   });
 
   it('Should not update', () => {
-    store.dispatch({ type: 'SYNC_ROOM_DATA' });
+    store.dispatch({ type: SYNC_ROOM_DATA });
     store.dispatch({ type: 'DOESNT_EXIST' });
     expect(setNewRoomInfo(store.dispatch, undefined)).to.be.equal(-1);
     expect(setNewRoomInfo(store.dispatch, {})).to.be.equal(-1);
@@ -51,7 +52,7 @@ describe('Room reducer tests', () => {
     exampleOfInGame = initialRoomState.inGame;
     exampleOfNbPlayer = initialRoomState.nbPlayer;
     exampleOfListPlayers = initialRoomState.listPlayers;
-    store.dispatch({ type: 'DELETE_ROOM_DATA' });
+    store.dispatch({ type: DELETE_ROOM_DATA });
   });
 
 });

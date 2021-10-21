@@ -5,6 +5,7 @@ import { initialHomeState } from '../../src/client/reducers/homeReducer.js';
 import { initialRoomState } from '../../src/client/reducers/roomReducer.js';
 import openSocket from 'socket.io-client';
 import _ from 'lodash';
+import params from '../../params.js'
 
 describe('Utils tests', () => {
   describe('isEmpty tests', () => {
@@ -23,7 +24,7 @@ describe('Utils tests', () => {
     let homeReducer = initialHomeState;
     let roomReducer = initialRoomState;
 
-    before(() => { socketReducer.socket = openSocket('http://localhost:8000'); });
+    before(() => { socketReducer.socket = openSocket(params.server.url); });
     after(() => { socketReducer.socket.disconnect(); });
 
     describe('game', () => {

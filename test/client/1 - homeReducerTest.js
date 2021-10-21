@@ -1,6 +1,7 @@
 import configureStore from '../../src/client/middleware/configureStore.js';
 import { expect } from 'chai';
-import { homeReducer, initialHomeState, setNewHomeInfo } from '../../src/client/reducers/homeReducer.js';
+import { homeReducer, initialHomeState } from '../../src/client/reducers/homeReducer.js';
+import { SYNC_HOME_DATA, setNewHomeInfo } from '../../src/client/actions/homeAction.js'
 
 describe('Home reducer tests', () => {
   let exampleOfUsername = 'bonjourLesAmis';
@@ -11,7 +12,7 @@ describe('Home reducer tests', () => {
   before(() => {
     store = configureStore(homeReducer, undefined, {});
     store = configureStore(homeReducer, initialHomeState, {
-      'SYNC_HOME_DATA': ({ dispatch, getState }) => {
+      SYNC_HOME_DATA: ({ dispatch, getState }) => {
         const state = getState();
         expect(state.profil.name).to.be.eql(exampleOfUsername);
         expect(state.joinUrl).to.be.eql(exampleOfJoinUrl);
@@ -34,7 +35,7 @@ describe('Home reducer tests', () => {
   });
 
   it('Should not update', () => {
-    store.dispatch({ type: 'SYNC_HOME_DATA' });
+    store.dispatch({ type: SYNC_HOME_DATA });
     store.dispatch({ type: 'DOESNT_EXIST', value: { joinUrl: 'nope' } });
   });
 

@@ -5,12 +5,12 @@ import openSocket from 'socket.io-client';
 import params from '../../params'
 import { CONNECT_SOCKET } from '../../src/client/actions/socketAction.js'
 
-describe.only('Socket reducer tests', () => {
+describe('Socket reducer tests', () => {
   let store;
   let socket;
 
   before(() => {
-    socket = openSocket(params.server.url2);
+    socket = openSocket(params.server.url);
     store = configureStore(socketReducer, undefined, {});
     store = configureStore(socketReducer, initialSocketState, {
       CONNECT_SOCKET: ({ dispatch, getState }) => {

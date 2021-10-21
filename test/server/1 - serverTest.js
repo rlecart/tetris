@@ -7,6 +7,7 @@ describe('Server tests', () => {
   let master;
 
   before(() => {
+    console.log(Master)
     master = new Master();
     master.startServer();
     server = master.getServer();

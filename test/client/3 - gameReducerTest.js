@@ -1,6 +1,7 @@
 import configureStore from '../../src/client/middleware/configureStore.js';
 import { expect } from 'chai';
-import { gameReducer, initialGameState, setNewGameInfo } from '../../src/client/reducers/gameReducer.js';
+import { gameReducer, initialGameState } from '../../src/client/reducers/gameReducer.js';
+import { setNewGameInfo, SYNC_GAME_DATA, DELETE_GAME_DATA, ADD_WINNER } from '../../src/client/actions/gameAction.js';
 
 describe('Game reducer tests', () => {
   let exampleOfLines = initialGameState.lines;
@@ -14,7 +15,7 @@ describe('Game reducer tests', () => {
   before(() => {
     store = configureStore(gameReducer, undefined, {});
     store = configureStore(gameReducer, initialGameState, {
-      'SYNC_GAME_DATA': ({ dispatch, getState }) => {
+      SYNC_GAME_DATA: ({ dispatch, getState }) => {
         const state = getState();
         expect(state.lines).to.be.eql(exampleOfLines);
         expect(state.tetri).to.be.eql(exampleOfTetri);
@@ -42,13 +43,13 @@ describe('Game reducer tests', () => {
   });
 
   it('Should not update', () => {
-    store.dispatch({ type: 'SYNC_GAME_DATA' });
+    store.dispatch({ type: SYNC_GAME_DATA });
     store.dispatch({ type: 'DOESNT_EXIST' });
   });
 
   it('Should add winner', () => {
     exampleOfWinner = 'abc';
-    store.dispatch({ type: 'ADD_WINNER', value: { winner: exampleOfWinner } });
+    store.dispatch({ type: ADD_WINNER, value: { winner: exampleOfWinner } });
   });
 
   it('Should delete game data', () => {
@@ -58,7 +59,7 @@ describe('Game reducer tests', () => {
     exampleOfPlaced = initialGameState.placed;
     exampleOfSpec = initialGameState.lines;
     exampleOfWinner = undefined;
-    store.dispatch({ type: 'DELETE_GAME_DATA' });
+    store.dispatch({ type: DELETE_GAME_DATA });
   });
 
 });

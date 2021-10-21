@@ -112,7 +112,7 @@ export default class mainServer {
           now = null;
         }, 6000);
       });
-      console.log('connected')
+      // console.log('connected')
     });
     this._io.listen(this._port);
     console.log(`[Io listening on port ${this._port}]`);

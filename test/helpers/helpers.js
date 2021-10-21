@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import defaultRules from '../../src/ressources/defaultRules.js';
 import openSocket from 'socket.io-client';
+import params from '../../params.js';
 
 // import pkg from 'enzyme';
 // const { mount, render, shallow, configure } = pkg;
@@ -44,7 +45,7 @@ const addNewClients = (nb, done, addOn) => {
   let doneAlready = 0;
 
   for (let i = 0; i < nb; i++) {
-    socket = new openSocket('http://localhost:8000');
+    socket = new openSocket(params.server.url);
     clients.push(socket);
     socket.on('connect', () => {
       if (addOn !== undefined) {

@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">94.74% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/19</span>
+        <span class='fraction'>18/19</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">80% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/10</span>
+        <span class='fraction'>8/10</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/6</span>
+        <span class='fraction'>6/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/13</span>
+        <span class='fraction'>13/13</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -71,37 +71,37 @@
 26
 27
 28
-29</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+29</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { applyMiddleware, createStore } from "redux";</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { applyMiddleware, createStore } from "redux";
 &nbsp;
-<span class="cstat-no" title="statement not covered" >const configureStore = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(reducer, initialState, types) =&gt; createStore(</span></span></span>
+const configureStore = (reducer, initialState, types) =&gt; createStore(
   reducer,
   initialState,
   applyMiddleware(
@@ -109,21 +109,21 @@
   )
 );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >const isFunction = <span class="fstat-no" title="function not covered" >arg =&gt; {</span> <span class="cstat-no" title="statement not covered" >return typeof arg === 'function'; };</span></span>
+const isFunction = arg =&gt; { return typeof arg === 'function'; };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >const myMiddleware = <span class="fstat-no" title="function not covered" >(types = {}) =&gt; <span class="cstat-no" title="statement not covered" >{</span></span></span>
-<span class="cstat-no" title="statement not covered" >  const fired = {};</span>
+const myMiddleware = (types = <span class="branch-1 cbranch-no" title="branch not covered" >{}) =&gt; {</span>
+  const fired = {};
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >store =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >next =&gt; <span class="fstat-no" title="function not covered" >action =&gt; {</span></span></span></span></span></span>
-<span class="cstat-no" title="statement not covered" >    const result = next(action);</span>
-<span class="cstat-no" title="statement not covered" >    const cb = types[action.type];</span>
+  return store =&gt; next =&gt; action =&gt; {
+    const result = next(action);
+    const cb = types[action.type];
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (cb &amp;&amp; !fired[action.type]) {</span>
-<span class="cstat-no" title="statement not covered" >      if (!isFunction(cb)) <span class="cstat-no" title="statement not covered" >t</span>hrow new Error("action's type value must be a function");</span>
-<span class="cstat-no" title="statement not covered" >      fired[action.type] = true;</span>
-<span class="cstat-no" title="statement not covered" >      cb({ getState: store.getState, dispatch: store.dispatch, action });</span>
+    if (cb &amp;&amp; !fired[action.type]) {
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (!isFunction(cb)) <span class="cstat-no" title="statement not covered" >throw new Error("action's type value must be a function");</span>
+      fired[action.type] = true;
+      cb({ getState: store.getState, dispatch: store.dispatch, action });
     }
-<span class="cstat-no" title="statement not covered" >    return result;</span>
+    return result;
   };
 };
 &nbsp;
@@ -133,7 +133,7 @@ export default configureStore;</pre></td></tr>
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Oct 20 2021 20:54:28 GMT+0200 (heure d’été d’Europe centrale)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Oct 21 2021 17:41:40 GMT+0200 (heure d’été d’Europe centrale)
 </div>
 </div>
 <script src="../../prettify.js"></script>

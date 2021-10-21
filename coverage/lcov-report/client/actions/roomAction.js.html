@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">81.82% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/11</span>
+        <span class='fraction'>9/11</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/4</span>
+        <span class='fraction'>4/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">50% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/2</span>
+        <span class='fraction'>1/2</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">81.82% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/11</span>
+        <span class='fraction'>9/11</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -64,44 +64,44 @@
 19
 20
 21
-22</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+22</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { isEmpty } from "../misc/utils.js";</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { isEmpty } from "../../misc/utils.js";
 &nbsp;
-export <span class="cstat-no" title="statement not covered" >const SYNC_ROOM_DATA = 'SYNC_ROOM_DATA';</span>
-export <span class="cstat-no" title="statement not covered" >const DELETE_ROOM_DATA = 'DELETE_ROOM_DATA';</span>
+export const SYNC_ROOM_DATA = 'SYNC_ROOM_DATA';
+export const DELETE_ROOM_DATA = 'DELETE_ROOM_DATA';
 &nbsp;
-<span class="cstat-no" title="statement not covered" >const setNewRoomInfo = <span class="fstat-no" title="function not covered" >(dispatch, newRoomInfo) =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >  let action = {</span>
+const setNewRoomInfo = (dispatch, newRoomInfo) =&gt; {
+  let action = {
     type: SYNC_ROOM_DATA,
     value: newRoomInfo,
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!newRoomInfo || isEmpty(newRoomInfo))</span>
-<span class="cstat-no" title="statement not covered" >    return (-1);</span>
-<span class="cstat-no" title="statement not covered" >  dispatch(action);</span>
+  if (!newRoomInfo || isEmpty(newRoomInfo))
+    return (-1);
+  dispatch(action);
 };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >const deleteRoomData = <span class="fstat-no" title="function not covered" >(dispatch) =&gt; {</span></span>
+const deleteRoomData = <span class="fstat-no" title="function not covered" >(dispatch) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  let action = { type: DELETE_ROOM_DATA };</span>
 <span class="cstat-no" title="statement not covered" >  dispatch(action);</span>
 };
@@ -112,7 +112,7 @@ export { setNewRoomInfo, deleteRoomData };</pre></td></tr>
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Oct 20 2021 20:54:28 GMT+0200 (heure d’été d’Europe centrale)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Oct 21 2021 17:41:40 GMT+0200 (heure d’été d’Europe centrale)
 </div>
 </div>
 <script src="../../prettify.js"></script>

@@ -1,7 +1,11 @@
 import { expect } from 'chai';
-import master from '../../src/server/main.js';
 
 describe('Server File test', () => {
+  let master;
+
+  before(() => {
+    master = require('../../src/server/main.js').default;
+  });
   after(() => {
     master.stopServer();
   });
