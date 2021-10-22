@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">88.89% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>8/9</span>
+        <span class='fraction'>0/9</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">88.24% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>15/17</span>
+        <span class='fraction'>0/17</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>5/5</span>
+        <span class='fraction'>0/5</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">88.89% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>8/9</span>
+        <span class='fraction'>0/9</span>
       </div>
     </div>
   </div>
-  <div class='status-line high'></div>
+  <div class='status-line low'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -80,14 +80,14 @@
 35
 36</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4×</span>
-<span class="cline-any cline-yes">2×</span>
-<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2×</span>
-<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -96,8 +96,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">11×</span>
-<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -108,21 +108,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">100008×</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const canIStayHere = (where, props) =&gt; {
-  return (new Promise((res, rej) =&gt; {
-    if (where === 'game') {
-      if (isEmpty(props.roomReducer) || isEmpty(props.socketReducer.socket))
-        rej();
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const canIStayHere = <span class="fstat-no" title="function not covered" >(where, props) =&gt; {</span>
+  return (new Promise(<span class="fstat-no" title="function not covered" >(res, rej) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if (where === 'game') {</span>
+<span class="cstat-no" title="statement not covered" >      if (isEmpty(props.roomReducer) || isEmpty(props.socketReducer.socket))</span>
+<span class="cstat-no" title="statement not covered" >        rej();</span>
       else
         res();
     }
-    else <span class="missing-if-branch" title="else path not taken" >E</span>if (where === 'room') {
-      <span class="missing-if-branch" title="if path not taken" >I</span>if ((isEmpty(props.roomReducer) &amp;&amp; isEmpty(props.homeReducer.home)) || isEmpty(props.socketReducer.socket))
+    else <span class="cstat-no" title="statement not covered" >if (where === 'room') {</span>
+<span class="cstat-no" title="statement not covered" >      if ((isEmpty(props.roomReducer) &amp;&amp; isEmpty(props.homeReducer.home)) || isEmpty(props.socketReducer.socket))</span>
 <span class="cstat-no" title="statement not covered" >        rej();</span>
       else
         res();
@@ -130,20 +130,20 @@
   }));
 };
 &nbsp;
-const isEmpty = (obj) =&gt; {
-  if (!obj || Object.keys(obj).length === 0)
-    return (true);
+const isEmpty = <span class="fstat-no" title="function not covered" >(obj) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  if (!obj || Object.keys(obj).length === 0)</span>
+<span class="cstat-no" title="statement not covered" >    return (true);</span>
   else
     return (false);
 };
 &nbsp;
-const generateUrl = () =&gt; {
+const generateUrl = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
   return (Math.random().toString(36).substring(2));
 };
 &nbsp;
-const createNewUrl = (roomsList) =&gt; {
+const createNewUrl = <span class="fstat-no" title="function not covered" >(roomsList) =&gt; {</span>
   let url = generateUrl();
-  while (roomsList[url])
+<span class="cstat-no" title="statement not covered" >  while (roomsList[url])</span>
     url = generateUrl();
   return (url);
 };
@@ -154,7 +154,7 @@ export { canIStayHere, isEmpty, generateUrl, createNewUrl };</pre></td></tr>
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Oct 21 2021 21:02:03 GMT+0200 (heure d’été d’Europe centrale)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 22 2021 20:11:02 GMT+0200 (heure d’été d’Europe centrale)
 </div>
 </div>
 <script src="../prettify.js"></script>

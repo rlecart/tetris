@@ -4,16 +4,19 @@ import { connect } from "react-redux";
 import api from '../api/clientApi';
 import { canIStayHere, isEmpty } from '../../misc/utils.js';
 import { setNewRoomInfo, deleteRoomData } from '../actions/roomAction';
+import TopPanel from '../components/TopPanel';
+import BottomPanel from '../components/BottomPanel';
+import RulesPanel from '../components/RulesPanel';
+import PlayersPanel from '../components/PlayersPanel';
+import Display from './Display';
 
-const Room = ({
+const RoomContainer = ({
   dispatch,
   history,
   location,
-  match,
   socketReducer,
   roomReducer,
   homeReducer,
-  gameReducer,
 }) => {
   const loaded = useRef(false);
 
@@ -74,37 +77,27 @@ const Room = ({
   }, []);
 
   let players = createList();
-  let startGame = ifOwner();
+  let startGameButton = ifOwner();
 
   return (
-    <div className="display">
+    <Display>
       <div className="homeMenu" id="inRoom">
-        <div className="topPanel">
-          <span className="title">Super Tetris 3000</span>
-        </div>
-        <div className="bottomPanel" id="inRoom">
-          <div className="blocMenu" id="rules">
-          </div>
-          <div className="blocMenu" id="listPlayers">
-            <div className="playerList">
-              {players}
-            </div>
-            <div className="bottomButtons">
-              <button className="roomButton" id="leaveLaunch" onClick={() => {
-                api.leaveRoom(socketReducer.socket, roomReducer.url)
-                  .then(() => {
-                    pleaseUnmountRoom('completly');
-                    history.replace('/');
-                  });
-              }}>
-                <span className="textButton">Quitter</span>
-              </button>
-              {startGame}
-            </div>
-          </div>
-        </div>
+        <TopPanel />
+        <BottomPanel id='inRoom'>
+          <RulesPanel />
+          <PlayersPanel
+            socketReducer={socketReducer}
+            roomReducer={roomReducer}
+            history={history}
+            api={api}
+            history={history}
+            players={players}
+            startGameButton={startGameButton}
+            pleaseUnmountRoom={pleaseUnmountRoom}
+          />
+        </BottomPanel>
       </div>
-    </div >
+    </Display>
   );
 };
 
@@ -112,4 +105,4 @@ const mapStateToProps = (state) => {
   return state;
 };
 
-export default connect(mapStateToProps)(Room);
+export default connect(mapStateToProps)(RoomContainer);

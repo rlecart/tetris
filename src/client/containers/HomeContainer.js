@@ -5,16 +5,17 @@ import api from "../api/clientApi";
 import openSocket from 'socket.io-client';
 import { addSocket } from '../actions/socketAction';
 import { setNewHomeInfo } from '../actions/homeAction';
+import ProfilPanel from '../components/ProfilPanel';
+import TopPanel from '../components/TopPanel';
+import BottomPanel from '../components/BottomPanel';
+import RoomSelectorPanel from '../components/RoomSelectorPanel';
+import Display from './Display';
 
 const Home = ({
   dispatch,
   history,
-  location,
-  match,
   socketReducer,
-  roomReducer,
   homeReducer,
-  gameReducer,
 }) => {
   const [whichButton, setWhichButton] = React.useState(undefined);
 
@@ -77,36 +78,25 @@ const Home = ({
   };
 
   return (
-    <div className="display">
+    <Display>
       <div className="homeMenu">
-        <div className="topPanel">
-          <span className="title">Super Tetris 3000</span>
-        </div>
-        <div className="bottomPanel">
+        <TopPanel />
+        <BottomPanel>
           <form onSubmit={(event) => submitForm(event)}>
-            <div className="blocMenu" id="home">
-              <div className="avatarSelector">
-                <div className="avatarButton" />
-                <div className="avatar" />
-                <div className="avatarButton" />
-              </div>
-              <input className='nickname' type="text" name="name" pattern='[A-Za-z-]{1,}' required value={homeReducer.profil.name}
-                onChange={(event) => handleChange(event)} />
-            </div>
-            <div className="blocMenu" id="home">
-              <input className='roomUrl' type="text" name="roomUrl" required={whichButton === 'joinRoom'} value={homeReducer.joinUrl}
-                onChange={(event) => handleChange(event)} placeholder='URL' />
-              <button type="submit" className="roomButton" onClick={() => setWhichButton('joinRoom')}>
-                <span className="textButton">Join room</span>
-              </button>
-              <button type="submit" className="roomButton" onClick={() => setWhichButton('createRoom')}>
-                <span className="textButton">Create Room</span>
-              </button>
-            </div>
+            <ProfilPanel
+              homeReducer={homeReducer}
+              handleChange={handleChange}
+            />
+            <RoomSelectorPanel
+              homeReducer={homeReducer}
+              whichButton={whichButton}
+              setWhichButton={setWhichButton}
+              handleChange={handleChange}
+            />
           </form>
-        </div>
+        </BottomPanel>
       </div>
-    </div >
+    </Display>
   );
 };
 

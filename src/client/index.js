@@ -5,9 +5,9 @@ import { Provider } from 'react-redux';
 import { combineReducers } from 'redux';
 
 import NotFound from './components/NotFound';
-import Room from './components/Room';
-import Game from './components/Game';
-import Home from './components/Home';
+import RoomContainer from './containers/RoomContainer';
+import GameContainer from './containers/GameContainer';
+import HomeContainer from './containers/HomeContainer';
 
 import {
   HashRouter,
@@ -32,9 +32,9 @@ const Root = () => (
   <Provider store={Store}>
     <HashRouter hashType='noslash'>
       <Switch>
-        <Route exact path='/' component={Home} />
-        <Route exact path='/:room' component={Room} />
-        <Route exact path='/:room/:game' component={Game} />
+        <Route exact path='/' component={HomeContainer} />
+        <Route exact path='/:room' component={RoomContainer} />
+        <Route exact path='/:room/:game' component={GameContainer} />
         <Route component={NotFound} />
       </Switch>
     </HashRouter>

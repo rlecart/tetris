@@ -4,16 +4,16 @@ import Enzyme, { shallow, render, mount } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import chaiEnzyme from 'chai-enzyme';
 
-import NotFound from '../../src/client/components/NotFound.js';
+import Home from '../../src/client/containers/HomeContainer.js';
 
-chai.should()
-chai.use(chaiEnzyme())
+chai.should();
+chai.use(chaiEnzyme());
 
-Enzyme.configure({ adapter: new Adapter() })
+Enzyme.configure({ adapter: new Adapter() });
 
-describe('<Home /> component test', () => {
+describe.only('<Home /> component test', () => {
   it('Should equal raw value', () => {
-    const output = render(<NotFound />);
+    const output = render(<Home />);
     output.should.have.html('<div>404</div>');
   });
 });
