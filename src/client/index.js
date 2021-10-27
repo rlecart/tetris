@@ -29,7 +29,7 @@ const Store = configureStore(combineReducers({
 }, undefined, {}));
 
 const Root = () => (
-  <Provider store={Store}>
+<Provider store={Store}>
     <HashRouter hashType='noslash'>
       <Switch>
         <Route exact path='/' component={HomeContainer} />

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for client/components/GamePanel.js</title>
+    <title>Code coverage report for client/components/Display.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -16,7 +16,7 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../../index.html">all files</a> / <a href="index.html">client/components/</a> GamePanel.js
+      <a href="../../index.html">all files</a> / <a href="index.html">client/components/</a> Display.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
@@ -51,13 +51,7 @@
 6
 7
 8
-9
-10
-11
-12</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+9</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -66,17 +60,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
-import Board from "./Board";
-import RightPanel from "./RightPanel";
 &nbsp;
-const GamePanel = ({ displayLines, nextTetri }) =&gt; (
-  &lt;div className="game"&gt;
-    &lt;Board displayLines={displayLines} /&gt;
-    &lt;RightPanel nextTetri={nextTetri} /&gt;
+const Display = ({ children }) =&gt; (
+  &lt;div className="display"&gt;
+    {children}
   &lt;/div&gt;
 );
 &nbsp;
-export default GamePanel;</pre></td></tr>
+export default Display;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->

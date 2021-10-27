@@ -8,7 +8,7 @@ import TopPanel from '../components/TopPanel';
 import BottomPanel from '../components/BottomPanel';
 import RulesPanel from '../components/RulesPanel';
 import PlayersPanel from '../components/PlayersPanel';
-import Display from './Display';
+import Display from '../components/Display';
 
 const RoomContainer = ({
   dispatch,
@@ -86,14 +86,15 @@ const RoomContainer = ({
         <BottomPanel id='inRoom'>
           <RulesPanel />
           <PlayersPanel
-            socketReducer={socketReducer}
-            roomReducer={roomReducer}
-            history={history}
-            api={api}
-            history={history}
             players={players}
             startGameButton={startGameButton}
-            pleaseUnmountRoom={pleaseUnmountRoom}
+            leaveRoom={() => {
+              api.leaveRoom(socketReducer.socket, roomReducer.url)
+                .then(() => {
+                  pleaseUnmountRoom('completly');
+                  history.replace('/');
+                });
+            }}
           />
         </BottomPanel>
       </div>

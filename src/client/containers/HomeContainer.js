@@ -9,7 +9,7 @@ import ProfilPanel from '../components/ProfilPanel';
 import TopPanel from '../components/TopPanel';
 import BottomPanel from '../components/BottomPanel';
 import RoomSelectorPanel from '../components/RoomSelectorPanel';
-import Display from './Display';
+import Display from '../components/Display';
 
 const Home = ({
   dispatch,
@@ -46,7 +46,7 @@ const Home = ({
   }, []);
 
   const submitForm = (event) => {
-    console.log('submit');
+    console.log('submiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiit');
     event.preventDefault();
     if (whichButton === 'joinRoom') {
       api.joinRoom(socketReducer.socket, homeReducer.profil, homeReducer.joinUrl)

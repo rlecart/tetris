@@ -10,7 +10,7 @@ import GameOverContainer from './GameOverContainer.js';
 import GamePanel from '../components/GamePanel.js';
 import SpecListContainer from './SpecListContainer.js';
 import LinesContainer from './LinesContainer.js';
-import Display from './Display.js';
+import Display from '../components/Display.js';
 
 const GameContainer = ({
   dispatch,
