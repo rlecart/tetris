@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@babel/runtime": "^7.15.4",
+    "@testing-library/react": "^12.1.2",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.5",
     "autoprefixer": "^9.1.5",
     "babel-cli": "^6.7.7",

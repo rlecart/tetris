@@ -46,35 +46,46 @@ const Home = ({
   }, []);
 
   const submitForm = (event) => {
-    console.log('submiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiit');
-    event.preventDefault();
-    if (whichButton === 'joinRoom') {
-      api.joinRoom(socketReducer.socket, homeReducer.profil, homeReducer.joinUrl)
-        .then((url) => {
-          setNewHomeInfo(dispatch, {
-            newProfil: homeReducer.profil,
-            newJoinUrl: url,
-            newOwner: false
+    return (new Promise((res) => {
+      console.log('\n\n');
+      console.log(socketReducer);
+      console.log(homeReducer);
+      console.log('whichbutton = ', whichButton);
+      event.preventDefault();
+      if (whichButton === 'joinRoom') {
+        api.joinRoom(socketReducer.socket, homeReducer.profil, homeReducer.joinUrl)
+          .then((url) => {
+            setNewHomeInfo(dispatch, {
+              newProfil: homeReducer.profil,
+              newJoinUrl: url,
+              newOwner: false
+            });
+            console.log('la ca join');
+            history.push(`/#${url}[${homeReducer.profil.name}]`);
+          })
+          .catch((err) => {
+            console.log(err);
           });
-          history.push(`/#${url}[${homeReducer.profil.name}]`);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-    else if (whichButton === 'createRoom') {
-      console.log(homeReducer.profil);
-      api.createRoom(socketReducer.socket, homeReducer.profil)
-        .then((url) => {
-          setNewHomeInfo(dispatch, {
-            newProfil: homeReducer.profil,
-            newJoinUrl: url,
-            newOwner: true
+      }
+      else if (whichButton === 'createRoom') {
+        console.log('la ca lance api create', history);
+        console.log(homeReducer.profil);
+        api.createRoom(socketReducer.socket, homeReducer.profil)
+          .then((url) => {
+            console.log('la ca .then');
+            setNewHomeInfo(dispatch, {
+              newProfil: homeReducer.profil,
+              newJoinUrl: url,
+              newOwner: true
+            });
+            console.log('attention ca va puuuuush');
+            history.push(`/#${url}[${homeReducer.profil.name}]`);
+            res();
           });
-          history.push(`/#${url}[${homeReducer.profil.name}]`);
-        });
-    }
-    setWhichButton(undefined);
+      }
+      console.log('soit un fail soit ca reset');
+      setWhichButton(undefined);
+    }));
   };
 
   return (
@@ -82,7 +93,7 @@ const Home = ({
       <div className="homeMenu">
         <TopPanel />
         <BottomPanel>
-          <form onSubmit={(event) => submitForm(event)}>
+          <form onSubmit={submitForm}>
             <ProfilPanel
               homeReducer={homeReducer}
               handleChange={handleChange}

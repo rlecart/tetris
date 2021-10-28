@@ -8,24 +8,32 @@ import { combineReducers } from "redux";
 import sinon from 'sinon';
 import _ from 'lodash';
 
+import { waitFor } from '@testing-library/react';
+
 import configureStore from "../../src/client/middleware/configureStore.js";
 import socketReducer from '../../src/client/reducers/socketReducer.js';
 import homeReducer from "../../src/client/reducers/homeReducer.js";
 import roomReducer from "../../src/client/reducers/roomReducer.js";
 import gameReducer from "../../src/client/reducers/gameReducer.js";
+import { SYNC_HOME_DATA } from '../../src/client/actions/homeAction.js';
 
 import Home from '../../src/client/containers/HomeContainer.js';
+
+import Master from '../../src/server/classes/Master';
 
 const Store = configureStore(combineReducers({
   socketReducer,
   roomReducer,
   homeReducer,
   gameReducer,
-}, undefined, {}));
+}), undefined, {
+  SYNC_HOME_DATA: ({ dispatch, getState }) => {
+  }
+});
 
-const NewHome = (testHistory) => (
+const NewHome = ({ history }) => (
   <Provider store={Store}>
-    <Home history={testHistory} />
+    <Home history={history} />
   </Provider>
 );
 
@@ -45,13 +53,24 @@ const testToCallPush = {
 describe.only('<Home /> component test', () => {
   let wrapper;
   let socketBefore;
+  let server;
+  let master;
 
   before(() => {
+    master = new Master();
+    master.startServer();
+    server = master.getServer();
+
     console.log(Store.getState());
     socketBefore = _.cloneDeep(Store.getState().socketReducer.socket);
     wrapper = mount(<NewHome
       history={testToCallPush}
     />);
+    console.log(Store.getState().socketReducer.socket.connected);
+    // Store.getState().socketReducer.socket.on('connect', () => done);
+  });
+  after(() => {
+    master.stopServer();
   });
 
   it('Should create socket', () => {
@@ -59,7 +78,6 @@ describe.only('<Home /> component test', () => {
   });
 
   it('Should fail to Create Room', () => {
-
   });
 
   it('Should update username', () => {
@@ -76,21 +94,17 @@ describe.only('<Home /> component test', () => {
     expect(Store.getState().homeReducer.joinUrl).to.not.be.eql(joinUrlBefore);
   });
 
-  it('Should succeed to Create Room', () => {
-    // const historyPushSpy = sinon.spy(testToCallPush);
-    // console.log(wrapper.find('button').at(0).prop('onClick'));
-    // console.log('proto = ', form.prototype)
-    // const submitFormSpy = sinon.spy(form.prototype, 'onSubmit');
-    wrapper.find('[type="submit"]').get(0).click();
-    // console.log('ca a submit = ', submitFormSpy.calledOnce);
-    // const button = wrapper.find('button.roomButton').at(1);
-    // button.simulate('click');
-    // console.log(historyPushSpy);
-    // console.log(historyPushSpy.push.calledOnce);
-    // console.log(isPushCalled);
-    // expect(historyPushSpy.push.calledOnce).to.be.true;
-    // expect(isPushCalled).to.be.true;
-    // expect(Home.prototype.submitForm.calledOnce).to.equal(true);
-    // wrapper.should.have.html('<div>404</div>');
+  it('Should succeed to Create Room', async () => {
+    const historyPushSpy = sinon.spy(testToCallPush);
+    wrapper.find('.roomButton#createRoomButton').prop('onClick')();
+    await wrapper.find('form').prop('onSubmit')({ preventDefault: () => { } });
+    console.log('le pqfwush = ', historyPushSpy.push.calledOnce);
+    console.log('isPushCalled = ', isPushCalled);
+    expect(historyPushSpy.push.calledOnce).to.be.true;
+    console.log('le pushsa = ', historyPushSpy.push.calledOnce);
+    console.log('le pussh = ', historyPushSpy.push.calledOnce);
+    console.log('le push = ', historyPushSpy.push.calledOnce);
+    console.log('le pushd = ', historyPushSpy.push.calledOnce);
+    console.log('le pufsh = ', historyPushSpy.push.calledOnce);
   });
 });
