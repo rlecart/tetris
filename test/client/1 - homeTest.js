@@ -19,18 +19,17 @@ describe('<Home /> component test', () => {
   let wrapper;
   let wrapper2;
   let socketBefore;
-  let server;
   let master;
   let roomPath;
-  const testToCallPush = {
+  const Store = createANewStore();
+  const Store2 = createANewStore();
+  const spyOnHistory = {
     push(path) {
       if (path)
         roomPath = path.slice(2, path.indexOf('['));
     }
   };
-  const historyPushSpy = sinon.spy(testToCallPush);
-  const Store = createANewStore();
-  const Store2 = createANewStore();
+  const historySpy = sinon.spy(spyOnHistory);
 
   const HomeWithProvider = ({ store, history }) => (
     <Provider store={store}>
@@ -41,12 +40,11 @@ describe('<Home /> component test', () => {
   before(async () => {
     master = new Master();
     master.startServer();
-    server = master.getServer();
 
     // console.log(Store.getState());
     socketBefore = _.cloneDeep(Store.getState().socketReducer.socket);
-    wrapper = mount(<HomeWithProvider store={Store} history={testToCallPush} />);
-    wrapper2 = mount(<HomeWithProvider store={Store2} history={testToCallPush} />);
+    wrapper = mount(<HomeWithProvider store={Store} history={spyOnHistory} />);
+    wrapper2 = mount(<HomeWithProvider store={Store2} history={spyOnHistory} />);
     await new Promise((res) => Store.getState().socketReducer.socket.on('connect', () => res()));
   });
   after(() => {
@@ -59,7 +57,7 @@ describe('<Home /> component test', () => {
 
   it('Should fail to submit', async () => {
     await wrapper.find('form').prop('onSubmit')({ preventDefault: () => { } });
-    expect(historyPushSpy.push.calledOnce).to.be.false;
+    expect(historySpy.push.calledOnce).to.be.false;
   });
 
   it('Should fail to Create Room', async () => {
@@ -68,7 +66,7 @@ describe('<Home /> component test', () => {
     await wrapper.find('form').prop('onSubmit')({ preventDefault: () => { } })
       .catch((err) => {
         expect(err).to.be.eql('bad profil or clienId');
-        expect(historyPushSpy.push.calledOnce).to.be.false;
+        expect(historySpy.push.calledOnce).to.be.false;
       });
   });
 
@@ -78,7 +76,7 @@ describe('<Home /> component test', () => {
     await wrapper.find('form').prop('onSubmit')({ preventDefault: () => { } })
       .catch((err) => {
         expect(err).to.be.eql('bad profil or clienId');
-        expect(historyPushSpy.push.calledOnce).to.be.false;
+        expect(historySpy.push.calledOnce).to.be.false;
       });
   });
 
@@ -110,7 +108,7 @@ describe('<Home /> component test', () => {
     wrapper.find('.roomButton#createRoomButton').prop('onClick')();
     wrapper.update();
     await wrapper.find('form').prop('onSubmit')({ preventDefault: () => { } });
-    expect(historyPushSpy.push.calledOnce).to.be.true;
+    expect(historySpy.push.calledOnce).to.be.true;
   });
 
   it('Should succeed to Join Room (2nd client)', async () => {
@@ -124,6 +122,6 @@ describe('<Home /> component test', () => {
     wrapper2.find('.roomButton#joinRoomButton').prop('onClick')();
     wrapper2.update();
     await wrapper2.find('form').prop('onSubmit')({ preventDefault: () => { } });
-    expect(historyPushSpy.push.calledTwice).to.be.true;
+    expect(historySpy.push.calledTwice).to.be.true;
   });
 });

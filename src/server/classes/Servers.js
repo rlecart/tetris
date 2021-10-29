@@ -85,11 +85,13 @@ export default class mainServer {
       client.on('createRoom', (clientId, profil, cb) => { master.createRoom(clientId, profil, cb); });
       client.on('joinRoom', (clientId, profil, url, cb) => { master.joinRoom(clientId, profil, url, cb); });
       client.on('leaveRoom', (clientId, url, res) => { master.leaveRoom(clientId, url, res); });
-      client.on('getRoomInfo', (url, res) => {
+      client.on('getRoomInfo', (url, cb) => {
         let room;
 
         if ((room = master.getRoom(url)))
-          res({ type: 'ok', value: room.getRoomInfo() });
+          cb({ type: 'ok', value: room.getRoomInfo() });
+        else
+          cb({ type: 'err', value: 'cant find room' })
       });
       client.on('askToStartGame', (clientId, url, res) => { master.askToStartGame(clientId, url, res); });
       client.on('readyToStart', (clientId, url, res) => { master.readyToStart(clientId, url, res); });

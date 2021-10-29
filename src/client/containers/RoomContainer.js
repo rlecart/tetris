@@ -47,7 +47,7 @@ const RoomContainer = ({
     if (completly)
       deleteRoomData(dispatch);
     loaded.current = false;
-    console.log('unmount room', roomReducer);
+    // console.log('unmount room', roomReducer);
   };
 
   React.useEffect(() => {
@@ -64,12 +64,17 @@ const RoomContainer = ({
               pleaseUnmountRoom();
               history.push(`${location.pathname}/game`);
             });
-            socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) => { setNewRoomInfo(dispatch, newRoomInfo); });
-            api.getRoomInfo(socketReducer.socket, homeReducer.joinUrl).then((newRoomInfo) => { setNewRoomInfo(dispatch, newRoomInfo); });
+            socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) => setNewRoomInfo(dispatch, newRoomInfo));
+            api.getRoomInfo(socketReducer.socket, homeReducer.joinUrl)
+              .then((newRoomInfo) => setNewRoomInfo(dispatch, newRoomInfo))
+              .catch((err) => {
+                pleaseUnmountRoom('completly');
+                history.push('/');
+              });
             loaded.current = true;
           }
-        },
-        () => { history.push('/'); });
+        })
+      .catch(() => { history.push('/'); });
 
     return (() => {
       console.log('real unmount room');

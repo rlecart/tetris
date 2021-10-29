@@ -97,8 +97,8 @@ const GameContainer = ({
             if (!loaded.current)
               api.readyToStart(socketReducer.socket, roomReducer.url);
           }
-        },
-        () => { history.push('/'); });
+        })
+      .catch(() => { history.push('/'); });
     return (() => isMounted.current = false);
   }, []);
 
@@ -135,7 +135,7 @@ const GameContainer = ({
       lines={gameReducer.lines}
       lineClass={'line'}
       blocClass={'lineBloc'} />
-    : console.log('quoiiiiii') ;
+    : console.log('quoiiiiii');
 
   const nextTetri = (gameReducer.tetri !== undefined) ?
     <LinesContainer
