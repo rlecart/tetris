@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">66.67% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>4/6</span>
+        <span class='fraction'>7/7</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">40% </span>
+        <span class="strong">87.5% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>4/10</span>
+        <span class='fraction'>14/16</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">90.91% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>4/8</span>
+        <span class='fraction'>10/11</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">66.67% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>4/6</span>
+        <span class='fraction'>7/7</span>
       </div>
     </div>
   </div>
-  <div class='status-line medium'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -149,7 +149,16 @@
 104
 105
 106
-107</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -162,6 +171,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -175,8 +201,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2×</span>
-<span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -188,18 +212,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -213,7 +227,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -280,58 +298,67 @@ const Home = ({
     let newProfil = homeReducer.profil;
     let newJoinUrl = homeReducer.joinUrl;
 &nbsp;
-    if (event.target.name === 'name')
-      newProfil = { name: event.target.value };
-    else <span class="missing-if-branch" title="else path not taken" >E</span>if (event.target.name === 'roomUrl')
-      newJoinUrl = event.target.value;
-    setNewHomeInfo(dispatch, {
-      newProfil: newProfil,
-      newJoinUrl: newJoinUrl,
-      newOwner: undefined,
-    });
+    if (event &amp;&amp; event.target
+      &amp;&amp; (event.target.name === 'name' || event.target.name === 'roomUrl')) {
+      if (event.target.name === 'name')
+        newProfil = { name: event.target.value };
+      else <span class="missing-if-branch" title="else path not taken" >E</span>if (event.target.name === 'roomUrl')
+        newJoinUrl = event.target.value;
+      setNewHomeInfo(dispatch, {
+        newProfil: newProfil,
+        newJoinUrl: newJoinUrl,
+        newOwner: undefined,
+      });
+    }
   };
 &nbsp;
   React.useEffect(() =&gt; {
     let socket;
 &nbsp;
     <span class="missing-if-branch" title="else path not taken" >E</span>if (!socketReducer.socket) {
-      console.log('socket vide');
+      // console.log('socket vide');
       socket = openSocket('http://0.0.0.0:3004');
       addSocket(dispatch, socket);
     }
-    return (() =&gt; console.log('real unmount home'));
+    return (<span class="fstat-no" title="function not covered" >() =&gt; {</span>
+      //console.log('real unmount home')
+    });
   }, []);
 &nbsp;
-  const submitForm = <span class="fstat-no" title="function not covered" >(event) =&gt; {</span>
-    console.log('submit');
-    event.preventDefault();
-<span class="cstat-no" title="statement not covered" >    if (whichButton === 'joinRoom') {</span>
-      api.joinRoom(socketReducer.socket, homeReducer.profil, homeReducer.joinUrl)
-        .then(<span class="fstat-no" title="function not covered" >(url) =&gt; {</span>
-          setNewHomeInfo(dispatch, {
-            newProfil: homeReducer.profil,
-            newJoinUrl: url,
-            newOwner: false
-          });
-          history.push(`/#${url}[${homeReducer.profil.name}]`);
-        })
-        .catch(<span class="fstat-no" title="function not covered" >(err) =&gt; {</span>
-          console.log(err);
-        });
-    }
-    else <span class="cstat-no" title="statement not covered" >if (whichButton === 'createRoom') {</span>
-      console.log(homeReducer.profil);
-      api.createRoom(socketReducer.socket, homeReducer.profil)
-        .then(<span class="fstat-no" title="function not covered" >(url) =&gt; {</span>
-          setNewHomeInfo(dispatch, {
-            newProfil: homeReducer.profil,
-            newJoinUrl: url,
-            newOwner: true
-          });
-          history.push(`/#${url}[${homeReducer.profil.name}]`);
-        });
-    }
-    setWhichButton(undefined);
+  const submitForm = (event) =&gt; {
+    return (new Promise((res, rej) =&gt; {
+      event.preventDefault();
+      if (whichButton === 'joinRoom') {
+        setWhichButton(undefined);
+        api.joinRoom(socketReducer.socket, homeReducer.profil, homeReducer.joinUrl)
+          .then((url) =&gt; {
+            setNewHomeInfo(dispatch, {
+              newProfil: homeReducer.profil,
+              newJoinUrl: url,
+              newOwner: false
+            });
+            history.push(`/#${url}[${homeReducer.profil.name}]`);
+            res();
+          })
+          .catch((err) =&gt; { rej(err); });
+      }
+      else if (whichButton === 'createRoom') {
+        setWhichButton(undefined);
+        api.createRoom(socketReducer.socket, homeReducer.profil)
+          .then((url) =&gt; {
+            setNewHomeInfo(dispatch, {
+              newProfil: homeReducer.profil,
+              newJoinUrl: url,
+              newOwner: true
+            });
+            history.push(`/#${url}[${homeReducer.profil.name}]`);
+            res();
+          })
+          .catch((err) =&gt; { rej(err); });
+      }
+      else
+        res();
+    }));
   };
 &nbsp;
   return (
@@ -339,7 +366,7 @@ const Home = ({
       &lt;div className="homeMenu"&gt;
         &lt;TopPanel /&gt;
         &lt;BottomPanel&gt;
-          &lt;form onSubmit={(event) =&gt; submitForm(event)}&gt;
+          &lt;form onSubmit={submitForm}&gt;
             &lt;ProfilPanel
               homeReducer={homeReducer}
               handleChange={handleChange}
@@ -367,7 +394,7 @@ export default connect(mapStateToProps)(Home);</pre></td></tr>
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Oct 27 2021 17:16:58 GMT+0200 (heure d’été d’Europe centrale)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 29 2021 16:57:07 GMT+0200 (heure d’été d’Europe centrale)
 </div>
 </div>
 <script src="../../prettify.js"></script>

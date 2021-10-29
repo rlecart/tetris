@@ -3,17 +3,12 @@ import defaultRules from '../../src/ressources/defaultRules.js';
 import openSocket from 'socket.io-client';
 import params from '../../params.js';
 
-// import pkg from 'enzyme';
-// const { mount, render, shallow, configure } = pkg;
-// import Adapter from 'enzyme-adapter-react-16';
-
-// configure({ adapter: new Adapter() });
-
-// global.expect = expect;
-
-// global.mount = mount;
-// global.render = render;
-// global.shallow = shallow;
+import { combineReducers } from "redux";
+import configureStore from "../../src/client/middleware/configureStore.js";
+import socketReducer from '../../src/client/reducers/socketReducer.js';
+import homeReducer from "../../src/client/reducers/homeReducer.js";
+import roomReducer from "../../src/client/reducers/roomReducer.js";
+import gameReducer from "../../src/client/reducers/gameReducer.js";
 
 const expectNewRoom = (room, playerId) => {
   expect(room.isInGame()).to.be.eql(false);
@@ -75,4 +70,14 @@ const waitAMinute = (ms) => {
   }));
 };
 
-export { expectNewRoom, expectJoinRoom, addNewClients, removeEveryClients, waitAMinute };
+
+const createANewStore = () => {
+  return (configureStore(combineReducers({
+    socketReducer,
+    roomReducer,
+    homeReducer,
+    gameReducer,
+  }), undefined, {}));
+};
+
+export { expectNewRoom, expectJoinRoom, addNewClients, removeEveryClients, waitAMinute, createANewStore };

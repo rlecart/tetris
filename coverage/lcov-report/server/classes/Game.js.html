@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">12.5% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/8</span>
+        <span class='fraction'>8/8</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">84.62% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/26</span>
+        <span class='fraction'>22/26</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/1</span>
+        <span class='fraction'>1/1</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">12.5% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/8</span>
+        <span class='fraction'>8/8</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -239,8 +239,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1680×</span>
+<span class="cline-any cline-yes">856×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -252,21 +252,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">228×</span>
+<span class="cline-any cline-yes">228×</span>
+<span class="cline-any cline-yes">4×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -294,8 +282,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">128×</span>
+<span class="cline-any cline-yes">128×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -367,7 +367,7 @@
 import defaultGame from '../../ressources/defaultGame.js';
 &nbsp;
 export default class Game {
-<span class="fstat-no" title="function not covered" >  constructor(shapes, shapesId) {</span>
+  constructor(shapes, shapesId) {
     this._lines = cloneDeep(defaultGame.lines);
     this._spec = cloneDeep(defaultGame.lines);
     this._tetri = cloneDeep(defaultGame.tetri);
@@ -399,8 +399,8 @@ export default class Game {
   }
 &nbsp;
   getLines(i, j) {
-<span class="cstat-no" title="statement not covered" >    if (this._lines &amp;&amp; i !== undefined) {</span>
-<span class="cstat-no" title="statement not covered" >      if (this._lines[i] &amp;&amp; j !== undefined)</span>
+    if (this._lines &amp;&amp; i !== undefined) {
+      if (this._lines[i] &amp;&amp; j !== undefined)
         return (this._lines[i][j]);
       return (this._lines[i]);
     }
@@ -412,9 +412,9 @@ export default class Game {
   }
 &nbsp;
   getActualShape(i, j) {
-<span class="cstat-no" title="statement not covered" >    if (this._tetri) {</span>
-<span class="cstat-no" title="statement not covered" >      if (this._tetri.actualShape &amp;&amp; i !== undefined) {</span>
-<span class="cstat-no" title="statement not covered" >        if (this._tetri.actualShape[i] &amp;&amp; j !== undefined) {</span>
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (this._tetri) {
+      if (this._tetri.actualShape &amp;&amp; i !== undefined) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (this._tetri.actualShape[i] &amp;&amp; j !== undefined) {
           return (this._tetri.actualShape[i][j]);
         }
         return (this._tetri.actualShape[i]);
@@ -454,8 +454,8 @@ export default class Game {
   }
 &nbsp;
   setLines(i, j, value) {
-<span class="cstat-no" title="statement not covered" >    if (this._lines &amp;&amp; i !== undefined) {</span>
-<span class="cstat-no" title="statement not covered" >      if (this._lines[i] &amp;&amp; j !== undefined) {</span>
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (this._lines &amp;&amp; i !== undefined) {
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (this._lines[i] &amp;&amp; j !== undefined) {
         this._lines[i][j] = value;
       }
       else
@@ -529,7 +529,7 @@ export default class Game {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Oct 27 2021 17:16:58 GMT+0200 (heure d’été d’Europe centrale)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 29 2021 16:57:07 GMT+0200 (heure d’été d’Europe centrale)
 </div>
 </div>
 <script src="../../prettify.js"></script>

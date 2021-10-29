@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">12.5% </span>
+        <span class="strong">62.5% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/8</span>
+        <span class='fraction'>5/8</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">37.5% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/16</span>
+        <span class='fraction'>6/16</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">68.42% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/19</span>
+        <span class='fraction'>13/19</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">12.5% </span>
+        <span class="strong">62.5% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/8</span>
+        <span class='fraction'>5/8</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line medium'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -232,8 +232,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -244,7 +244,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -253,7 +253,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -290,7 +290,7 @@ import Server from 'socket.io';
 import params from '../../../params.js';
 &nbsp;
 export default class mainServer {
-<span class="fstat-no" title="function not covered" >  constructor() {</span>
+  constructor() {
     this._host = params.server.host;
     this._port = params.server.port;
     this._app = {};
@@ -325,7 +325,7 @@ export default class mainServer {
 &nbsp;
     this._app.on('request', handler);
 &nbsp;
-    this._server = this._app.listen({ host, port }, <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+    this._server = this._app.listen({ host, port }, () =&gt; {
       // loginfo(`tetris listen on ${params.url}`);
       cb();
     });
@@ -333,7 +333,7 @@ export default class mainServer {
 &nbsp;
   startServer(cb) {
     this._app = http.createServer();
-    this.initApp(<span class="fstat-no" title="function not covered" >() =&gt; {</span>
+    this.initApp(() =&gt; {
       this._io = Server(this._app, {
         cors: {
           origin: params.server.url2,
@@ -352,8 +352,8 @@ export default class mainServer {
   }
 &nbsp;
   stopListenSio(sioList) {
-<span class="cstat-no" title="statement not covered" >    if (Object.values(sioList).length !== 0) {</span>
-<span class="cstat-no" title="statement not covered" >      for (let client of Object.values(sioList)) {</span>
+    if (Object.values(sioList).length !== 0) {
+      for (let client of Object.values(sioList)) {
         client.disconnect();
       }
     }
@@ -361,26 +361,26 @@ export default class mainServer {
   }
 &nbsp;
   listenSio(master) {
-    this._io.on('connection', <span class="fstat-no" title="function not covered" >(client) =&gt; {</span>
+    this._io.on('connection', (client) =&gt; {
       master.addNewSio(client);
-      client.on('move', <span class="fstat-no" title="function not covered" >(clientId, url, dir, res) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if (master.getRoom(url) &amp;&amp; master.getRoom(url).isInGame() === true)</span>
+      client.on('move', (clientId, url, dir, res) =&gt; {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (master.getRoom(url) &amp;&amp; master.getRoom(url).isInGame() === true)
           master.askToMove(clientId, url, dir, res);
       });
-      client.on('createRoom', <span class="fstat-no" title="function not covered" >(clientId, profil, res) =&gt; {</span> master.createRoom(clientId, profil, res); });
-      client.on('joinRoom', <span class="fstat-no" title="function not covered" >(clientId, profil, url, cb) =&gt; {</span> master.joinRoom(clientId, profil, url, cb); });
-      client.on('leaveRoom', <span class="fstat-no" title="function not covered" >(clientId, url, res) =&gt; {</span> master.leaveRoom(clientId, url, res); });
-      client.on('getRoomInfo', <span class="fstat-no" title="function not covered" >(url, res) =&gt; {</span>
+      client.on('createRoom', (clientId, profil, cb) =&gt; { master.createRoom(clientId, profil, cb); });
+      client.on('joinRoom', (clientId, profil, url, cb) =&gt; { master.joinRoom(clientId, profil, url, cb); });
+      client.on('leaveRoom', (clientId, url, res) =&gt; { master.leaveRoom(clientId, url, res); });
+      client.on('getRoomInfo', (url, res) =&gt; {
         let room;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if ((room = master.getRoom(url)))</span>
+        <span class="missing-if-branch" title="else path not taken" >E</span>if ((room = master.getRoom(url)))
           res({ type: 'ok', value: room.getRoomInfo() });
       });
-      client.on('askToStartGame', <span class="fstat-no" title="function not covered" >(clientId, url, res) =&gt; {</span> master.askToStartGame(clientId, url, res); });
-      client.on('readyToStart', <span class="fstat-no" title="function not covered" >(clientId, url, res) =&gt; {</span> master.readyToStart(clientId, url, res); });
-      client.on('askToEndGame', <span class="fstat-no" title="function not covered" >(clientId, url, res) =&gt; {</span> master.askToEndGame(clientId, url, res); });
+      client.on('askToStartGame', (clientId, url, res) =&gt; { master.askToStartGame(clientId, url, res); });
+      client.on('readyToStart', (clientId, url, res) =&gt; { master.readyToStart(clientId, url, res); });
+      client.on('askToEndGame', (clientId, url, res) =&gt; { master.askToEndGame(clientId, url, res); });
       client.on('askEverybodyToCalmDown', <span class="fstat-no" title="function not covered" >(clientId, url, res) =&gt; {</span> master.askEverybodyToCalmDown(clientId, url, res); });
-      client.on('ping', <span class="fstat-no" title="function not covered" >() =&gt; {</span> client.emit('pong'); });
+      client.on('ping', () =&gt; { client.emit('pong'); });
       client.conn.on('heartbeat', <span class="fstat-no" title="function not covered" >() =&gt; {</span>
         console.log('heartbeat called!');
         master.setSioHbeat(client.id, Date.now());
@@ -400,7 +400,7 @@ export default class mainServer {
       // console.log('connected')
     });
     this._io.listen(this._port);
-    console.log(`[Io listening on port ${this._port}]`);
+    // console.log(`[Io listening on port ${this._port}]`);
   }
 };
 &nbsp;</pre></td></tr>
@@ -409,7 +409,7 @@ export default class mainServer {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Oct 27 2021 17:16:58 GMT+0200 (heure d’été d’Europe centrale)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 29 2021 16:57:07 GMT+0200 (heure d’été d’Europe centrale)
 </div>
 </div>
 <script src="../../prettify.js"></script>

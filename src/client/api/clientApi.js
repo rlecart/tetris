@@ -25,10 +25,8 @@ const getRoomInfo = (socket, idRoom) => {
 const createRoom = (socket, profil) => {
   return (new Promise((res, rej) => {
     if (socket && socket.connected && socket.id) {
-      console.log('api to serv create');
       socket.emit('createRoom', socket.id, profil, (reponse) => {
-      console.log('reponse serv = ', reponse);
-      if (reponse && reponse.type === 'ok')
+        if (reponse && reponse.type === 'ok')
           res(reponse.value);
         else
           rej(reponse.value);
@@ -41,13 +39,14 @@ const createRoom = (socket, profil) => {
 
 const joinRoom = (socket, profil, idRoom) => {
   return (new Promise((res, rej) => {
-    if (socket && socket.connected && socket.id)
+    if (socket && socket.connected && socket.id) {
       socket.emit('joinRoom', socket.id, profil, idRoom, (reponse) => {
         if (reponse && reponse.type === 'ok')
           res(reponse.value);
         else
           rej(reponse.value);
       });
+    }
     else
       rej('socket not connected');
   }));

@@ -1,7 +1,7 @@
 import configureStore from '../../src/client/middleware/configureStore.js';
 import { expect } from 'chai';
 import { roomReducer, initialRoomState } from '../../src/client/reducers/roomReducer.js';
-import { setNewRoomInfo, SYNC_ROOM_DATA, DELETE_ROOM_DATA } from '../../src/client/actions/roomAction.js'
+import { setNewRoomInfo, deleteRoomData, SYNC_ROOM_DATA } from '../../src/client/actions/roomAction.js';
 import Player from '../../src/server/classes/Player.js';
 
 describe('Room reducer tests', () => {
@@ -52,7 +52,8 @@ describe('Room reducer tests', () => {
     exampleOfInGame = initialRoomState.inGame;
     exampleOfNbPlayer = initialRoomState.nbPlayer;
     exampleOfListPlayers = initialRoomState.listPlayers;
-    store.dispatch({ type: DELETE_ROOM_DATA });
+    deleteRoomData(store.dispatch);
+    // store.dispatch({ type: DELETE_ROOM_DATA });
   });
 
 });

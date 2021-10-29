@@ -23,36 +23,38 @@ const Home = ({
     let newProfil = homeReducer.profil;
     let newJoinUrl = homeReducer.joinUrl;
 
-    if (event.target.name === 'name')
-      newProfil = { name: event.target.value };
-    else if (event.target.name === 'roomUrl')
-      newJoinUrl = event.target.value;
-    setNewHomeInfo(dispatch, {
-      newProfil: newProfil,
-      newJoinUrl: newJoinUrl,
-      newOwner: undefined,
-    });
+    if (event && event.target
+      && (event.target.name === 'name' || event.target.name === 'roomUrl')) {
+      if (event.target.name === 'name')
+        newProfil = { name: event.target.value };
+      else if (event.target.name === 'roomUrl')
+        newJoinUrl = event.target.value;
+      setNewHomeInfo(dispatch, {
+        newProfil: newProfil,
+        newJoinUrl: newJoinUrl,
+        newOwner: undefined,
+      });
+    }
   };
 
   React.useEffect(() => {
     let socket;
 
     if (!socketReducer.socket) {
-      console.log('socket vide');
+      // console.log('socket vide');
       socket = openSocket('http://0.0.0.0:3004');
       addSocket(dispatch, socket);
     }
-    return (() => console.log('real unmount home'));
+    return (() => {
+      //console.log('real unmount home')
+    });
   }, []);
 
   const submitForm = (event) => {
-    return (new Promise((res) => {
-      console.log('\n\n');
-      console.log(socketReducer);
-      console.log(homeReducer);
-      console.log('whichbutton = ', whichButton);
+    return (new Promise((res, rej) => {
       event.preventDefault();
       if (whichButton === 'joinRoom') {
+        setWhichButton(undefined);
         api.joinRoom(socketReducer.socket, homeReducer.profil, homeReducer.joinUrl)
           .then((url) => {
             setNewHomeInfo(dispatch, {
@@ -60,31 +62,27 @@ const Home = ({
               newJoinUrl: url,
               newOwner: false
             });
-            console.log('la ca join');
             history.push(`/#${url}[${homeReducer.profil.name}]`);
+            res();
           })
-          .catch((err) => {
-            console.log(err);
-          });
+          .catch((err) => { rej(err); });
       }
       else if (whichButton === 'createRoom') {
-        console.log('la ca lance api create', history);
-        console.log(homeReducer.profil);
+        setWhichButton(undefined);
         api.createRoom(socketReducer.socket, homeReducer.profil)
           .then((url) => {
-            console.log('la ca .then');
             setNewHomeInfo(dispatch, {
               newProfil: homeReducer.profil,
               newJoinUrl: url,
               newOwner: true
             });
-            console.log('attention ca va puuuuush');
             history.push(`/#${url}[${homeReducer.profil.name}]`);
             res();
-          });
+          })
+          .catch((err) => { rej(err); });
       }
-      console.log('soit un fail soit ca reset');
-      setWhichButton(undefined);
+      else
+        res();
     }));
   };
 

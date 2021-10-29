@@ -17,8 +17,8 @@ export default class Master {
       this._server = new mainServer(this);
       this._server.startServer(() => {
         this._server.listenSio(this);
-        console.log('c bien res')
-        res()
+        // console.log('c bien res');
+        res();
       });
     }));
     // console.log('[Server completely started]')
@@ -31,7 +31,7 @@ export default class Master {
       this._server = undefined;
       res();
       // console.log('[Server completely stopped]')
-    }))
+    }));
   }
 
   getServer() {
@@ -110,7 +110,7 @@ export default class Master {
     }
   }
 
-  createRoom(clientId, profil, res) {
+  createRoom(clientId, profil, cb) {
     let room;
 
     if (profil && profil !== undefined && profil.name && profil.name !== undefined && profil.name.length > 0 && clientId !== undefined && clientId !== null) {
@@ -119,14 +119,16 @@ export default class Master {
       room = new Room(this);
       room.setUrl(createNewUrl(this.getRoomsList()));
       this.addNewRoom(room);
-      this.joinRoom(clientId, profil, room.getUrl(), res);
+      this.joinRoom(clientId, profil, room.getUrl(), cb);
     }
+    else
+      cb({ type: 'err', value: 'bad profil or clienId' });
   }
 
   joinRoom(clientId, profil, url, cb) {
     let room;
 
-    if (profil && profil !== undefined && profil.name) {
+    if (profil && profil !== undefined && profil.name && profil.name !== undefined && profil.name.length > 0 && clientId !== undefined && clientId !== null) {
       if (this.isInRoom(clientId) && (room = this.getRoomFromPlayerId(clientId)))
         this.leaveRoom(clientId, room.getUrl());
       if ((room = this.getRoom(url)) && room.isInGame() !== true && room.getNbPlayer() < 8) {
@@ -137,8 +139,10 @@ export default class Master {
         cb({ type: 'ok', value: url });
       }
       else
-        cb({ type: 'err', value: 'room full' });
+        cb({ type: 'err', value: 'room full or closed' });
     }
+    else
+      cb({ type: 'err', value: 'bad profil or clienId' });
   }
 
   leaveRoom(clientId, url, res) {

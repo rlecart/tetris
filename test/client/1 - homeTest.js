@@ -4,70 +4,50 @@ import Enzyme, { shallow, render, mount } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import chaiEnzyme from 'chai-enzyme';
 import { Provider } from 'react-redux';
-import { combineReducers } from "redux";
 import sinon from 'sinon';
 import _ from 'lodash';
 
-import { waitFor } from '@testing-library/react';
-
-import configureStore from "../../src/client/middleware/configureStore.js";
-import socketReducer from '../../src/client/reducers/socketReducer.js';
-import homeReducer from "../../src/client/reducers/homeReducer.js";
-import roomReducer from "../../src/client/reducers/roomReducer.js";
-import gameReducer from "../../src/client/reducers/gameReducer.js";
-import { SYNC_HOME_DATA } from '../../src/client/actions/homeAction.js';
-
+import { createANewStore } from "../helpers/helpers.js";
 import Home from '../../src/client/containers/HomeContainer.js';
-
 import Master from '../../src/server/classes/Master';
-
-const Store = configureStore(combineReducers({
-  socketReducer,
-  roomReducer,
-  homeReducer,
-  gameReducer,
-}), undefined, {
-  SYNC_HOME_DATA: ({ dispatch, getState }) => {
-  }
-});
-
-const NewHome = ({ history }) => (
-  <Provider store={Store}>
-    <Home history={history} />
-  </Provider>
-);
 
 chai.should();
 chai.use(chaiEnzyme());
-
 Enzyme.configure({ adapter: new Adapter() });
 
-let isPushCalled = false;
-
-const testToCallPush = {
-  push(path) {
-    isPushCalled = true;
-  }
-};
-
-describe.only('<Home /> component test', () => {
+describe('<Home /> component test', () => {
   let wrapper;
+  let wrapper2;
   let socketBefore;
   let server;
   let master;
+  let roomPath;
+  const testToCallPush = {
+    push(path) {
+      if (path)
+        roomPath = path.slice(2, path.indexOf('['));
+    }
+  };
+  const historyPushSpy = sinon.spy(testToCallPush);
+  const Store = createANewStore();
+  const Store2 = createANewStore();
 
-  before(() => {
+  const HomeWithProvider = ({ store, history }) => (
+    <Provider store={store}>
+      <Home history={history} />
+    </Provider>
+  );
+
+  before(async () => {
     master = new Master();
     master.startServer();
     server = master.getServer();
 
-    console.log(Store.getState());
+    // console.log(Store.getState());
     socketBefore = _.cloneDeep(Store.getState().socketReducer.socket);
-    wrapper = mount(<NewHome
-      history={testToCallPush}
-    />);
-    console.log(Store.getState().socketReducer.socket.connected);
-    // Store.getState().socketReducer.socket.on('connect', () => done);
+    wrapper = mount(<HomeWithProvider store={Store} history={testToCallPush} />);
+    wrapper2 = mount(<HomeWithProvider store={Store2} history={testToCallPush} />);
+    await new Promise((res) => Store.getState().socketReducer.socket.on('connect', () => res()));
   });
   after(() => {
     master.stopServer();
@@ -77,7 +57,39 @@ describe.only('<Home /> component test', () => {
     expect(Store.getState().socketReducer.socket).to.not.be.eql(socketBefore);
   });
 
-  it('Should fail to Create Room', () => {
+  it('Should fail to submit', async () => {
+    await wrapper.find('form').prop('onSubmit')({ preventDefault: () => { } });
+    expect(historyPushSpy.push.calledOnce).to.be.false;
+  });
+
+  it('Should fail to Create Room', async () => {
+    wrapper.find('.roomButton#createRoomButton').prop('onClick')();
+    wrapper.update();
+    await wrapper.find('form').prop('onSubmit')({ preventDefault: () => { } })
+      .catch((err) => {
+        expect(err).to.be.eql('bad profil or clienId');
+        expect(historyPushSpy.push.calledOnce).to.be.false;
+      });
+  });
+
+  it('Should fail to Join Room', async () => {
+    wrapper.find('.roomButton#joinRoomButton').prop('onClick')();
+    wrapper.update();
+    await wrapper.find('form').prop('onSubmit')({ preventDefault: () => { } })
+      .catch((err) => {
+        expect(err).to.be.eql('bad profil or clienId');
+        expect(historyPushSpy.push.calledOnce).to.be.false;
+      });
+  });
+
+  it('Should fail to update username and roomUrl', () => {
+    const usernameBefore = _.cloneDeep(Store.getState().homeReducer.profil.name);
+    const joinUrlBefore = _.cloneDeep(Store.getState().homeReducer.joinUrl);
+    const event = { target: { name: "doesntExist", value: "aaaaa" } };
+    wrapper.find('.username').simulate('change', event);
+    wrapper.find('.roomUrl').simulate('change', event);
+    expect(Store.getState().homeReducer.joinUrl).to.be.eql(joinUrlBefore);
+    expect(Store.getState().homeReducer.profil.name).to.be.eql(usernameBefore);
   });
 
   it('Should update username', () => {
@@ -95,16 +107,23 @@ describe.only('<Home /> component test', () => {
   });
 
   it('Should succeed to Create Room', async () => {
-    const historyPushSpy = sinon.spy(testToCallPush);
     wrapper.find('.roomButton#createRoomButton').prop('onClick')();
+    wrapper.update();
     await wrapper.find('form').prop('onSubmit')({ preventDefault: () => { } });
-    console.log('le pqfwush = ', historyPushSpy.push.calledOnce);
-    console.log('isPushCalled = ', isPushCalled);
     expect(historyPushSpy.push.calledOnce).to.be.true;
-    console.log('le pushsa = ', historyPushSpy.push.calledOnce);
-    console.log('le pussh = ', historyPushSpy.push.calledOnce);
-    console.log('le push = ', historyPushSpy.push.calledOnce);
-    console.log('le pushd = ', historyPushSpy.push.calledOnce);
-    console.log('le pufsh = ', historyPushSpy.push.calledOnce);
+  });
+
+  it('Should succeed to Join Room (2nd client)', async () => {
+    console.log('roomPath = ', roomPath);
+    const usernameEvent = { target: { name: "name", value: "nameChangeTest2" } };
+    wrapper2.find('.username').simulate('change', usernameEvent);
+    wrapper2.update();
+    const urlEvent = { target: { name: "roomUrl", value: roomPath } };
+    wrapper2.find('.roomUrl').simulate('change', urlEvent);
+    wrapper2.update();
+    wrapper2.find('.roomButton#joinRoomButton').prop('onClick')();
+    wrapper2.update();
+    await wrapper2.find('form').prop('onSubmit')({ preventDefault: () => { } });
+    expect(historyPushSpy.push.calledTwice).to.be.true;
   });
 });

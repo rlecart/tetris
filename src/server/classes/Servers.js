@@ -82,7 +82,7 @@ export default class mainServer {
         if (master.getRoom(url) && master.getRoom(url).isInGame() === true)
           master.askToMove(clientId, url, dir, res);
       });
-      client.on('createRoom', (clientId, profil, res) => { master.createRoom(clientId, profil, res); });
+      client.on('createRoom', (clientId, profil, cb) => { master.createRoom(clientId, profil, cb); });
       client.on('joinRoom', (clientId, profil, url, cb) => { master.joinRoom(clientId, profil, url, cb); });
       client.on('leaveRoom', (clientId, url, res) => { master.leaveRoom(clientId, url, res); });
       client.on('getRoomInfo', (url, res) => {
@@ -115,6 +115,6 @@ export default class mainServer {
       // console.log('connected')
     });
     this._io.listen(this._port);
-    console.log(`[Io listening on port ${this._port}]`);
+    // console.log(`[Io listening on port ${this._port}]`);
   }
 };
