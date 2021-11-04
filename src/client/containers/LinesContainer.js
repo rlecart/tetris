@@ -10,8 +10,8 @@ const Bloc = ({ bloc, blocClass, id, idTetri }) => {
 const Line = ({ line, blocClass, id, idTetri }) => {
   let ret = [];
 
-  for (let bloc of line)
-    ret.push(<Bloc bloc={bloc} blocClass={blocClass} id={id} idTetri={idTetri} />);
+  for (let i in line)
+    ret.push(<Bloc key={i} bloc={line[i]} blocClass={blocClass} id={id} idTetri={idTetri} />);
   return (ret);
 };
 
@@ -20,10 +20,10 @@ const LinesContainer = ({ lines, lineClass, blocClass, id, idTetri }) => {
 
   if (idTetri === 5 && lines.length < 3)
     lines.unshift(new Array(lines[0].length).fill(0));
-  for (let line of lines) {
+  for (let i in lines) {
     ret.push(
-      <div className={lineClass}>
-        {<Line line={line} blocClass={blocClass} id={id} idTetri={idTetri} />}
+      <div key={i} className={lineClass}>
+        {<Line line={lines[i]} blocClass={blocClass} id={id} idTetri={idTetri} />}
       </div>
     );
   }

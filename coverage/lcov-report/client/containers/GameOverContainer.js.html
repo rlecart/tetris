@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/4</span>
+        <span class='fraction'>4/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">87.5% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/14</span>
+        <span class='fraction'>14/16</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">50% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/2</span>
+        <span class='fraction'>1/2</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/4</span>
+        <span class='fraction'>4/4</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -104,7 +104,9 @@
 59
 60
 61
-62</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+62
+63
+64</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -120,21 +122,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -145,7 +147,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -172,7 +176,7 @@ import TextReveal from "../components/TextReveal";
 import LeaveButton from "../components/LeaveButton";
 import GameOver from "../components/GameOver";
 &nbsp;
-const GameOverContainer = <span class="fstat-no" title="function not covered" >({</span>
+const GameOverContainer = ({
   socketReducer,
   roomReducer,
   gameReducer,
@@ -181,21 +185,21 @@ const GameOverContainer = <span class="fstat-no" title="function not covered" >(
   pleaseUnmountGame,
   history
 }) =&gt; {
-<span class="cstat-no" title="statement not covered" >  if (gameReducer.winner !== undefined) {</span>
+  if (gameReducer &amp;&amp; gameReducer.winner !== undefined) {
     let returnToRoomButton = undefined;
     let goBack = undefined;
     let finalText = undefined;
     let text1 = undefined;
     let text2 = undefined;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (roomReducer.owner === socketReducer.socket.id)</span>
+    if (roomReducer.owner === socketReducer.socket.id)
       returnToRoomButton = (
         &lt;LeaveButton
           text='flex'
           toExecute={() =&gt; api.askEverybodyToCalmDown(socketReducer.socket, roomReducer.url)}
         /&gt;
       );
-<span class="cstat-no" title="statement not covered" >    if (showGoBack === true &amp;&amp; !(roomReducer.owner === socketReducer.socket.id))</span>
+    if (showGoBack === true &amp;&amp; !(roomReducer.owner === socketReducer.socket.id))
       goBack = (
         &lt;LeaveButton
           text='Go back'
@@ -206,13 +210,13 @@ const GameOverContainer = <span class="fstat-no" title="function not covered" >(
           }}
         /&gt;
       );
-<span class="cstat-no" title="statement not covered" >    if (!isEmpty(gameReducer.winner)) {</span>
+    if (!isEmpty(gameReducer.winner)) {
       text1 = (gameReducer.winner.id === socketReducer.socket.id) ?
         'what a pro you are, such a nice musculature!!! :Q' :
-        'but you lose, like the looser you are! :(((';
+<span class="branch-1 cbranch-no" title="branch not covered" >        'but you lose, like the looser you are! :(((';</span>
       text2 = (gameReducer.winner.id === socketReducer.socket.id) ?
         'YOU are the real beaugosse!' :
-        `${gameReducer.winner.name} is the real beaugosse!`;
+        `${<span class="branch-1 cbranch-no" title="branch not covered" >gameReducer.winner.name} is the real beaugosse!`;</span>
       finalText = &lt;TextReveal text1={text1} text2={text2} /&gt;;
     }
 &nbsp;
@@ -224,6 +228,8 @@ const GameOverContainer = <span class="fstat-no" title="function not covered" >(
       /&gt;
     );
   }
+  else
+    return (null);
 };
 &nbsp;
 export default GameOverContainer;</pre></td></tr>
@@ -232,7 +238,7 @@ export default GameOverContainer;</pre></td></tr>
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 29 2021 16:57:07 GMT+0200 (heure d’été d’Europe centrale)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Nov 04 2021 21:10:35 GMT+0100 (heure normale d’Europe centrale)
 </div>
 </div>
 <script src="../../prettify.js"></script>

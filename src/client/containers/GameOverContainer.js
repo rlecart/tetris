@@ -14,7 +14,7 @@ const GameOverContainer = ({
   pleaseUnmountGame,
   history
 }) => {
-  if (gameReducer.winner !== undefined) {
+  if (gameReducer && gameReducer.winner !== undefined) {
     let returnToRoomButton = undefined;
     let goBack = undefined;
     let finalText = undefined;
@@ -57,6 +57,8 @@ const GameOverContainer = ({
       />
     );
   }
+  else
+    return (null);
 };
 
 export default GameOverContainer;

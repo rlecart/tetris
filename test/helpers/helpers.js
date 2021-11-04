@@ -48,7 +48,7 @@ const addNewClients = (nb, done, addOn) => {
           socket.on(key, value);
       }
       doneAlready++;
-      if (doneAlready === nb)
+      if (doneAlready === nb && done)
         done();
     });
   }

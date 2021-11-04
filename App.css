@@ -292,7 +292,13 @@ code {
 	margin-left: 40px;
 }
 
-.roomButton#leaveLaunch {
+.roomButton#leave {
+	flex: 1;
+	margin: 15px;
+	max-width: 200px;
+}
+
+.roomButton#launch {
 	flex: 1;
 	margin: 15px;
 	max-width: 200px;

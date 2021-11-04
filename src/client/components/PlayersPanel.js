@@ -10,7 +10,7 @@ const PlayersPanel = ({
       {players}
     </div>
     <div className="bottomButtons">
-      <button className="roomButton" id="leaveLaunch" onClick={leaveRoom}>
+      <button className="roomButton" id="leave" onClick={leaveRoom}>
         <span className="textButton">Quitter</span>
       </button>
       {startGameButton}
