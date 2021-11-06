@@ -5,7 +5,7 @@ import api from '../api/clientApi.js';
 import { canIStayHere, isEmpty } from '../../misc/utils.js';
 
 import { setNewRoomInfo } from '../actions/roomAction.js';
-import { setNewGameInfo, addWinner, deleteGameData } from '../actions/gameAction.js';
+import { setNewGameInfo, addWinner, deleteGameData, acidMode, stopAcidMode } from '../actions/gameAction.js';
 import GameOverContainer from './GameOverContainer.js';
 import GamePanel from '../components/GamePanel.js';
 import SpecListContainer from './SpecListContainer.js';
@@ -21,26 +21,15 @@ const GameContainer = ({
 }) => {
   const isMounted = React.useRef(false);
   const loaded = React.useRef(false);
-  let [isOut, setIsOut] = React.useState(false);
-  let [showGoBack, setShowGoBack] = React.useState(false);
+  const gameOverTimeout = React.useRef();
+  const [isOut, setIsOut] = React.useState(false);
+  const [showGoBack, setShowGoBack] = React.useState(false);
 
-  const acidMode = () => {
-    console.log('gamereduc = ', gameReducer);
-    let newDisplayLines = gameReducer.lines;
-
-    for (let line in newDisplayLines) {
-      for (let char in newDisplayLines[line]) {
-        // newDisplayLines[line][char]++;
-        newDisplayLines[line][char] = (newDisplayLines[line][char] + 1) % 9;
-      }
-    }
-    setNewGameInfo(dispatch, { ...gameReducer, lines: newDisplayLines });
-  };
 
   const eventDispatcher = (event) => {
     console.log(event.key);
     if (event.key === "z")
-      acidMode();
+      acidMode(dispatch);
     else if (event.key === 'ArrowRight')
       api.move('right', roomReducer.url, socketReducer.socket);
     else if (event.key === 'ArrowLeft')
@@ -56,20 +45,23 @@ const GameContainer = ({
     }
   };
 
-  React.useEffect(() => {
-    isMounted.current = true;
-    canIStayHere('game', { roomReducer, socketReducer })
-      .then(
-        () => {
-          console.log('ca useEffectttttttttttttttttttttttttttttttttttttttt');
-          if (!loaded.current) {
+  React.useEffect(async () => {
+    if (!isMounted.current) {
+      await canIStayHere('game', { roomReducer, socketReducer })
+        .then(
+          () => {
+            isMounted.current = true;
+            console.log('ca useEffectttttttttttttttttttttttttttttttttttttttt');
             socketReducer.socket.on('disconnect', () => {
-              pleaseUnmountGame();
+              pleaseUnmountGame('completly');
               history.push('/');
             });
             socketReducer.socket.on('refreshVue', (newGame, newSpec) => {
-              console.log('ca refresh front', gameReducer);
-              setNewGameInfo(dispatch, { ...newGame, spec: newSpec, });
+              console.log('ca refresh front');
+              let ret = { ...gameReducer, spec: newSpec };
+              if (newGame)
+                ret = { ...newGame, spec: newSpec };
+              setNewGameInfo(dispatch, ret);
               if (!loaded.current) {
                 window.addEventListener('keydown', eventDispatcher);
                 loaded.current = true;
@@ -77,17 +69,21 @@ const GameContainer = ({
             });
             socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) => { setNewRoomInfo(dispatch, newRoomInfo); });
             socketReducer.socket.on('nowChillOutDude', (path) => {
-              pleaseUnmountGame();
+              pleaseUnmountGame('completly');
               history.replace(path);
             });
             socketReducer.socket.on('endGame', () => {
               console.log('unload', gameReducer);
               window.removeEventListener('keydown', eventDispatcher);
+              console.log(gameReducer);
+              stopAcidMode(dispatch);
               setIsOut(true); // pour faire un ptit 'mdr t mor'
             });
             socketReducer.socket.on('theEnd', ({ winnerInfo }) => {
               console.log('the end', winnerInfo);
-              setTimeout(() => {
+              window.removeEventListener('keydown', eventDispatcher);
+              gameOverTimeout.current = setTimeout(() => {
+                console.log('gameOverTimeout');
                 if (isMounted.current)
                   setShowGoBack(true);
               }, 5000);
@@ -96,21 +92,29 @@ const GameContainer = ({
             console.log('DidMount du game');
             if (!loaded.current)
               api.readyToStart(socketReducer.socket, roomReducer.url);
-          }
-        })
-      .catch(() => { history.push('/'); });
-    return (() => isMounted.current = false);
-  }, []);
+          })
+        .catch(() => { history.push('/'); });
+    }
+    return (() => {
+      socketReducer.socket.removeAllListeners();
+      isMounted.current = false;
+    });
+  }, [gameReducer]);
 
-  const pleaseUnmountGame = () => {
+  const pleaseUnmountGame = (completly) => {
     if (!isEmpty(socketReducer)) {
       if (!isEmpty(socketReducer.socket))
         socketReducer.socket.removeAllListeners();
-      if (loaded.current) {
-        window.removeEventListener('keydown', eventDispatcher);
-        loaded.current = false;
+      if (completly) {
+        if (loaded.current) {
+          window.removeEventListener('keydown', eventDispatcher);
+          loaded.current = false;
+          clearTimeout(gameOverTimeout.current);
+          gameOverTimeout.current = undefined;
+        }
+        deleteGameData(dispatch);
+        stopAcidMode(dispatch);
       }
-      deleteGameData(dispatch);
     }
   };
 

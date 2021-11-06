@@ -50,35 +50,35 @@ const RoomContainer = ({
     // console.log('unmount room', roomReducer);
   };
 
-  React.useEffect(() => {
-    canIStayHere('room', { roomReducer, homeReducer, socketReducer })
+  React.useEffect(async () => {
+    await canIStayHere('room', { roomReducer, homeReducer, socketReducer })
       .then(
         () => {
           console.log('mount room');
+          socketReducer.socket.on('disconnect', () => {
+            pleaseUnmountRoom('completly');
+            console.log('ca disconnect');
+            history.push('/');
+          });
+          socketReducer.socket.on('goToGame', () => {
+            pleaseUnmountRoom();
+            console.log('ca go to game');
+            history.push(`${location.pathname}/game`);
+          });
+          socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) => {
+            console.log(roomReducer);
+            console.log('ca refresh car new info room', newRoomInfo);
+            setNewRoomInfo(dispatch, newRoomInfo);
+          });
           if (!loaded.current) {
-            socketReducer.socket.on('disconnect', () => {
-              // console.log(socketReducer, roomReducer, homeReducer)
-              pleaseUnmountRoom('completly');
-              console.log('ca disconnect');
-              history.push('/');
-            });
-            socketReducer.socket.on('goToGame', () => {
-              pleaseUnmountRoom();
-              console.log('ca go to game');
-              history.push(`${location.pathname}/game`);
-            });
-            socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) => {
-              console.log(roomReducer)
-              console.log('ca refresh car new info room', newRoomInfo)
-              setNewRoomInfo(dispatch, newRoomInfo)});
             api.getRoomInfo(socketReducer.socket, homeReducer.joinUrl)
               .then((newRoomInfo) => {
-                console.log('\nca get')
-                console.log('ca get')
-                console.log('ca get')
-                console.log('ca get')
-                console.log('ca get')
-                console.log(newRoomInfo, roomReducer, '\n')
+                console.log('\nca get');
+                console.log('ca get');
+                console.log('ca get');
+                console.log('ca get');
+                console.log('ca get');
+                console.log(newRoomInfo, roomReducer, '\n');
                 setNewRoomInfo(dispatch, newRoomInfo);
                 // console.log('ca get 1 fois', newRoomInfo);
                 // console.log('ca get 1 fois', roomReducer);
@@ -95,11 +95,11 @@ const RoomContainer = ({
         console.log('ca cantstayhere');
         history.push('/');
       });
-
     return (() => {
+      socketReducer.socket.removeAllListeners();
       console.log('real unmount room');
     });
-  }, []);
+  }, [roomReducer]);
 
   const leaveRoom = () => {
 

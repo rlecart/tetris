@@ -34,7 +34,7 @@ const GameOverContainer = ({
           text='Go back'
           toExecute={() => {
             let profil = roomReducer.listPlayers[socketReducer.socket.id]._profil;
-            pleaseUnmountGame();
+            pleaseUnmountGame('completly');
             history.replace(`/${roomReducer.url}[${profil.name}]`);
           }}
         />

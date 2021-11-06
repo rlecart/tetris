@@ -4,7 +4,7 @@ const canIStayHere = (where, props) => {
       if (isEmpty(props.roomReducer) || isEmpty(props.socketReducer.socket))
         rej();
       else
-        res();
+        res(props);
     }
     else if (where === 'room') {
       if ((isEmpty(props.roomReducer) && isEmpty(props.homeReducer.home)) || isEmpty(props.socketReducer.socket))
