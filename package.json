@@ -9,7 +9,7 @@
     "client-dev": "webpack-dev-server --colors --hot --inline --host 0.0.0.0 --port 8080",
     "srv-dev": "DEBUG=tetris:* babel-watch -w src src/server/main.js",
     "srv-dist": "DEBUG=tetris:* babel src --out-dir dist",
-    "test": "./node_modules/.bin/_mocha -S test/**/*.js --require babel-core/register --require babel-polyfill --reporter spec",
+    "test": "./node_modules/.bin/_mocha --timeout 10000 -S test/**/*.js --require babel-core/register --require babel-polyfill --reporter spec",
     "coverage": "NODE_ENV=test nyc --include src --all -r text -r lcov --require babel-core/register --require babel-polyfill ./node_modules/.bin/_mocha  -S test/**/*.js"
   },
   "dependencies": {

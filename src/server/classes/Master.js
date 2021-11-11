@@ -10,6 +10,7 @@ export default class Master {
     this._roomsList = {};
     this._sioClientList = {};
     this._server = {};
+    this.counter = 0;
   }
 
   startServer() {
@@ -100,14 +101,21 @@ export default class Master {
   }
 
   addNewSio(client) {
+    this.counter = this.counter + 1;
     this._sioClientList = { ...this._sioClientList, [client.id]: client };
   }
 
   removeSio(client) {
-    if (this._sioClientList[client] !== undefined) {
-      this._sioClientList[client].disconnect();
-      delete this._sioClientList[client];
-    }
+    console.log('counter = ', this.counter)
+    console.log('length = ', Object.keys(this._sioClientList).length)
+    return (new Promise(async res => {
+      if (this._sioClientList[client] !== undefined) {
+        await this._sioClientList[client].disconnect();
+        delete this._sioClientList[client];
+        this.counter--;
+      }
+      res();
+    }));
   }
 
   createRoom(clientId, profil, cb) {
