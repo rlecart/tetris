@@ -43,35 +43,20 @@ const addNewClients = async (nb, addOn) => {
   console.log('nb = ', nb);
   await new Promise(res => {
     while (i < nb) {
-      // console.log('i aa = ', i)
-      // for (let i = 0; i < nb; i++) {
-      // ;
-      // await waitAMinute(10)
-      socket = io(params.server.url, { multiplex: false });
+      socket = io(params.server.url, { forceNew: true });
+      clients.push(socket);
       socket.on('connect', () => {
         if (addOn !== undefined) {
           for (let [key, value] of Object.entries(addOn))
             socket.on(key, value);
         }
         doneAlready++;
-        if (doneAlready >= nb) {
-          console.log('doneAlred = ', doneAlready);
-          console.log('nb = ', nb);
-          // console.log('ca done', i);
-          // res();
-          setTimeout(() => {
-            console.log('donealresad', doneAlready);
-            console.log('i = ', i);
-            res();
-          }, 4500);
-        }
+        if (doneAlready >= nb)
+          res();
       });
-      clients.push(socket);
       i++;
     }
   });
-  console.log('finaldone', doneAlready);
-  console.log('nb of duplicate = ', new Set(clients).length)
   return (clients);
 };
 
@@ -82,7 +67,6 @@ const removeEveryClients = (master) => {
       i++;
       await master.removeSio(client);
     }
-    console.log(i);
     res();
   }));
 };

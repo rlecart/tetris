@@ -57,7 +57,7 @@ describe('<Room /> component test', () => {
     master = new Master();
     await master.startServer();
 
-    clients = addNewClients(2);
+    clients = await addNewClients(2);
 
     setNewHomeInfo(Store3.dispatch, {
       newProfil: { name: 'nameTest' },

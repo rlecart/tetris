@@ -2,7 +2,7 @@ import { expect, assert } from 'chai';
 import Master from '../../src/server/classes/Master.js';
 import { addNewClients, removeEveryClients, waitAMinute } from '../helpers/helpers.js';
 
-describe.only('Server tests', () => {
+describe('Server tests', () => {
   let server;
   let master;
 
@@ -39,13 +39,13 @@ describe.only('Server tests', () => {
     after(async () => {
       await removeEveryClients(master);
       expect(Object.keys(master.getSioList()).length).to.be.eql(0);
-      // sockets.forEach(socket => master.removeSio(socket.id))
     });
 
     it('Socket list exists', () => {
       assert.exists(master.getSioList());
     });
-    it('Socket list nicely filled', () => {
+    it('Socket list nicely filled', async () => {
+      await waitAMinute(500);
       expect(Object.keys(master.getSioList()).length).to.be.eql(1);
     });
     it('Emit test with ping', (done) => {
@@ -60,20 +60,11 @@ describe.only('Server tests', () => {
 
   describe('With 50 clients', () => {
     let sockets = [];
-    let disconnectedCounter = 1;
-    const addDisconnect = () => {
-      // console.log('coucou', disconnectedCounter);
-      disconnectedCounter++;
-    };
 
     before(async () => {
       console.log('server counter avant = ', server.counter)
-      sockets = await addNewClients(300);
-      await waitAMinute(500)
+      sockets = await addNewClients(50);
       console.log('server counter = ', server.counter)
-      // console.dir(Object.keys(master.getSioList()), {'maxArrayLength': null});
-      // console.log(Object.keys(master.getSioList()).length)
-      // console.log(sockets.length)
     });
     after(async () => {
       await removeEveryClients(master);
@@ -83,7 +74,7 @@ describe.only('Server tests', () => {
     it('Socket list nicely filled', async () => {
       await waitAMinute(500);
       console.log('server.counter', server.counter)
-      expect(Object.keys(master.getSioList()).length).to.be.eql(300);
+      expect(Object.keys(master.getSioList()).length).to.be.eql(50);
     });
     it('Emit test with ping', (done) => {
       let doneAlready = 0;

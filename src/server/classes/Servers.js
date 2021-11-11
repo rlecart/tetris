@@ -11,7 +11,6 @@ export default class mainServer {
     this._app = {};
     this._server = {};
     this._io = {};
-    this.counter = 0;
   }
 
   getHttpServer() {
@@ -78,7 +77,6 @@ export default class mainServer {
 
   listenSio(master) {
     this._io.on('connection', (client) => {
-      this.counter++;
       master.addNewSio(client);
       client.on('move', (clientId, url, dir, res) => {
         if (master.getRoom(url) && master.getRoom(url).isInGame() === true)
