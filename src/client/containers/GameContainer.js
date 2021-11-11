@@ -73,14 +73,14 @@ const GameContainer = ({
               history.replace(path);
             });
             socketReducer.socket.on('endGame', () => {
-              console.log('unload', gameReducer);
+              // console.log('unload', gameReducer);
               window.removeEventListener('keydown', eventDispatcher);
-              console.log(gameReducer);
+              // console.log(gameReducer);
               stopAcidMode(dispatch);
               setIsOut(true); // pour faire un ptit 'mdr t mor'
             });
             socketReducer.socket.on('theEnd', ({ winnerInfo }) => {
-              console.log('the end', winnerInfo);
+              // console.log('the end', winnerInfo);
               window.removeEventListener('keydown', eventDispatcher);
               gameOverTimeout.current = setTimeout(() => {
                 console.log('gameOverTimeout');

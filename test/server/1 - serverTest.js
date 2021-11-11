@@ -38,6 +38,7 @@ describe('Server tests', () => {
 
     after(async () => {
       await removeEveryClients(master);
+      await waitAMinute(500);
       expect(Object.keys(master.getSioList()).length).to.be.eql(0);
       // sockets.forEach(socket => master.removeSio(socket.id))
     });
@@ -45,15 +46,17 @@ describe('Server tests', () => {
     it('Socket list exists', () => {
       assert.exists(master.getSioList());
     });
-    it('Socket list nicely filled', () => {
+    it('Socket list nicely filled', async () => {
+      await waitAMinute(500);
       expect(Object.keys(master.getSioList()).length).to.be.eql(1);
     });
     it('Emit test with ping', (done) => {
       sockets[0].on('pong', done);
       sockets[0].emit('ping');
     });
-    it('Remove client', () => {
-      master.removeSio(sockets[0].id);
+    it('Remove client', async () => {
+      await master.removeSio(sockets[0].id);
+      await waitAMinute(500);
       expect(Object.keys(master.getSioList()).length).to.be.eql(0);
     });
   });
@@ -67,6 +70,7 @@ describe('Server tests', () => {
 
     after(async () => {
       await removeEveryClients(master);
+      await waitAMinute(500);
       expect(Object.keys(master.getSioList()).length).to.be.eql(0);
     });
 
