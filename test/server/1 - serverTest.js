@@ -38,6 +38,7 @@ describe('Server tests', () => {
 
     after(async () => {
       await removeEveryClients(master);
+      await waitAMinute(500);
       expect(Object.keys(master.getSioList()).length).to.be.eql(0);
     });
 
@@ -54,6 +55,7 @@ describe('Server tests', () => {
     });
     it('Remove client', async () => {
       await master.removeSio(sockets[0].id);
+      await waitAMinute(500);
       expect(Object.keys(master.getSioList()).length).to.be.eql(0);
     });
   });
@@ -68,6 +70,7 @@ describe('Server tests', () => {
     });
     after(async () => {
       await removeEveryClients(master);
+      await waitAMinute(500);
       expect(Object.keys(master.getSioList()).length).to.be.eql(0);
     });
 
@@ -90,6 +93,7 @@ describe('Server tests', () => {
     });
     it('Remove 50 clients', async () => {
       await removeEveryClients(master);
+      await waitAMinute(500);
       expect(Object.keys(master.getSioList()).length).to.be.eql(0);
     });
   });

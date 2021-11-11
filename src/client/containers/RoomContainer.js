@@ -66,19 +66,19 @@ const RoomContainer = ({
             history.push(`${location.pathname}/game`);
           });
           socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) => {
-            console.log(roomReducer);
-            console.log('ca refresh car new info room', newRoomInfo);
+            // console.log(roomReducer);
+            // console.log('ca refresh car new info room', newRoomInfo);
             setNewRoomInfo(dispatch, newRoomInfo);
           });
           if (!loaded.current) {
             api.getRoomInfo(socketReducer.socket, homeReducer.joinUrl)
               .then((newRoomInfo) => {
-                console.log('\nca get');
-                console.log('ca get');
-                console.log('ca get');
-                console.log('ca get');
-                console.log('ca get');
-                console.log(newRoomInfo, roomReducer, '\n');
+                // console.log('\nca get');
+                // console.log('ca get');
+                // console.log('ca get');
+                // console.log('ca get');
+                // console.log('ca get');
+                // console.log(newRoomInfo, roomReducer, '\n');
                 setNewRoomInfo(dispatch, newRoomInfo);
                 // console.log('ca get 1 fois', newRoomInfo);
                 // console.log('ca get 1 fois', roomReducer);
