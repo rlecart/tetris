@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import defaultRules from '../../src/ressources/defaultRules.js';
-import openSocket from 'socket.io-client';
+import { io } from 'socket.io-client';
 import params from '../../params.js';
 
 import { combineReducers } from "redux";
@@ -34,32 +34,55 @@ const expectJoinRoom = (room, playerId, playerName, nbPlayer) => {
   expect(room.getNbPlayer()).to.be.eql(nbPlayer);
 };
 
-const addNewClients = (nb, done, addOn) => {
+const addNewClients = async (nb, addOn) => {
   let clients = [];
   let socket;
   let doneAlready = 0;
+  let i = 0;
 
-  for (let i = 0; i < nb; i++) {
-    socket = new openSocket(params.server.url);
-    clients.push(socket);
-    socket.on('connect', () => {
-      if (addOn !== undefined) {
-        for (let [key, value] of Object.entries(addOn))
-          socket.on(key, value);
-      }
-      doneAlready++;
-      if (doneAlready === nb && done)
-        done();
-    });
-  }
+  console.log('nb = ', nb);
+  await new Promise(res => {
+    while (i < nb) {
+      // console.log('i aa = ', i)
+      // for (let i = 0; i < nb; i++) {
+      // ;
+      // await waitAMinute(10)
+      socket = io(params.server.url, { multiplex: false });
+      socket.on('connect', () => {
+        if (addOn !== undefined) {
+          for (let [key, value] of Object.entries(addOn))
+            socket.on(key, value);
+        }
+        doneAlready++;
+        if (doneAlready >= nb) {
+          console.log('doneAlred = ', doneAlready);
+          console.log('nb = ', nb);
+          // console.log('ca done', i);
+          // res();
+          setTimeout(() => {
+            console.log('donealresad', doneAlready);
+            console.log('i = ', i);
+            res();
+          }, 4500);
+        }
+      });
+      clients.push(socket);
+      i++;
+    }
+  });
+  console.log('finaldone', doneAlready);
+  console.log('nb of duplicate = ', new Set(clients).length)
   return (clients);
 };
 
 const removeEveryClients = (master) => {
-  return (new Promise(res => {
+  return (new Promise(async res => {
+    let i = 1;
     for (let client in master.getSioList()) {
-      master.removeSio(client);
+      i++;
+      await master.removeSio(client);
     }
+    console.log(i);
     res();
   }));
 };

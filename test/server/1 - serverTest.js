@@ -2,7 +2,7 @@ import { expect, assert } from 'chai';
 import Master from '../../src/server/classes/Master.js';
 import { addNewClients, removeEveryClients, waitAMinute } from '../helpers/helpers.js';
 
-describe('Server tests', () => {
+describe.only('Server tests', () => {
   let server;
   let master;
 
@@ -32,8 +32,8 @@ describe('Server tests', () => {
   describe('With client', () => {
     let sockets = [];
 
-    before((done) => {
-      sockets = addNewClients(1, done);
+    before(async () => {
+      sockets = await addNewClients(1);
     });
 
     after(async () => {
@@ -52,19 +52,29 @@ describe('Server tests', () => {
       sockets[0].on('pong', done);
       sockets[0].emit('ping');
     });
-    it('Remove client', () => {
-      master.removeSio(sockets[0].id);
+    it('Remove client', async () => {
+      await master.removeSio(sockets[0].id);
       expect(Object.keys(master.getSioList()).length).to.be.eql(0);
     });
   });
 
   describe('With 50 clients', () => {
     let sockets = [];
+    let disconnectedCounter = 1;
+    const addDisconnect = () => {
+      // console.log('coucou', disconnectedCounter);
+      disconnectedCounter++;
+    };
 
-    before((done) => {
-      sockets = addNewClients(50, done);
+    before(async () => {
+      console.log('server counter avant = ', server.counter)
+      sockets = await addNewClients(300);
+      await waitAMinute(500)
+      console.log('server counter = ', server.counter)
+      // console.dir(Object.keys(master.getSioList()), {'maxArrayLength': null});
+      // console.log(Object.keys(master.getSioList()).length)
+      // console.log(sockets.length)
     });
-
     after(async () => {
       await removeEveryClients(master);
       expect(Object.keys(master.getSioList()).length).to.be.eql(0);
@@ -72,7 +82,8 @@ describe('Server tests', () => {
 
     it('Socket list nicely filled', async () => {
       await waitAMinute(500);
-      expect(Object.keys(master.getSioList()).length).to.be.eql(50);
+      console.log('server.counter', server.counter)
+      expect(Object.keys(master.getSioList()).length).to.be.eql(300);
     });
     it('Emit test with ping', (done) => {
       let doneAlready = 0;
