@@ -27,7 +27,7 @@ const GameContainer = ({
 
 
   const eventDispatcher = (event) => {
-    console.log(event.key);
+    console.log('event.key = ', event.key);
     if (event.key === "z")
       acidMode(dispatch);
     else if (event.key === 'ArrowRight')
@@ -51,13 +51,13 @@ const GameContainer = ({
         .then(
           () => {
             isMounted.current = true;
-            console.log('ca useEffectttttttttttttttttttttttttttttttttttttttt');
+            // console.log('ca useEffectttttttttttttttttttttttttttttttttttttttt');
             socketReducer.socket.on('disconnect', () => {
               pleaseUnmountGame('completly');
               history.push('/');
             });
             socketReducer.socket.on('refreshVue', (newGame, newSpec) => {
-              console.log('ca refresh front');
+              // console.log('ca refresh front');
               let ret = { ...gameReducer, spec: newSpec };
               if (newGame)
                 ret = { ...newGame, spec: newSpec };
@@ -73,23 +73,23 @@ const GameContainer = ({
               history.replace(path);
             });
             socketReducer.socket.on('endGame', () => {
-              console.log('unload', gameReducer);
+              // console.log('unload', gameReducer);
               window.removeEventListener('keydown', eventDispatcher);
-              console.log(gameReducer);
+              // console.log(gameReducer);
               stopAcidMode(dispatch);
               setIsOut(true); // pour faire un ptit 'mdr t mor'
             });
             socketReducer.socket.on('theEnd', ({ winnerInfo }) => {
-              console.log('the end', winnerInfo);
+              // console.log('the end', winnerInfo);
               window.removeEventListener('keydown', eventDispatcher);
               gameOverTimeout.current = setTimeout(() => {
-                console.log('gameOverTimeout');
+                // console.log('gameOverTimeout');
                 if (isMounted.current)
                   setShowGoBack(true);
               }, 5000);
               addWinner(dispatch, winnerInfo);
             });
-            console.log('DidMount du game');
+            // console.log('DidMount du game');
             if (!loaded.current)
               api.readyToStart(socketReducer.socket, roomReducer.url);
           })
@@ -139,7 +139,7 @@ const GameContainer = ({
       lines={gameReducer.lines}
       lineClass={'line'}
       blocClass={'lineBloc'} />
-    : console.log('quoiiiiii');
+    : undefined;
 
   const nextTetri = (gameReducer.tetri !== undefined) ?
     <LinesContainer

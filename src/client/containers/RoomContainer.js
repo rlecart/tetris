@@ -54,50 +54,50 @@ const RoomContainer = ({
     await canIStayHere('room', { roomReducer, homeReducer, socketReducer })
       .then(
         () => {
-          console.log('mount room');
+          // console.log('mount room');
           socketReducer.socket.on('disconnect', () => {
             pleaseUnmountRoom('completly');
-            console.log('ca disconnect');
+            // console.log('ca disconnect');
             history.push('/');
           });
           socketReducer.socket.on('goToGame', () => {
             pleaseUnmountRoom();
-            console.log('ca go to game');
+            // console.log('ca go to game');
             history.push(`${location.pathname}/game`);
           });
           socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) => {
-            console.log(roomReducer);
-            console.log('ca refresh car new info room', newRoomInfo);
+            // console.log(roomReducer);
+            // console.log('ca refresh car new info room', newRoomInfo);
             setNewRoomInfo(dispatch, newRoomInfo);
           });
           if (!loaded.current) {
             api.getRoomInfo(socketReducer.socket, homeReducer.joinUrl)
               .then((newRoomInfo) => {
-                console.log('\nca get');
-                console.log('ca get');
-                console.log('ca get');
-                console.log('ca get');
-                console.log('ca get');
-                console.log(newRoomInfo, roomReducer, '\n');
+                // console.log('\nca get');
+                // console.log('ca get');
+                // console.log('ca get');
+                // console.log('ca get');
+                // console.log('ca get');
+                // console.log(newRoomInfo, roomReducer, '\n');
                 setNewRoomInfo(dispatch, newRoomInfo);
                 // console.log('ca get 1 fois', newRoomInfo);
                 // console.log('ca get 1 fois', roomReducer);
               })
               .catch((err) => {
                 pleaseUnmountRoom('completly');
-                console.log('ca arrive pas a getRoom');
+                // console.log('ca arrive pas a getRoom');
                 history.push('/');
               });
             loaded.current = true;
           }
         })
       .catch(() => {
-        console.log('ca cantstayhere');
+        // console.log('ca cantstayhere');
         history.push('/');
       });
     return (() => {
       socketReducer.socket.removeAllListeners();
-      console.log('real unmount room');
+      // console.log('real unmount room');
     });
   }, [roomReducer]);
 
@@ -106,12 +106,12 @@ const RoomContainer = ({
     // console.log('roomReducer = ', roomReducer);
     api.leaveRoom(socketReducer.socket, roomReducer.url)
       .then(() => {
-        console.log('ca leaveRoom');
+        // console.log('ca leaveRoom');
         pleaseUnmountRoom('completly');
         history.replace('/');
       })
       .catch(() => {
-        console.log('ca leave pas Room');
+        // console.log('ca leave pas Room');
       });
   };
 

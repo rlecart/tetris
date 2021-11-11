@@ -32,6 +32,8 @@ const defaultGame = {
   },
   placed: -1,
   isWaiting: true,
+  nextIsInAcid: false,
+  nextAcidInterval: undefined,
 };
 
 export default defaultGame;

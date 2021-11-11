@@ -138,8 +138,9 @@ export default class Master {
         room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo());
         cb({ type: 'ok', value: url });
       }
-      else
+      else {
         cb({ type: 'err', value: 'room full or closed' });
+      }
     }
     else
       cb({ type: 'err', value: 'bad profil or clienId' });

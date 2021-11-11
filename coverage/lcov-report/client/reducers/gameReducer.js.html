@@ -22,22 +22,22 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/0</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
-        <span class="quiet">Branches</span>
-        <span class='fraction'>8/8</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
-        <span class="quiet">Functions</span>
         <span class='fraction'>1/1</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">84.62% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>11/13</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/2</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/0</span>
+        <span class='fraction'>1/1</span>
       </div>
     </div>
   </div>
@@ -79,11 +79,109 @@
 34
 35
 36
-37</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -118,7 +216,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {
   SYNC_GAME_DATA,
   DELETE_GAME_DATA,
-  ADD_WINNER
+  ADD_WINNER,
+  ACID_MODE,
+  UPDATE_ACID_MODE,
+  STOP_ACID_MODE,
 } from '../actions/gameAction.js';
 import defaultGame from '../../ressources/defaultGame.js';
 &nbsp;
@@ -137,14 +238,60 @@ const gameReducer = (state = initialGameState, action) =&gt; {
       };
       return (nextState);
     case DELETE_GAME_DATA:
-      return (initialGameState);
+      nextState = {
+        ...initialGameState
+      };
+      return (nextState);
     case ADD_WINNER:
       nextState = {
         ...state,
         winner: { ...action.value },
       };
       return (nextState);
-      
+<span class="branch-3 cbranch-no" title="branch not covered" >    case UPDATE_ACID_MODE:</span>
+      let newDisplayLines = state.lines;
+&nbsp;
+      // for (let line in newDisplayLines)
+      //   for (let char in newDisplayLines[line])
+      newDisplayLines.forEach((line) =&gt; line.forEach(<span class="fstat-no" title="function not covered" >(char) =&gt; {</span>
+        char = (char + 1) % 9;
+      }));
+      // newDisplayLines[line][char] = (newDisplayLines[line][char] + 1) % 9;
+      nextState = {
+        ...state,
+        lines: newDisplayLines,
+      };
+      return (nextState);
+    case ACID_MODE:
+      let nextIsInAcid = state.isInAcid;
+      let nextAcidInterval = state.acidInterval;
+&nbsp;
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (!state.isInAcid) {
+        nextIsInAcid = true;
+        nextAcidInterval = action.value;
+      }
+      else {
+        clearInterval(action.value);
+        clearInterval(state.acidInterval);
+        nextIsInAcid = false;
+        nextAcidInterval = undefined;
+      }
+      nextState = {
+        ...state,
+        isInAcid: nextIsInAcid,
+        acidInterval: nextAcidInterval,
+      };
+      return (nextState);
+    case STOP_ACID_MODE:
+      clearInterval(state.acidInterval);
+      nextIsInAcid = false;
+      nextAcidInterval = undefined;
+      nextState = {
+        ...state,
+        isInAcid: nextIsInAcid,
+        acidInterval: nextAcidInterval,
+      };
+      return (nextState);
     default:
       return (state);
   }
@@ -157,7 +304,7 @@ export default gameReducer;</pre></td></tr>
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Nov 04 2021 21:10:35 GMT+0100 (heure normale d’Europe centrale)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Nov 11 2021 19:55:09 GMT+0100 (heure normale d’Europe centrale)
 </div>
 </div>
 <script src="../../prettify.js"></script>

@@ -1,7 +1,8 @@
 import configureStore from '../../src/client/middleware/configureStore.js';
 import { expect } from 'chai';
 import { gameReducer, initialGameState } from '../../src/client/reducers/gameReducer.js';
-import { setNewGameInfo, addWinner, deleteGameData, SYNC_GAME_DATA, DELETE_GAME_DATA, ADD_WINNER } from '../../src/client/actions/gameAction.js';
+import { setNewGameInfo, addWinner, deleteGameData, SYNC_GAME_DATA, DELETE_GAME_DATA, ADD_WINNER, acidMode, stopAcidMode } from '../../src/client/actions/gameAction.js';
+import { waitAMinute } from '../helpers/helpers';
 
 describe('Game reducer tests', () => {
   let exampleOfLines = initialGameState.lines;
@@ -53,6 +54,19 @@ describe('Game reducer tests', () => {
     // store.dispatch({ type: ADD_WINNER, value: { winner: exampleOfWinner } });
   });
 
+  it('Should activate acid mode', () => {
+    acidMode(store.dispatch);
+    expect(store.getState().isInAcid).to.be.true;
+    expect(store.getState().acidInterval).to.not.be.undefined;
+  });
+
+  it('Should desactivate acid mode', () => {
+    stopAcidMode(store.dispatch);
+    expect(store.getState().isInAcid).to.be.false;
+    expect(store.getState().acidInterval).to.be.undefined;
+    setNewGameInfo(store.dispatch, initialGameState);
+  });
+
   it('Should delete game data', () => {
     exampleOfLines = initialGameState.lines;
     exampleOfTetri = initialGameState.tetri;
@@ -62,5 +76,4 @@ describe('Game reducer tests', () => {
     exampleOfWinner = undefined;
     deleteGameData(store.dispatch);
   });
-
 });

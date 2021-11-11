@@ -25,14 +25,14 @@
         <span class='fraction'>6/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">76.47% </span>
+        <span class="strong">82.35% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>13/17</span>
+        <span class='fraction'>14/17</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">72.22% </span>
+        <span class="strong">76.47% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>13/18</span>
+        <span class='fraction'>13/17</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -209,8 +209,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10×</span>
-<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">14×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -218,19 +218,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">14×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -239,9 +227,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">9×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -257,6 +246,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -377,68 +377,68 @@ const RoomContainer = ({
     // console.log('unmount room', roomReducer);
   };
 &nbsp;
-  React.useEffect(() =&gt; {
-    canIStayHere('room', { roomReducer, homeReducer, socketReducer })
+  React.useEffect(async () =&gt; {
+    await canIStayHere('room', { roomReducer, homeReducer, socketReducer })
       .then(
         () =&gt; {
-          console.log('mount room');
-          <span class="missing-if-branch" title="else path not taken" >E</span>if (!loaded.current) {
-            socketReducer.socket.on('disconnect', () =&gt; {
-              // console.log(socketReducer, roomReducer, homeReducer)
-              pleaseUnmountRoom('completly');
-              console.log('ca disconnect');
-              history.push('/');
-            });
-            socketReducer.socket.on('goToGame', <span class="fstat-no" title="function not covered" >() =&gt; {</span>
-              pleaseUnmountRoom();
-              console.log('ca go to game');
-              history.push(`${location.pathname}/game`);
-            });
-            socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) =&gt; {
-              console.log(roomReducer)
-              console.log('ca refresh car new info room', newRoomInfo)
-              setNewRoomInfo(dispatch, newRoomInfo)});
+          // console.log('mount room');
+          socketReducer.socket.on('disconnect', () =&gt; {
+            pleaseUnmountRoom('completly');
+            // console.log('ca disconnect');
+            history.push('/');
+          });
+          socketReducer.socket.on('goToGame', <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+            pleaseUnmountRoom();
+            // console.log('ca go to game');
+            history.push(`${location.pathname}/game`);
+          });
+          socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) =&gt; {
+            // console.log(roomReducer);
+            // console.log('ca refresh car new info room', newRoomInfo);
+            setNewRoomInfo(dispatch, newRoomInfo);
+          });
+          if (!loaded.current) {
             api.getRoomInfo(socketReducer.socket, homeReducer.joinUrl)
               .then((newRoomInfo) =&gt; {
-                console.log('\nca get')
-                console.log('ca get')
-                console.log('ca get')
-                console.log('ca get')
-                console.log('ca get')
-                console.log(newRoomInfo, roomReducer, '\n')
+                // console.log('\nca get');
+                // console.log('ca get');
+                // console.log('ca get');
+                // console.log('ca get');
+                // console.log('ca get');
+                // console.log(newRoomInfo, roomReducer, '\n');
                 setNewRoomInfo(dispatch, newRoomInfo);
                 // console.log('ca get 1 fois', newRoomInfo);
                 // console.log('ca get 1 fois', roomReducer);
               })
-              .catch(<span class="fstat-no" title="function not covered" >(err) =&gt; {</span>
+              .catch((err) =&gt; {
                 pleaseUnmountRoom('completly');
-                console.log('ca arrive pas a getRoom');
+                // console.log('ca arrive pas a getRoom');
                 history.push('/');
               });
             loaded.current = true;
           }
         })
       .catch(() =&gt; {
-        console.log('ca cantstayhere');
+        // console.log('ca cantstayhere');
         history.push('/');
       });
-&nbsp;
     return (<span class="fstat-no" title="function not covered" >() =&gt; {</span>
-      console.log('real unmount room');
+      socketReducer.socket.removeAllListeners();
+      // console.log('real unmount room');
     });
-  }, []);
+  }, [roomReducer]);
 &nbsp;
   const leaveRoom = () =&gt; {
 &nbsp;
     // console.log('roomReducer = ', roomReducer);
     api.leaveRoom(socketReducer.socket, roomReducer.url)
       .then(() =&gt; {
-        console.log('ca leaveRoom');
+        // console.log('ca leaveRoom');
         pleaseUnmountRoom('completly');
         history.replace('/');
       })
       .catch(<span class="fstat-no" title="function not covered" >() =&gt; {</span>
-        console.log('ca leave pas Room');
+        // console.log('ca leave pas Room');
       });
   };
 &nbsp;
@@ -472,7 +472,7 @@ export default connect(mapStateToProps)(RoomContainer);</pre></td></tr>
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Nov 04 2021 21:10:35 GMT+0100 (heure normale d’Europe centrale)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Nov 11 2021 19:55:09 GMT+0100 (heure normale d’Europe centrale)
 </div>
 </div>
 <script src="../../prettify.js"></script>
