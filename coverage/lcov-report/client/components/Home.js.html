@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for client/components/Home.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">client/components/</a> Home.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/6</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
+import { connect } from 'react-redux';
+&nbsp;
+import api from "../api/clientApi";
+import openSocket from 'socket.io-client';
+import { addSocket } from '../actions/socketAction';
+import { setNewHomeInfo } from '../actions/homeAction';
+&nbsp;
+const Home = <span class="fstat-no" title="function not covered" >({</span>
+  dispatch,
+  history,
+  location,
+  match,
+  socketReducer,
+  roomReducer,
+  homeReducer,
+  gameReducer,
+}) =&gt; {
+  const [whichButton, setWhichButton] = React.useState(undefined);
+&nbsp;
+  const handleChange = <span class="fstat-no" title="function not covered" >(event) =&gt; {</span>
+    let newProfil = homeReducer.profil;
+    let newJoinUrl = homeReducer.joinUrl;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (event.target.name === 'name')</span>
+<span class="cstat-no" title="statement not covered" >      newProfil = { name: event.target.value };</span>
+    else <span class="cstat-no" title="statement not covered" >if (event.target.name === 'roomUrl')</span>
+      newJoinUrl = event.target.value;
+    setNewHomeInfo(dispatch, {
+      newProfil: newProfil,
+      newJoinUrl: newJoinUrl,
+      newOwner: undefined,
+    });
+  };
+&nbsp;
+  React.useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span>
+    let socket;
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (!socketReducer.socket) {</span>
+      console.log('socket vide');
+      socket = openSocket('http://0.0.0.0:3004');
+      addSocket(dispatch, socket);
+    }
+    return (() =&gt; console.log('real unmount home'));
+  }, []);
+&nbsp;
+  const submitForm = <span class="fstat-no" title="function not covered" >(event) =&gt; {</span>
+    console.log('submit');
+    event.preventDefault();
+<span class="cstat-no" title="statement not covered" >    if (whichButton === 'joinRoom') {</span>
+      api.joinRoom(socketReducer.socket, homeReducer.profil, homeReducer.joinUrl)
+        .then(<span class="fstat-no" title="function not covered" >(url) =&gt; {</span>
+          setNewHomeInfo(dispatch, {
+            newProfil: homeReducer.profil,
+            newJoinUrl: url,
+            newOwner: false
+          });
+          history.push(`/#${url}[${homeReducer.profil.name}]`);
+        })
+        .catch(<span class="fstat-no" title="function not covered" >(err) =&gt; {</span>
+          console.log(err);
+        });
+    }
+    else <span class="cstat-no" title="statement not covered" >if (whichButton === 'createRoom') {</span>
+      console.log(homeReducer.profil);
+      api.createRoom(socketReducer.socket, homeReducer.profil)
+        .then(<span class="fstat-no" title="function not covered" >(url) =&gt; {</span>
+          setNewHomeInfo(dispatch, {
+            newProfil: homeReducer.profil,
+            newJoinUrl: url,
+            newOwner: true
+          });
+          history.push(`/#${url}[${homeReducer.profil.name}]`);
+        });
+    }
+    setWhichButton(undefined);
+  };
+&nbsp;
+  return (
+    &lt;div className="display"&gt;
+      &lt;div className="homeMenu"&gt;
+        &lt;div className="topPanel"&gt;
+          &lt;span className="title"&gt;Super Tetris 3000&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div className="bottomPanel"&gt;
+          &lt;form onSubmit={(event) =&gt; submitForm(event)}&gt;
+            &lt;div className="blocMenu" id="home"&gt;
+              &lt;div className="avatarSelector"&gt;
+                &lt;div className="avatarButton" /&gt;
+                &lt;div className="avatar" /&gt;
+                &lt;div className="avatarButton" /&gt;
+              &lt;/div&gt;
+              &lt;input className='nickname' type="text" name="name" pattern='[A-Za-z-]{1,}' required value={homeReducer.profil.name}
+                onChange={(event) =&gt; handleChange(event)} /&gt;
+            &lt;/div&gt;
+            &lt;div className="blocMenu" id="home"&gt;
+              &lt;input className='roomUrl' type="text" name="roomUrl" required={whichButton === 'joinRoom'} value={homeReducer.joinUrl}
+                onChange={(event) =&gt; handleChange(event)} placeholder='URL' /&gt;
+              &lt;button type="submit" className="roomButton" onClick={() =&gt; setWhichButton('joinRoom')}&gt;
+                &lt;span className="textButton"&gt;Join room&lt;/span&gt;
+              &lt;/button&gt;
+              &lt;button type="submit" className="roomButton" onClick={() =&gt; setWhichButton('createRoom')}&gt;
+                &lt;span className="textButton"&gt;Create Room&lt;/span&gt;
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/form&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div &gt;
+  );
+};
+&nbsp;
+const mapStateToProps = <span class="fstat-no" title="function not covered" >(state) =&gt; {</span>
+  return (state);
+};
+&nbsp;
+export default connect(mapStateToProps)(Home);</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 22 2021 14:54:55 GMT+0200 (heure d’été d’Europe centrale)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
