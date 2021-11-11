@@ -1,4 +1,0 @@
---require chai
--R spec
---ui bdd
--r jsdom-global/register
