@@ -2,7 +2,7 @@ import React from 'react';
 import { render as enzymeRender } from 'enzyme';
 import configureStore from "../../src/client/middleware/configureStore.js";
 import { Provider } from 'react-redux';
-// Import your own reducer
+
 import socketReducer from '../../src/client/reducers/socketReducer.js';
 import homeReducer from "../../src/client/reducers/homeReducer.js";
 import roomReducer from "../../src/client/reducers/roomReducer.js";
@@ -29,7 +29,4 @@ function render(
   return enzymeRender(ui, { wrapper: Wrapper, ...renderOptions });
 }
 
-// re-export everything
-// export * from 'enzyme';
-// override render method
 export { render };

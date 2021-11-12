@@ -53,7 +53,6 @@ describe('Room reducer tests', () => {
     exampleOfNbPlayer = initialRoomState.nbPlayer;
     exampleOfListPlayers = initialRoomState.listPlayers;
     deleteRoomData(store.dispatch);
-    // store.dispatch({ type: DELETE_ROOM_DATA });
   });
 
 });

@@ -1,16 +1,12 @@
-import chai, { expect, assert } from "chai";
+import chai, { expect } from "chai";
 import React from 'react';
-import Enzyme, { shallow, render, mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import chaiEnzyme from 'chai-enzyme';
 import _ from 'lodash';
 
 import GameOverContainer from '../../src/client/containers/GameOverContainer.js';
 
-import defaultGame from '../../src/ressources/defaultGame';
-import sinon from "sinon";
-
-chai.should();
 chai.use(chaiEnzyme());
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -72,7 +68,7 @@ describe('<GameOverContainer /> test', () => {
     });
 
     it('Should renders <LeaveButton /> (owner vue, no winner)', () => {
-      expect(wrapper.find('LeaveButton').text()).to.eql('flex');
+      expect(wrapper.find('LeaveButton').text()).to.eql('Return to room');
     });
 
     it('Should renders <LeaveButton /> (not owner vue no winner)', () => {

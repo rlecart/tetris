@@ -41,13 +41,10 @@ const Home = ({
     let socket;
 
     if (!socketReducer.socket) {
-      // console.log('socket vide');
       socket = openSocket('http://0.0.0.0:3004');
       addSocket(dispatch, socket);
     }
-    return (() => {
-      //console.log('real unmount home')
-    });
+    return (() => { });
   }, []);
 
   const submitForm = (event) => {

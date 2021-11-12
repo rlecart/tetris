@@ -213,8 +213,8 @@ const checkFilledLine = (game) => {
 const endGame = (room, id, res) => {
   room.emitOnly('endGame', id);
   room.addOut(id);
-  // if (res !== undefined)
-  //   res();
+  if (res)
+    res();
 };
 
 function addFilledLine(room, exception, amount) {

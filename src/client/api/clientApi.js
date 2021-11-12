@@ -62,9 +62,6 @@ const askToStartGame = (socket, idRoom) => {
 };
 
 const leaveRoom = (socket, idRoom) => {
-  // console.log('ca leaaave')
-  // console.log('socket.id', socket.id)
-  // console.log('idRoom', idRoom)
   return (new Promise((res, rej) => {
     if (socket && socket.connected && socket.id)
       socket.emit('leaveRoom', socket.id, idRoom, res);

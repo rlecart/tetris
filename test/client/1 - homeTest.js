@@ -1,6 +1,6 @@
-import chai, { expect, assert } from "chai";
+import chai, { expect } from "chai";
 import React from 'react';
-import Enzyme, { shallow, render, mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import chaiEnzyme from 'chai-enzyme';
 import { Provider } from 'react-redux';
@@ -11,7 +11,6 @@ import { createANewStore } from "../helpers/helpers.js";
 import Home from '../../src/client/containers/HomeContainer.js';
 import Master from '../../src/server/classes/Master';
 
-chai.should();
 chai.use(chaiEnzyme());
 Enzyme.configure({ adapter: new Adapter() });
 

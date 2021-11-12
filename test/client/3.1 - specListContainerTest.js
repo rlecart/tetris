@@ -1,24 +1,19 @@
-import chai, { expect, assert } from "chai";
+import chai, { expect } from "chai";
 import React from 'react';
-import Enzyme, { shallow, render, mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import chaiEnzyme from 'chai-enzyme';
-import { Provider } from 'react-redux';
-import sinon from 'sinon';
 import _ from 'lodash';
 
-import { createANewStore } from "../helpers/helpers.js";
 import SpecListContainer from '../../src/client/containers/SpecListContainer.js';
 
 import defaultGame from '../../src/ressources/defaultGame';
 
-chai.should();
 chai.use(chaiEnzyme());
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('<SpecListContainer /> test', () => {
   let wrapper;
-  let specList = undefined;
 
   it('Should not render specs with 1 player only', () => {
     wrapper = mount(<SpecListContainer specList={undefined} />);

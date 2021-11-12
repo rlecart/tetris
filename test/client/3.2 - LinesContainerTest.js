@@ -1,6 +1,6 @@
-import chai, { expect, assert } from "chai";
+import chai, { expect } from "chai";
 import React from 'react';
-import Enzyme, { shallow, render, mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import chaiEnzyme from 'chai-enzyme';
 import _ from 'lodash';
@@ -9,7 +9,6 @@ import LinesContainer from '../../src/client/containers/LinesContainer.js';
 
 import defaultGame from '../../src/ressources/defaultGame';
 
-chai.should();
 chai.use(chaiEnzyme());
 Enzyme.configure({ adapter: new Adapter() });
 

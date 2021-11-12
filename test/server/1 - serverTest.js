@@ -28,7 +28,6 @@ describe('Server tests', () => {
     });
   });
 
-
   describe('With client', () => {
     let sockets = [];
 
@@ -39,7 +38,6 @@ describe('Server tests', () => {
     after(async () => {
       await removeEveryClients(master);
       expect(Object.keys(master.getSioList()).length).to.be.eql(0);
-      // sockets.forEach(socket => master.removeSio(socket.id))
     });
 
     it('Socket list exists', () => {

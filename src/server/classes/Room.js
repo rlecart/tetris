@@ -238,7 +238,7 @@ export default class Room {
     this.emitAll('refreshRoomInfo', clientId, this.getRoomInfo());
   }
 
-  launchGame(sio) {
+  launchGame() {
     initShapes(this);
     this.initGames();
     this.setInGame(true);

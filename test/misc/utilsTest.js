@@ -88,13 +88,6 @@ describe('Utils tests', () => {
         ret = createNewUrl(roomsList);
         roomsList.push(ret);
       }
-      // console.log(roomsList);
-      // let abc = _.countBy(roomsList);
-      // for (let [key, value] of Object.entries(abc)) {
-      //   if (value === 1)
-      //     delete abc[key];
-      // }
-      // console.log(abc);
       expect(new Set(roomsList).size).to.be.eql(roomsList.length);
     });
 

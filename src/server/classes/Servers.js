@@ -1,5 +1,4 @@
 import fs from 'fs';
-import debug from 'debug';
 import http from 'http';
 import Server from 'socket.io';
 import params from '../../../params.js';
@@ -27,8 +26,6 @@ export default class mainServer {
       const file = req.url === '/bundle.js' ? '/../../../build/bundle.js' : '/../../../index.html';
       fs.readFile(__dirname + file, (err, data) => {
         if (err) {
-          console.log(err)
-          // logerror(err);
           res.writeHead(500);
           return res.end('Error loading index.html');
         }
@@ -39,10 +36,7 @@ export default class mainServer {
 
     this._app.on('request', handler);
 
-    this._server = this._app.listen({ host, port }, () => {
-      // loginfo(`tetris listen on ${params.url}`);
-      cb();
-    });
+    this._server = this._app.listen({ host, port }, () => { cb(); });
   }
 
   startServer(cb) {
@@ -51,7 +45,7 @@ export default class mainServer {
       this._io = Server(this._app, {
         cors: {
           origin: params.server.url2,
-          methods: ["GET", "POST"], 
+          methods: ["GET", "POST"],
           credentials: true
         },
         'pingInterval': 5000
@@ -77,42 +71,17 @@ export default class mainServer {
   listenSio(master) {
     this._io.on('connection', (client) => {
       master.addNewSio(client);
-      client.on('move', (clientId, url, dir, res) => {
-        if (master.getRoom(url) && master.getRoom(url).isInGame() === true)
-          master.askToMove(clientId, url, dir, res);
-      });
+      client.on('move', (clientId, url, dir, res) => { master.askToMove(clientId, url, dir, res); });
       client.on('createRoom', (clientId, profil, cb) => { master.createRoom(clientId, profil, cb); });
       client.on('joinRoom', (clientId, profil, url, cb) => { master.joinRoom(clientId, profil, url, cb); });
       client.on('leaveRoom', (clientId, url, res) => { master.leaveRoom(clientId, url, res); });
-      client.on('getRoomInfo', (url, cb) => {
-        let room;
-
-        if ((room = master.getRoom(url)))
-          cb({ type: 'ok', value: room.getRoomInfo() });
-        else
-          cb({ type: 'err', value: 'cant find room' })
-      });
+      client.on('getRoomInfo', (url, cb) => { master.askToGetRoomInfo(url, cb); });
       client.on('askToStartGame', (clientId, url, res) => { master.askToStartGame(clientId, url, res); });
       client.on('readyToStart', (clientId, url, res) => { master.readyToStart(clientId, url, res); });
       client.on('askToEndGame', (clientId, url, res) => { master.askToEndGame(clientId, url, res); });
       client.on('askEverybodyToCalmDown', (clientId, url, res) => { master.askEverybodyToCalmDown(clientId, url, res); });
       client.on('ping', () => { client.emit('pong'); });
-      client.conn.on('heartbeat', () => {
-        console.log('heartbeat called!');
-        master.setSioHbeat(client.id, Date.now());
-        setTimeout(() => {
-          let now = Date.now();
-
-          if (now - master.getSioHbeat(client.id) > 5000) {
-            console.log('this client id will be closed ' + client.id);
-            let room = master.getRoomFromPlayerId(client.id, master);
-            if (room !== undefined)
-              master.leaveRoom(client.id, room.getUrl(), () => { });
-            setTimeout(() => master.removeSio(client), 500);
-          }
-          now = null;
-        }, 6000);
-      });
+      client.conn.on('heartbeat', () => { master.heartbeat(client); });
       // console.log('connected')
     });
     this._io.listen(this._port);

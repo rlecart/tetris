@@ -27,7 +27,6 @@ const GameContainer = ({
 
 
   const eventDispatcher = (event) => {
-    console.log('event.key = ', event.key);
     if (event.key === "z")
       acidMode(dispatch);
     else if (event.key === 'ArrowRight')

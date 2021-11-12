@@ -17,11 +17,9 @@ export default class Master {
       this._server = new mainServer(this);
       this._server.startServer(() => {
         this._server.listenSio(this);
-        // console.log('c bien res');
         res();
       });
     }));
-    // console.log('[Server completely started]')
   }
 
   stopServer() {
@@ -30,7 +28,6 @@ export default class Master {
       this._server.stopServer();
       this._server = undefined;
       res();
-      // console.log('[Server completely stopped]')
     }));
   }
 
@@ -113,7 +110,8 @@ export default class Master {
   createRoom(clientId, profil, cb) {
     let room;
 
-    if (profil && profil !== undefined && profil.name && profil.name !== undefined && profil.name.length > 0 && clientId !== undefined && clientId !== null) {
+    if (profil && profil !== undefined && profil.name && profil.name !== undefined
+      && profil.name.length > 0 && clientId !== undefined && clientId !== null) {
       if (this.isInRoom(clientId) && (room = this.getRoomFromPlayerId(clientId)))
         this.leaveRoom(clientId, room.getUrl());
       room = new Room(this);
@@ -128,7 +126,8 @@ export default class Master {
   joinRoom(clientId, profil, url, cb) {
     let room;
 
-    if (profil && profil !== undefined && profil.name && profil.name !== undefined && profil.name.length > 0 && clientId !== undefined && clientId !== null) {
+    if (profil && profil !== undefined && profil.name && profil.name !== undefined
+      && profil.name.length > 0 && clientId !== undefined && clientId !== null) {
       if (this.isInRoom(clientId) && (room = this.getRoomFromPlayerId(clientId)))
         this.leaveRoom(clientId, room.getUrl());
       if ((room = this.getRoom(url)) && room.isInGame() !== true && room.getNbPlayer() < 8) {
@@ -151,9 +150,8 @@ export default class Master {
 
     if ((room = this.getRoom(url)) && room.getListPlayers(clientId)) {
       room.removePlayer(clientId);
-      if (room.getNbPlayer() <= 0) {
+      if (room.getNbPlayer() <= 0)
         this.closeRoom(room);
-      }
       if (res !== undefined)
         res();
     }
@@ -186,8 +184,8 @@ export default class Master {
 
     if ((room = this.getRoom(url)))
       endGame(room, clientId, res);
-    if (res !== undefined)
-      res();
+    // if (res !== undefined)
+    //   res();
   }
 
   tryToStart(clientsRTS, nbPlayers) {
@@ -205,9 +203,8 @@ export default class Master {
 
     if (url && clientId && (room = this.getRoom(url)) && room.getListPlayers(clientId) && room.isInGame() === false && room.isPending()) {
       room.addReadyToStart(clientId);
-      if (this.tryToStart(room.getReadyToStart(), room.getNbPlayer())) {
-        room.launchGame(this.getSioListFromRoom(url));
-      }
+      if (this.tryToStart(room.getReadyToStart(), room.getNbPlayer()))
+        room.launchGame();
       if (res !== undefined)
         res();
     }
@@ -220,12 +217,21 @@ export default class Master {
     let player = {};
     let game = {};
 
-    if ((room = this.getRoom(url)) && (player = room.getListPlayers(clientId))) {
+    if ((room = this.getRoom(url)) && room.isInGame() === true && (player = room.getListPlayers(clientId))) {
       if ((game = player.getGame()) && game.getY() !== -1)
         player.move(dir, room);
       if (res !== undefined)
         res();
     }
+  }
+
+  askToGetRoomInfo(url, cb) {
+    let room;
+
+    if ((room = this.getRoom(url)))
+      cb({ type: 'ok', value: room.getRoomInfo() });
+    else
+      cb({ type: 'err', value: 'cant find room' });
   }
 
   askEverybodyToCalmDown(clientId, url, res) {
@@ -240,5 +246,21 @@ export default class Master {
       if (res !== undefined)
         res();
     }
+  }
+
+  heartbeat(client) {
+    this.setSioHbeat(client.id, Date.now());
+    setTimeout(() => {
+      let now = Date.now();
+
+      if (now - this.getSioHbeat(client.id) > 5000) {
+        // console.log('this client id will be closed ' + client.id);
+        let room = this.getRoomFromPlayerId(client.id, this);
+        if (room !== undefined)
+          this.leaveRoom(client.id, room.getUrl(), () => { });
+        setTimeout(() => this.removeSio(client), 500);
+      }
+      now = null;
+    }, 6000);
   }
 };

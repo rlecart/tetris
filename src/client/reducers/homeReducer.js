@@ -2,9 +2,7 @@ import { SYNC_HOME_DATA } from '../actions/homeAction.js';
 
 const initialHomeState = {
   owner: undefined,
-  profil: {
-    name: '',
-  },
+  profil: { name: '', },
   joinUrl: '',
 };
 

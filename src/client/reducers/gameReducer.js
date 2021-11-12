@@ -23,9 +23,7 @@ const gameReducer = (state = initialGameState, action) => {
       };
       return (nextState);
     case DELETE_GAME_DATA:
-      nextState = {
-        ...initialGameState
-      };
+      nextState = { ...initialGameState };
       return (nextState);
     case ADD_WINNER:
       nextState = {
@@ -36,12 +34,9 @@ const gameReducer = (state = initialGameState, action) => {
     case UPDATE_ACID_MODE:
       let newDisplayLines = state.lines;
 
-      // for (let line in newDisplayLines)
-      //   for (let char in newDisplayLines[line])
-      newDisplayLines.forEach((line) => line.forEach((char) => {
-        char = (char + 1) % 9;
+      newDisplayLines.forEach((line, i) => line.forEach((char, j) => {
+        newDisplayLines[i][j] = (newDisplayLines[i][j] + 1) % 9;
       }));
-      // newDisplayLines[line][char] = (newDisplayLines[line][char] + 1) % 9;
       nextState = {
         ...state,
         lines: newDisplayLines,

@@ -1,8 +1,7 @@
 import configureStore from '../../src/client/middleware/configureStore.js';
 import { expect } from 'chai';
 import { gameReducer, initialGameState } from '../../src/client/reducers/gameReducer.js';
-import { setNewGameInfo, addWinner, deleteGameData, SYNC_GAME_DATA, DELETE_GAME_DATA, ADD_WINNER, acidMode, stopAcidMode } from '../../src/client/actions/gameAction.js';
-import { waitAMinute } from '../helpers/helpers';
+import { setNewGameInfo, addWinner, deleteGameData, SYNC_GAME_DATA, acidMode, stopAcidMode } from '../../src/client/actions/gameAction.js';
 
 describe('Game reducer tests', () => {
   let exampleOfLines = initialGameState.lines;
@@ -51,7 +50,6 @@ describe('Game reducer tests', () => {
   it('Should add winner', () => {
     exampleOfWinner = 'abc';
     addWinner(store.dispatch, { winner: exampleOfWinner });
-    // store.dispatch({ type: ADD_WINNER, value: { winner: exampleOfWinner } });
   });
 
   it('Should activate acid mode', () => {

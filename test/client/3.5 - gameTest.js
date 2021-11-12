@@ -1,6 +1,6 @@
-import chai, { expect, assert } from "chai";
+import chai, { expect } from "chai";
 import React from 'react';
-import Enzyme, { shallow, render, mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import chaiEnzyme from 'chai-enzyme';
 import { Provider } from 'react-redux';
@@ -11,15 +11,12 @@ import { createANewStore } from "../helpers/helpers.js";
 import Game from '../../src/client/containers/GameContainer.js';
 import Master from '../../src/server/classes/Master';
 import { addSocket } from "../../src/client/actions/socketAction.js";
-import openSocket from 'socket.io-client';
 import { addNewClients } from "../helpers/helpers.js";
 
-import { setNewHomeInfo, SYNC_HOME_DATA } from '../../src/client/actions/homeAction.js';
-import { setNewGameInfo, SYNC_GAME_DATA } from "../../src/client/actions/gameAction.js";
+import { setNewHomeInfo } from '../../src/client/actions/homeAction.js';
 import api from '../../src/client/api/clientApi';
 import { setNewRoomInfo } from "../../src/client/actions/roomAction.js";
 
-chai.should();
 chai.use(chaiEnzyme());
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -124,11 +121,8 @@ describe('<Game /> component test', () => {
       await new Promise((res) => setTimeout(res, 100))
         .then(() => {
           expect(wrapper.find('.board')).to.exists;
-          // expect(dispatchSpy.calledWithMatch(sinon.match({ type: SYNC_GAME_DATA }))).to.be.false;
-          // expect(dispatchSpy.callCount).to.be.eql(3);
           expect(historySpy.push.calledThrice).to.be.false;
           expect(master.getRoom(roomPath).isInGame()).to.be.false;
-          // wrapper.setProps({});
         });
     });
 
@@ -148,10 +142,7 @@ describe('<Game /> component test', () => {
       it('right', () => {
         const lineTmp = Store1.getState().gameReducer.lines;
 
-        console.log(wrapper.prototype)
-        // wrapper.find('window').simulate('keyDown', {key:'ArrowRight'});
         wrapper.update();
-        // expect(lineTmp).to.not.be.eql(Store1.getState().gameReducer.lines);
       });
     });
   });
