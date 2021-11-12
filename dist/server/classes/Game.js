@@ -10,7 +10,7 @@ var _cloneDeep = require('lodash/cloneDeep.js');
 
 var _cloneDeep2 = _interopRequireDefault(_cloneDeep);
 
-var _defaultGame = require('../../client/ressources/defaultGame.js');
+var _defaultGame = require('../../ressources/defaultGame.js');
 
 var _defaultGame2 = _interopRequireDefault(_defaultGame);
 

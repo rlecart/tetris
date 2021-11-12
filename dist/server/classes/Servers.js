@@ -88,7 +88,7 @@ var mainServer = function () {
       this.initApp(function () {
         _this._io = (0, _socket2.default)(_this._app, {
           cors: {
-            origin: _params2.default.url,
+            origin: _params2.default.server.url2,
             methods: ["GET", "POST"],
             credentials: true
           },
@@ -142,8 +142,8 @@ var mainServer = function () {
         client.on('move', function (clientId, url, dir, res) {
           if (master.getRoom(url) && master.getRoom(url).isInGame() === true) master.askToMove(clientId, url, dir, res);
         });
-        client.on('createRoom', function (clientId, profil, res) {
-          master.createRoom(clientId, profil, res);
+        client.on('createRoom', function (clientId, profil, cb) {
+          master.createRoom(clientId, profil, cb);
         });
         client.on('joinRoom', function (clientId, profil, url, cb) {
           master.joinRoom(clientId, profil, url, cb);
@@ -151,10 +151,10 @@ var mainServer = function () {
         client.on('leaveRoom', function (clientId, url, res) {
           master.leaveRoom(clientId, url, res);
         });
-        client.on('getRoomInfo', function (url, res) {
+        client.on('getRoomInfo', function (url, cb) {
           var room = void 0;
 
-          if (room = master.getRoom(url)) res({ type: 'ok', value: room.getRoomInfo() });
+          if (room = master.getRoom(url)) cb({ type: 'ok', value: room.getRoomInfo() });else cb({ type: 'err', value: 'cant find room' });
         });
         client.on('askToStartGame', function (clientId, url, res) {
           master.askToStartGame(clientId, url, res);

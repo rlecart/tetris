@@ -21,17 +21,21 @@ var getRoomInfo = function getRoomInfo(socket, idRoom) {
 
 var createRoom = function createRoom(socket, profil) {
   return new Promise(function (res, rej) {
-    if (socket && socket.connected && socket.id) socket.emit('createRoom', socket.id, profil, function (reponse) {
-      if (reponse && reponse.type === 'ok') res(reponse.value);else rej(reponse.value);
-    });else rej('socket not connected');
+    if (socket && socket.connected && socket.id) {
+      socket.emit('createRoom', socket.id, profil, function (reponse) {
+        if (reponse && reponse.type === 'ok') res(reponse.value);else rej(reponse.value);
+      });
+    } else rej('socket not connected');
   });
 };
 
 var joinRoom = function joinRoom(socket, profil, idRoom) {
   return new Promise(function (res, rej) {
-    if (socket && socket.connected && socket.id) socket.emit('joinRoom', socket.id, profil, idRoom, function (reponse) {
-      if (reponse && reponse.type === 'ok') res(reponse.value);else rej(reponse.value);
-    });else rej('socket not connected');
+    if (socket && socket.connected && socket.id) {
+      socket.emit('joinRoom', socket.id, profil, idRoom, function (reponse) {
+        if (reponse && reponse.type === 'ok') res(reponse.value);else rej(reponse.value);
+      });
+    } else rej('socket not connected');
   });
 };
 
@@ -42,6 +46,9 @@ var askToStartGame = function askToStartGame(socket, idRoom) {
 };
 
 var leaveRoom = function leaveRoom(socket, idRoom) {
+  // console.log('ca leaaave')
+  // console.log('socket.id', socket.id)
+  // console.log('idRoom', idRoom)
   return new Promise(function (res, rej) {
     if (socket && socket.connected && socket.id) socket.emit('leaveRoom', socket.id, idRoom, res);else rej('socket not connected');
   });

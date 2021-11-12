@@ -32,7 +32,6 @@ export default class mainServer {
           res.writeHead(500);
           return res.end('Error loading index.html');
         }
-        console.log(data)
         res.writeHead(200);
         res.end(data);
       });

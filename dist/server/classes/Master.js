@@ -18,7 +18,7 @@ var _Servers = require('./Servers.js');
 
 var _Servers2 = _interopRequireDefault(_Servers);
 
-var _utils = require('../../client/misc/utils.js');
+var _utils = require('../../misc/utils.js');
 
 var _refresh = require('../refresh.js');
 
@@ -50,7 +50,7 @@ var Master = function () {
         _this._server = new _Servers2.default(_this);
         _this._server.startServer(function () {
           _this._server.listenSio(_this);
-          console.log('c bien res');
+          // console.log('c bien res');
           res();
         });
       });
@@ -59,10 +59,15 @@ var Master = function () {
   }, {
     key: 'stopServer',
     value: function stopServer() {
-      this._server.stopListenSio(this._sioClientList);
-      this._server.stopServer();
-      this._server = undefined;
-      // console.log('[Server completely stopped]')
+      var _this2 = this;
+
+      return new Promise(function (res) {
+        _this2._server.stopListenSio(_this2._sioClientList);
+        _this2._server.stopServer();
+        _this2._server = undefined;
+        res();
+        // console.log('[Server completely stopped]')
+      });
     }
   }, {
     key: 'getServer',
@@ -193,7 +198,7 @@ var Master = function () {
     }
   }, {
     key: 'createRoom',
-    value: function createRoom(clientId, profil, res) {
+    value: function createRoom(clientId, profil, cb) {
       var room = void 0;
 
       if (profil && profil !== undefined && profil.name && profil.name !== undefined && profil.name.length > 0 && clientId !== undefined && clientId !== null) {
@@ -201,15 +206,15 @@ var Master = function () {
         room = new _Room2.default(this);
         room.setUrl((0, _utils.createNewUrl)(this.getRoomsList()));
         this.addNewRoom(room);
-        this.joinRoom(clientId, profil, room.getUrl(), res);
-      }
+        this.joinRoom(clientId, profil, room.getUrl(), cb);
+      } else cb({ type: 'err', value: 'bad profil or clienId' });
     }
   }, {
     key: 'joinRoom',
     value: function joinRoom(clientId, profil, url, cb) {
       var room = void 0;
 
-      if (profil && profil !== undefined && profil.name) {
+      if (profil && profil !== undefined && profil.name && profil.name !== undefined && profil.name.length > 0 && clientId !== undefined && clientId !== null) {
         if (this.isInRoom(clientId) && (room = this.getRoomFromPlayerId(clientId))) this.leaveRoom(clientId, room.getUrl());
         if ((room = this.getRoom(url)) && room.isInGame() !== true && room.getNbPlayer() < 8) {
           profil = _extends({}, profil, { url: url });
@@ -217,8 +222,10 @@ var Master = function () {
           room.addSio(this.getSioList(clientId));
           room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo());
           cb({ type: 'ok', value: url });
-        } else cb({ type: 'err', value: 'room full' });
-      }
+        } else {
+          cb({ type: 'err', value: 'room full or closed' });
+        }
+      } else cb({ type: 'err', value: 'bad profil or clienId' });
     }
   }, {
     key: 'leaveRoom',

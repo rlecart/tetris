@@ -3,9 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.DELETE_ROOM_DATA = exports.SYNC_ROOM_DATA = undefined;
+exports.deleteRoomData = exports.setNewRoomInfo = exports.DELETE_ROOM_DATA = exports.SYNC_ROOM_DATA = undefined;
 
-var _utils = require('../misc/utils.js');
+var _utils = require('../../misc/utils.js');
 
 var SYNC_ROOM_DATA = exports.SYNC_ROOM_DATA = 'SYNC_ROOM_DATA';
 var DELETE_ROOM_DATA = exports.DELETE_ROOM_DATA = 'DELETE_ROOM_DATA';
@@ -25,4 +25,5 @@ var deleteRoomData = function deleteRoomData(dispatch) {
   dispatch(action);
 };
 
-exports.default = { setNewRoomInfo: setNewRoomInfo, deleteRoomData: deleteRoomData };
+exports.setNewRoomInfo = setNewRoomInfo;
+exports.deleteRoomData = deleteRoomData;

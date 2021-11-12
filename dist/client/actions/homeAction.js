@@ -7,7 +7,7 @@ var SYNC_HOME_DATA = exports.SYNC_HOME_DATA = 'SYNC_HOME_DATA';
 
 var setNewHomeInfo = function setNewHomeInfo(dispatch, newHomeInfo) {
   var action = {
-    type: 'SYNC_HOME_DATA',
+    type: SYNC_HOME_DATA,
     value: {
       profil: newHomeInfo.newProfil,
       joinUrl: newHomeInfo.newJoinUrl,
@@ -17,4 +17,4 @@ var setNewHomeInfo = function setNewHomeInfo(dispatch, newHomeInfo) {
   dispatch(action);
 };
 
-exports.default = { setNewHomeInfo: setNewHomeInfo };
+exports.setNewHomeInfo = setNewHomeInfo;

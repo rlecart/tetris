@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _react = require("react");
@@ -10,12 +10,13 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var NotFound = function NotFound(props) {
-    return _react2.default.createElement(
-        "div",
-        null,
-        "404"
-    );
+var Board = function Board(_ref) {
+  var displayLines = _ref.displayLines;
+  return _react2.default.createElement(
+    "div",
+    { className: "board" },
+    displayLines
+  );
 };
 
-exports.default = NotFound;
+exports.default = Board;

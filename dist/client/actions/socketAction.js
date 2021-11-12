@@ -14,4 +14,4 @@ var addSocket = function addSocket(dispatch, socket) {
   if (socket) dispatch(action);
 };
 
-exports.default = addSocket;
+exports.addSocket = addSocket;

@@ -1,5 +1,7 @@
 'use strict';
 
+require('../style/App.css');
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -16,43 +18,42 @@ var _NotFound = require('./components/NotFound');
 
 var _NotFound2 = _interopRequireDefault(_NotFound);
 
-var _Room = require('./components/Room');
+var _RoomContainer = require('./containers/RoomContainer');
 
-var _Room2 = _interopRequireDefault(_Room);
+var _RoomContainer2 = _interopRequireDefault(_RoomContainer);
 
-var _Game = require('./components/Game');
+var _GameContainer = require('./containers/GameContainer');
 
-var _Game2 = _interopRequireDefault(_Game);
+var _GameContainer2 = _interopRequireDefault(_GameContainer);
 
-var _Home = require('./components/Home');
+var _HomeContainer = require('./containers/HomeContainer');
 
-var _Home2 = _interopRequireDefault(_Home);
+var _HomeContainer2 = _interopRequireDefault(_HomeContainer);
 
 var _reactRouterDom = require('react-router-dom');
 
-var _socketReducer = require('./reducers/socketReducer');
+var _socketReducer = require('./reducers/socketReducer.js');
 
 var _socketReducer2 = _interopRequireDefault(_socketReducer);
 
-var _homeReducer = require('./reducers/homeReducer');
+var _homeReducer = require('./reducers/homeReducer.js');
 
 var _homeReducer2 = _interopRequireDefault(_homeReducer);
 
-var _roomReducer = require('./reducers/roomReducer');
+var _roomReducer = require('./reducers/roomReducer.js');
 
 var _roomReducer2 = _interopRequireDefault(_roomReducer);
 
-var _gameReducer = require('./reducers/gameReducer');
+var _gameReducer = require('./reducers/gameReducer.js');
 
 var _gameReducer2 = _interopRequireDefault(_gameReducer);
 
-var _configureStore = require('./middleware/configureStore');
+var _configureStore = require('./middleware/configureStore.js');
 
 var _configureStore2 = _interopRequireDefault(_configureStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import './App.css';
 var Store = (0, _configureStore2.default)((0, _redux.combineReducers)({
   socketReducer: _socketReducer2.default,
   roomReducer: _roomReducer2.default,
@@ -70,9 +71,9 @@ var Root = function Root() {
       _react2.default.createElement(
         _reactRouterDom.Switch,
         null,
-        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _Home2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/:room', component: _Room2.default }),
-        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/:room/:game', component: _Game2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _HomeContainer2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/:room', component: _RoomContainer2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/:room/:game', component: _GameContainer2.default }),
         _react2.default.createElement(_reactRouterDom.Route, { component: _NotFound2.default })
       )
     )
