@@ -24,7 +24,7 @@ const GameOverContainer = ({
     if (roomReducer.owner === socketReducer.socket.id)
       returnToRoomButton = (
         <LeaveButton
-          text='flex'
+          text='Return to room'
           toExecute={() => api.askEverybodyToCalmDown(socketReducer.socket, roomReducer.url)}
         />
       );

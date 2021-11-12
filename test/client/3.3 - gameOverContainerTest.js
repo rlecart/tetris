@@ -108,7 +108,7 @@ describe('<GameOverContainer /> test', () => {
           pleaseUnmountGame={pleaseUnmountGame}
           history={history}
         />);
-      expect(wrapper.find('LeaveButton').text()).to.eql('flex');
+      expect(wrapper.find('LeaveButton').text()).to.eql('Return to room');
     });
 
     it('Should renders <LeaveButton /> (not owner vue with winner)', () => {
