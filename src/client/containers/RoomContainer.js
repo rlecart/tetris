@@ -19,6 +19,7 @@ const RoomContainer = ({
   homeReducer,
 }) => {
   const loaded = useRef(false);
+  const isMounted = useRef(false);
 
   const createList = () => {
     let ret = [];
@@ -52,17 +53,20 @@ const RoomContainer = ({
     await canIStayHere('room', { roomReducer, homeReducer, socketReducer })
       .then(
         () => {
-          socketReducer.socket.on('disconnect', () => {
-            pleaseUnmountRoom('completly');
-            history.push('/');
-          });
-          socketReducer.socket.on('goToGame', () => {
-            pleaseUnmountRoom();
-            history.push(`${location.pathname}/game`);
-          });
-          socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) => {
-            setNewRoomInfo(dispatch, newRoomInfo);
-          });
+          if (isMounted.current) {
+            socketReducer.socket.on('disconnect', () => {
+              pleaseUnmountRoom('completly');
+              history.push('/');
+            });
+            socketReducer.socket.on('goToGame', () => {
+              pleaseUnmountRoom();
+              history.push(`${location.pathname}/game`);
+            });
+            socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) => {
+              isMounted.current = false;
+              setNewRoomInfo(dispatch, newRoomInfo);
+            });
+          }
           if (!loaded.current) {
             api.getRoomInfo(socketReducer.socket, homeReducer.joinUrl)
               .then((newRoomInfo) => {
@@ -76,11 +80,15 @@ const RoomContainer = ({
               });
             loaded.current = true;
           }
+          isMounted.current = true;
         })
       .catch(() => {
         history.push('/');
       });
-    return (() => socketReducer.socket.removeAllListeners());
+    return (() => {
+      socketReducer.socket.removeAllListeners();
+      isMounted.current = false;
+    });
   }, [roomReducer]);
 
   const leaveRoom = () => {
