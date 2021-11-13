@@ -157,8 +157,10 @@ export default class Room {
       this._isOut = undefined;
       this.endGame();
       this.emitAll('theEnd', undefined, { winnerInfo });
-      for (let player of Object.values(this.getListPlayers()))
-        player.setGame(undefined);
+      setTimeout(() => {
+        for (let player of Object.values(this.getListPlayers()))
+          player.setGame(undefined);
+      }, 1500);
     }
   }
 
@@ -295,7 +297,7 @@ export default class Room {
   flatGames(only) {
     let ret;
 
-    if (only !== undefined && !this.isOut(only)) {
+    if (only !== undefined) {
       ret = _.cloneDeep(this.getAllGames(only));
       addTetri(ret);
       return (ret.formatIt());

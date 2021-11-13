@@ -55,7 +55,6 @@ const GameContainer = ({
               history.push('/');
             });
             socketReducer.socket.on('refreshVue', (newGame, newSpec) => {
-              console.log(newGame);
               let ret = { ...gameReducer, spec: newSpec };
               if (newGame)
                 ret = { ...newGame, spec: newSpec };
@@ -73,7 +72,7 @@ const GameContainer = ({
             socketReducer.socket.on('endGame', () => {
               window.removeEventListener('keydown', eventDispatcher);
               stopAcidMode(dispatch);
-              setIsOut(true); // pour faire un ptit 'mdr t mor'
+              setIsOut(true);
             });
             socketReducer.socket.on('theEnd', ({ winnerInfo }) => {
               window.removeEventListener('keydown', eventDispatcher);
