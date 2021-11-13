@@ -8,16 +8,32 @@ export default class mainServer {
     this._host = params.server.host;
     this._port = params.server.port;
     this._app = {};
-    this._server = {};
-    this._io = {};
+    this._httpServer = {};
+    this._ioServer = {};
   }
 
-  getHttpServer() {
-    return (this._server);
+  get httpServer() {
+    return (this._httpServer);
   }
 
-  getIoServer() {
-    return (this._io);
+  set httpServer(value) {
+    this._httpServer = value;
+  }
+
+  get ioServer() {
+    return (this._ioServer);
+  }
+
+  set ioServer(value) {
+    this._ioServer = value;
+  }
+
+  get app() {
+    return (this._app);
+  }
+
+  set app(value) {
+    this._app = value;
   }
 
   initApp(cb) {
@@ -34,15 +50,15 @@ export default class mainServer {
       });
     };
 
-    this._app.on('request', handler);
+    this.app.on('request', handler);
 
-    this._server = this._app.listen({ host, port }, () => { cb(); });
+    this.httpServer = this.app.listen({ host, port }, () => { cb(); });
   }
 
   startServer(cb) {
-    this._app = http.createServer();
+    this.app = http.createServer();
     this.initApp(() => {
-      this._io = Server(this._app, {
+      this.ioServer = Server(this.app, {
         cors: {
           origin: params.server.url2,
           methods: ["GET", "POST"],
@@ -56,7 +72,7 @@ export default class mainServer {
   }
 
   stopServer() {
-    this._server.close();
+    this.httpServer.close();
   }
 
   stopListenSio(sioList) {
@@ -65,11 +81,11 @@ export default class mainServer {
         client.disconnect();
       }
     }
-    this._io.close();
+    this.ioServer.close();
   }
 
   listenSio(master) {
-    this._io.on('connection', (client) => {
+    this.ioServer.on('connection', (client) => {
       master.addNewSio(client);
       client.on('move', (clientId, url, dir, res) => { master.askToMove(clientId, url, dir, res); });
       client.on('createRoom', (clientId, profil, cb) => { master.createRoom(clientId, profil, cb); });
@@ -84,7 +100,7 @@ export default class mainServer {
       client.conn.on('heartbeat', () => { master.heartbeat(client); });
       // console.log('connected')
     });
-    this._io.listen(this._port);
+    this.ioServer.listen(this._port);
     // console.log(`[Io listening on port ${this._port}]`);
   }
 };

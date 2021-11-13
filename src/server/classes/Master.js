@@ -14,9 +14,9 @@ export default class Master {
 
   startServer() {
     return (new Promise((res) => {
-      this._server = new mainServer(this);
-      this._server.startServer(() => {
-        this._server.listenSio(this);
+      this.server = new mainServer(this);
+      this.server.startServer(() => {
+        this.server.listenSio(this);
         res();
       });
     }));
@@ -24,43 +24,49 @@ export default class Master {
 
   stopServer() {
     return (new Promise((res) => {
-      this._server.stopListenSio(this._sioClientList);
-      this._server.stopServer();
-      this._server = undefined;
+      this.server.stopListenSio(this.sioClientList);
+      this.server.stopServer();
+      this.server = undefined;
       res();
     }));
   }
 
-  getServer() {
+  get server() {
     return (this._server);
   }
 
-  getRoomsList() {
+  set server(value) {
+    this._server = value;
+  }
+
+  get roomsList() {
     return (this._roomsList);
   }
 
-  getRoom(url) {
-    if (url !== undefined && this._roomsList !== undefined && this._roomsList[url] !== undefined)
-      return (this._roomsList[url]);
+  set roomsList(value) {
+    this._roomsList = value;
   }
 
-  getSioList(only) {
-    if (only !== undefined)
-      return (this._sioClientList[only]);
+  get sioClientList() {
     return (this._sioClientList);
   }
 
+  set sioClientList(value) {
+    this._sioClientList = value;
+  }
+
   getSioHbeat(id) {
-    return (this._sioClientList[id].hbeat);
+    if (this.sioClientList[id])
+      return (this.sioClientList[id].hbeat);
   }
 
   getRoomFromPlayerId(id) {
     let room;
 
     if (id !== undefined) {
-      for (let url in this.getRoomsList()) {
-        room = this.getRoom(url);
-        if (room.getListPlayers(id) !== undefined)
+      for (let url in this.roomsList) {
+        room = this.roomsList[url];
+        if (room.listPlayers[id] !== undefined)
           return (room);
       }
     }
@@ -71,17 +77,17 @@ export default class Master {
     let ret;
     let room;
 
-    if ((room = this.getRoom(url)) && room.getListPlayers()) {
-      for (let id of Object.keys(room.getListPlayers()))
-        ret = { ...ret, [id]: this.getSioList(id) };
+    if ((room = this.roomsList[url]) && room.listPlayers) {
+      for (let id of Object.keys(room.listPlayers))
+        ret = { ...ret, [id]: this.sioClientList[id] };
     }
     return (ret);
   }
 
   isInRoom(clientId) {
-    if (Object.keys(this.getRoomsList()).length > 0) {
-      for (let room of Object.values(this.getRoomsList())) {
-        if (room.getListPlayers(clientId) !== undefined)
+    if (Object.keys(this.roomsList).length > 0) {
+      for (let room of Object.values(this.roomsList)) {
+        if (room.listPlayers[clientId] !== undefined)
           return (true);
       }
     }
@@ -89,7 +95,7 @@ export default class Master {
   }
 
   addNewRoom(room) {
-    this._roomsList = { ...this._roomsList, [room.getUrl()]: room };
+    this._roomsList = { ...this._roomsList, [room.url]: room };
   }
 
   setSioHbeat(id, value) {
@@ -113,11 +119,11 @@ export default class Master {
     if (profil && profil !== undefined && profil.name && profil.name !== undefined
       && profil.name.length > 0 && clientId !== undefined && clientId !== null) {
       if (this.isInRoom(clientId) && (room = this.getRoomFromPlayerId(clientId)))
-        this.leaveRoom(clientId, room.getUrl());
+        this.leaveRoom(clientId, room.url);
       room = new Room(this);
-      room.setUrl(createNewUrl(this.getRoomsList()));
+      room.url = createNewUrl(this.roomsList);
       this.addNewRoom(room);
-      this.joinRoom(clientId, profil, room.getUrl(), cb);
+      this.joinRoom(clientId, profil, room.url, cb);
     }
     else
       cb({ type: 'err', value: 'bad profil or clienId' });
@@ -129,12 +135,12 @@ export default class Master {
     if (profil && profil !== undefined && profil.name && profil.name !== undefined
       && profil.name.length > 0 && clientId !== undefined && clientId !== null) {
       if (this.isInRoom(clientId) && (room = this.getRoomFromPlayerId(clientId)))
-        this.leaveRoom(clientId, room.getUrl());
-      if ((room = this.getRoom(url)) && room.isInGame() !== true && room.getNbPlayer() < 8) {
+        this.leaveRoom(clientId, room.url);
+      if ((room = this.roomsList[url]) && room.inGame !== true && room.nbPlayer < 8) {
         profil = { ...profil, url: url };
         room.addNewPlayer(clientId, profil);
-        room.addSio(this.getSioList(clientId));
-        room.emitAll('refreshRoomInfo', clientId, room.getRoomInfo());
+        room.addSio(this.sioClientList[clientId]);
+        room.emitAll('refreshRoomInfo', clientId, room.roomInfo);
         cb({ type: 'ok', value: url });
       }
       else {
@@ -148,9 +154,9 @@ export default class Master {
   leaveRoom(clientId, url, res) {
     let room;
 
-    if ((room = this.getRoom(url)) && room.getListPlayers(clientId)) {
+    if ((room = this.roomsList[url]) && room.listPlayers[clientId]) {
       room.removePlayer(clientId);
-      if (room.getNbPlayer() <= 0)
+      if (room.nbPlayer <= 0)
         this.closeRoom(room);
       if (res !== undefined)
         res();
@@ -158,7 +164,7 @@ export default class Master {
   }
 
   closeRoom(room) {
-    let url = room.getUrl();
+    let url = room.url;
     let clientsRoom;
 
     if ((clientsRoom = this.getSioListFromRoom(url)) !== undefined) {
@@ -173,7 +179,7 @@ export default class Master {
   askToStartGame(clientId, url, res) {
     let room = {};
 
-    if ((room = this.getRoom(url)) && room.isOwner(clientId) && room.isInGame() === false)
+    if ((room = this.roomsList[url]) && room.isOwner(clientId) && room.inGame === false)
       room.emitAll('goToGame');
     if (res !== undefined)
       res();
@@ -182,7 +188,7 @@ export default class Master {
   askToEndGame(clientId, url, res) {
     let room = {};
 
-    if ((room = this.getRoom(url)))
+    if ((room = this.roomsList[url]))
       endGame(room, clientId, res);
     // if (res !== undefined)
     //   res();
@@ -201,15 +207,15 @@ export default class Master {
   readyToStart(clientId, url, res) {
     let room;
 
-    if (url && clientId && (room = this.getRoom(url)) && room.getListPlayers(clientId) && room.isInGame() === false && room.isPending()) {
+    if (url && clientId && (room = this.roomsList[url]) && room.listPlayers[clientId] && room.inGame === false && room.isPending) {
       room.addReadyToStart(clientId);
-      if (this.tryToStart(room.getReadyToStart(), room.getNbPlayer()))
+      if (this.tryToStart(room.readyToStart, room.nbPlayer))
         room.launchGame();
       if (res !== undefined)
         res();
     }
-    else if (room !== undefined && room.getListPlayers(clientId) && !room.isPending())
-      room.emitOnly('nowChillOutDude', clientId, `/${url}[${String(room.getListPlayers(clientId).getName())}]`);
+    else if (room !== undefined && room.listPlayers[clientId] && !room.isPending)
+      room.emitOnly('nowChillOutDude', clientId, `/${url}[${String(room.listPlayers[clientId].name)}]`);
   }
 
   askToMove(clientId, url, dir, res) {
@@ -217,8 +223,8 @@ export default class Master {
     let player = {};
     let game = {};
 
-    if ((room = this.getRoom(url)) && room.isInGame() === true && (player = room.getListPlayers(clientId))) {
-      if ((game = player.getGame()) && game.getY() !== -1)
+    if ((room = this.roomsList[url]) && room.inGame === true && (player = room.listPlayers[clientId])) {
+      if ((game = player.game) && game.y !== -1)
         player.move(dir, room);
       if (res !== undefined)
         res();
@@ -228,21 +234,21 @@ export default class Master {
   askToGetRoomInfo(url, cb) {
     let room;
 
-    if ((room = this.getRoom(url)))
-      cb({ type: 'ok', value: room.getRoomInfo() });
+    if ((room = this.roomsList[url]))
+      cb({ type: 'ok', value: room.roomInfo });
     else
       cb({ type: 'err', value: 'cant find room' });
   }
 
   askEverybodyToCalmDown(clientId, url, res) {
     let room = {};
-    let sioList = {};
+    let sioClientList = {};
 
-    if ((room = this.getRoom(url)) && room.getOwner() === clientId && (sioList = room.getSio())) {
-      for (let [id, client] of Object.entries(sioList)) {
-        client.emit('nowChillOutDude', `/${url}[${String(room.getListPlayers(id).getName())}]`);
+    if ((room = this.roomsList[url]) && room.owner === clientId && (sioClientList = room.sioList)) {
+      for (let [id, client] of Object.entries(sioClientList)) {
+        client.emit('nowChillOutDude', `/${url}[${String(room.listPlayers[id].name)}]`);
       }
-      room.setPending(true);
+      room.isPending = true;
       if (res !== undefined)
         res();
     }
@@ -257,7 +263,7 @@ export default class Master {
         // console.log('this client id will be closed ' + client.id);
         let room = this.getRoomFromPlayerId(client.id, this);
         if (room !== undefined)
-          this.leaveRoom(client.id, room.getUrl(), () => { });
+          this.leaveRoom(client.id, room.url, () => { });
         setTimeout(() => this.removeSio(client), 500);
       }
       now = null;

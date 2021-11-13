@@ -17,32 +17,32 @@ function initShapes(room) {
 }
 
 const createNewTetri = (game, room) => {
-  game.addPlaced(1);
-  if (game.getPlaced() >= room.getShapes().length - 1)
+  game.placed += 1;
+  if (game.placed >= room.shapes.length - 1)
     room.addNewShape(newShape(room, newRand(1, defaultTetriminos.length)));
-  game.setActualShape(room.getShapes(game.getPlaced()));
-  game.setNextShape(room.getShapes(game.getPlaced() + 1));
-  game.setId(room.getShapesId(game.getPlaced()));
-  game.setNextId(room.getShapesId(game.getPlaced() + 1));
-  game.setX(Math.trunc(game.getLines(0).length / 2 - game.getActualShape(0).length / 2));
-  game.setY(-1);
+  game.tetri.actualShape = room.shapes[game.placed];
+  game.tetri.nextShape = room.shapes[game.placed + 1];
+  game.tetri.id = room.shapesId[game.placed];
+  game.tetri.nextId = room.shapesId[game.placed + 1];
+  game.tetri.x = Math.trunc(game.lines[0].length / 2 - game.tetri.actualShape[0].length / 2);
+  game.tetri.y = -1;
 };
 
 const addTetri = (game) => {
   let i = -1;
   let j = -1;
-  let x = game.getX();
-  let y = game.getY();
-  let id = game.getId();
-  let actual = game.getActualShape();
+  let x = game.tetri.x;
+  let y = game.tetri.y;
+  let id = game.tetri.id;
+  let actual = game.tetri.actualShape;
 
   while (++i < actual.length) {
     while (++j < actual[0].length) {
-      if (actual[i][j] === 1)
-        game.setLines(y, x, id);
+      if (actual[i][j] === 1 && game.lines[y] !== undefined && game.lines[y][x] !== undefined)
+        game.lines[y][x] = id;
       x++;
     }
-    x = game.getX();
+    x = game.tetri.x;
     j = -1;
     y++;
   }
@@ -51,43 +51,43 @@ const addTetri = (game) => {
 const checkTetri = (game, truePos) => {
   let i = -1;
   let j = -1;
-  let x = game.getX();
-  let y = game.getY();
-  let actual = game.getActualShape();
+  let x = game.tetri.x;
+  let y = game.tetri.y;
+  let actual = game.tetri.actualShape;
 
-  if (x + truePos.x + truePos.lengthX > game.getLines(0).length
-    || y + truePos.y + truePos.lengthY > game.getLines().length)
+  if (x + truePos.x + truePos.lengthX > game.lines[0].length
+    || y + truePos.y + truePos.lengthY > game.lines.length)
     return (-1);
   while (++i < actual.length && i <= truePos.y + truePos.lengthY - 1) {
     while (++j < actual[i].length && j <= truePos.x + truePos.lengthX - 1) {
-      if (game.getY() + i >= game.getLines().length
-        || (actual[i][j] === 1 && game.getLines(y, x) !== undefined && game.getLines(y, x) !== 0))
+      if (game.tetri.y + i >= game.lines.length
+        || (actual[i][j] === 1 && game.lines[y] && game.lines[y][x] && game.lines[y][x] !== 0))
         return (-1);
       x++;
     }
     j = -1;
-    x = game.getX();
+    x = game.tetri.x;
     y++;
   }
   return (1);
 };
 
 const noMoreSpace = (game) => {
-  if (game.getY() > 0)
+  if (game.tetri.y > 0)
     return (true);
   return (false);
 };
 
 const turnTetri = (game, dir) => {
-  let tmp = game.getActualShape();
+  let tmp = game.tetri.actualShape;
 
-  if (game.getId() === 5)
+  if (game.tetri.id === 5)
     return (1);
   if (dir)
     tmp = tmp.map((val, index) => tmp.map(row => row[index]).reverse());
   else
     tmp = tmp.map((val, index) => tmp.map(row => row[index])).reverse();
-  game.setActualShape(tmp);
+  game.tetri.actualShape = tmp;
   return (0);
 };
 
@@ -143,17 +143,17 @@ const parseTruePos = (tab) => {
 };
 
 const checkIfOk = (game, x, y, truePos) => {
-  if (game.isWaiting())
+  if (game.isWaiting)
     return (0);
-  if (game.getId() === 5 && x === 0 && y === 0)
+  if (game.tetri.id === 5 && x === 0 && y === 0)
     return (0);
-  if (game.getX() + truePos.x + x < 0
-    || game.getX() + truePos.x + truePos.lengthX - 1 + x >= game.getLines(0).length) {
+  if (game.tetri.x + truePos.x + x < 0
+    || game.tetri.x + truePos.x + truePos.lengthX - 1 + x >= game.lines[0].length) {
     return (0);
   }
   if (x === 0 && y === 0
-    && ((truePos.lengthX < truePos.lengthY && game.getX() + truePos.x + truePos.lengthX - 1 > game.getLines(0).length)
-      || (truePos.lengthY < truePos.lengthX && game.getY() + truePos.y + truePos.lengthY - 1 > game.getLines().length))) {
+    && ((truePos.lengthX < truePos.lengthY && game.tetri.x + truePos.x + truePos.lengthX - 1 > game.lines[0].length)
+      || (truePos.lengthY < truePos.lengthX && game.tetri.y + truePos.y + truePos.lengthY - 1 > game.lines.length))) {
     return (0);
   }
   return ('ok');
@@ -165,28 +165,28 @@ const moveTetri = (game, x, y) => {
 
   if (x === 0 && y === 0)
     turnTetri(game, true);
-  truePos = parseTruePos(game.getActualShape());
+  truePos = parseTruePos(game.tetri.actualShape);
   errors = checkIfOk(game, x, y, truePos);
   if (errors !== 'ok') {
     if (x === 0 && y === 0)
       turnTetri(game, false);
     return (errors);
   }
-  game.addY(y);
-  game.addX(x);
+  game.tetri.y += y;
+  game.tetri.x += x;
   if ((checkTetri(game, truePos)) === -1) {
     if ((x === 0 && y !== 0) && noMoreSpace(game) === false)
       return (-1);
     else {
-      game.subY(y);
-      game.subX(x);
+      game.tetri.y -= y;
+      game.tetri.x -= x;
       if (x === 0 && y === 0)
         turnTetri(game, false);
       if (x === 0) {
         if (x === 0 && y === 0)
           return (0);
-        if (!game.isWaiting()) {
-          game.setWaiting(true);
+        if (!game.isWaiting) {
+          game.isWaiting = true;
           addTetri(game);
         }
         return (1);
@@ -200,8 +200,8 @@ const checkFilledLine = (game) => {
   let i = -1;
   let count = 0;
 
-  while (++i < game.getLines().length) {
-    if (!(game.getLines(i).includes(0)) && !(game.getLines(i).includes(1))) {
+  while (++i < game.lines.length) {
+    if (!(game.lines[i].includes(0)) && !(game.lines[i].includes(1))) {
       game.removeFilledLine(i);
       i--;
       count++;
@@ -211,29 +211,29 @@ const checkFilledLine = (game) => {
 };
 
 const endGame = (room, id, res) => {
-  room.emitOnly('endGame', id);
   room.addOut(id);
+  room.emitOnly('endGame', id);
   if (res)
     res();
 };
 
 function addFilledLine(room, exception, amount) {
-  let players = room.getSio();
+  let players = room.sioList;
 
   for (let id of Object.keys(players)) {
-    if (id !== exception && !room.isOut(id)) {
+    if (id !== exception && !room.isOut[id]) {
       for (let i = 0; i < amount; i++) {
-        if (room.getListPlayers(id).getGame().getLines(0).find((elem) => { elem !== 0; })) {
+        if (room.listPlayers[id].game.lines[0].find((elem) => { elem !== 0; })) {
           endGame(room, id);
           break;
         }
         else {
-          if (room.getListPlayers(id).getGame().getY() === 0)
-            refresh(room.getListPlayers(id).getGame(), room, id);
-          room.getListPlayers(id).getGame().subY(1);
-          room.getListPlayers(id).getGame().fillLine();
-          refresh(room.getListPlayers(id).getGame(), room, id);
-          room.emitOnly('refreshVue', id, room.getListPlayers(id).getGame().formatIt(), room.createSpecList(id));
+          if (room.listPlayers[id].game.tetri.y === 0)
+            refresh(room.listPlayers[id].game, room, id);
+          room.listPlayers[id].game.tetri.y -= 1;
+          room.listPlayers[id].game.fillLine();
+          refresh(room.listPlayers[id].game, room, id);
+          room.emitOnly('refreshVue', id, room.listPlayers[id].game.formated, room.createSpecList(id));
         }
       }
     }
@@ -244,8 +244,8 @@ function refresh(game, room, id) {
   let hasMoved = 0;
   let filledLines = 0;
 
-  game.setWaiting(false);
-  if (game.getPlaced() === -1)
+  game.isWaiting = false;
+  if (game.placed === -1)
     createNewTetri(game, room);
   hasMoved = moveTetri(game, 0, 1);
   if (hasMoved == -1)
@@ -253,7 +253,7 @@ function refresh(game, room, id) {
   else if (hasMoved == 1) {
     if ((filledLines = checkFilledLine(game)) > 0)
       addFilledLine(room, id, filledLines);
-    game.refreshSpec(game.getLines());
+    game.refreshSpec(game.lines);
     createNewTetri(game, room);
     refresh(game, room, id);
   }

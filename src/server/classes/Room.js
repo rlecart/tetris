@@ -13,7 +13,7 @@ export default class Room {
     this._isOut = {};
 
 
-    this._interval = undefined;
+    this._roomInterval = undefined;
     this._shapes = [];
     this._shapesId = [];
 
@@ -22,99 +22,150 @@ export default class Room {
     this._sioList = {};
     this._owner = undefined;
     this._arrivalOrder = [];
-    this._pending = true;
+    this._isPending = true;
   }
 
-  getSio(id) {
-    if (id !== undefined)
-      return (this._sioList[id]);
+  get sioList() {
     return (this._sioList);
   }
 
-  getUrl() {
+  set sioList(value) {
+    this._sioList = value;
+  }
+
+  get url() {
     return (this._url);
   }
 
-  getListPlayers(player) {
-    if (player !== undefined)
-      return (this._listPlayers[player]);
+  set url(value) {
+    this._url = value;
+  }
+
+  get listPlayers() {
     return (this._listPlayers);
   }
 
-  getNbPlayer() {
+  set listPlayers(value) {
+    this._listPlayers = value;
+  }
+
+  get nbPlayer() {
     return (this._nbPlayer);
   }
 
-  getShapes(i) {
-    if (i !== undefined)
-      return (this._shapes[i]);
+  set nbPlayer(value) {
+    this._nbPlayer = value;
+  }
+
+  get shapes() {
     return (this._shapes);
   }
 
-  getShapesId(i) {
-    if (i !== undefined)
-      return (this._shapesId[i]);
+  set shapes(value) {
+    this._shapes = value;
+  }
+
+  get shapesId() {
     return (this._shapesId);
   }
 
-  getReadyToStart() {
+  set shapesId(value) {
+    this._shapesId = value;
+  }
+
+  get readyToStart() {
     return (this._readyToStart);
   }
 
-  getRules() {
+  set readyToStart(value) {
+    this._readyToStart = value;
+  }
+
+  get rules() {
     return (this._rules);
   }
 
-  getInterval() {
-    return (this._interval);
+  set rules(value) {
+    this._rules = value;
   }
 
-  getOwner() {
+  get roomInterval() {
+    return (this._roomInterval);
+  }
+
+  set roomInterval(value) {
+    this._roomInterval = value;
+  }
+
+  get owner() {
     return (this._owner);
   }
 
-  getArrivalOrder() {
+  set owner(value) {
+    this._owner = value;
+  }
+
+  get arrivalOrder() {
     return (this._arrivalOrder);
   }
 
-  getRoomInfo() {
-    let roomInfo = {};
+  set arrivalOrder(value) {
+    this._arrivalOrder = value;
+  }
 
-    roomInfo.url = this._url;
-    roomInfo.inGame = this._inGame;
-    roomInfo.nbPlayer = this._nbPlayer;
-    roomInfo.rules = this._rules;
-    roomInfo.listPlayers = this._listPlayers;
-    roomInfo.owner = this._owner;
-    return (roomInfo);
+  get roomInfo() {
+    let ret = {};
+
+    ret.url = this.url;
+    ret.inGame = this.inGame;
+    ret.nbPlayer = this.nbPlayer;
+    ret.rules = this.rules;
+    ret.listPlayers = this.listPlayers;
+    ret.owner = this.owner;
+    return (ret);
+  }
+
+  set roomInfo(value) {
+    this._roomInfo = value;
+  }
+
+  get isOut() {
+    return (this._isOut);
+  }
+
+  set isOut(value) {
+    this._isOut = value;
+  }
+
+  get inGame() {
+    return (this._inGame);
+  }
+
+  set inGame(value) {
+    this._inGame = value;
+  }
+
+  get isPending() {
+    return (this._isPending);
+  }
+
+  set isPending(value) {
+    this._isPending = value;
   }
 
   getAllGames(only, exception) {
     let ret = {};
     let playersList = {};
 
-    if (only !== undefined)
-      return (this.getListPlayers(only).getGame());
+    if (only !== undefined && this.listPlayers[only])
+      return (this.listPlayers[only].game);
     else
-      playersList = this.getListPlayers();
+      playersList = this.listPlayers;
     for (let [key, value] of Object.entries(playersList)) {
       if (key !== exception && key !== undefined)
-        ret = { ...ret, [key]: value.getGame() };
+        ret = { ...ret, [key]: value.game };
     }
     return (ret);
-  }
-
-  isOut(id) {
-    if (this._isOut !== undefined)
-      return (this._isOut[id]);
-  }
-
-  isInGame() {
-    return (this._inGame);
-  }
-
-  isPending() {
-    return (this._pending);
   }
 
   isOwner(id) {
@@ -125,128 +176,116 @@ export default class Room {
 
   addSio(sio) {
     if (sio && sio.id)
-      this._sioList = { ...this._sioList, [sio.id]: sio };
+      this.sioList = { ...this.sioList, [sio.id]: sio };
   }
 
   removeSio(id) {
-    this._sioList = { ...this._sioList, [id]: undefined };
-    delete this._sioList[id];
+    this.sioList = { ...this.sioList, [id]: undefined };
+    delete this.sioList[id];
   }
 
-  setUrl(url) {
-    this._url = url;
-  }
 
   addOut(id) {
-    this._isOut = { ...this._isOut, [id]: id };
-
-    if (Object.keys(this._isOut).length >= this._nbPlayer - 1) {
+    this.isOut = { ...this.isOut, [id]: id };
+    if (Object.keys(this.isOut).length >= this.nbPlayer - 1) {
       let winnerInfo = {};
       let winnerId;
 
-      if (this.getNbPlayer() > 1) {
-        for (let key of Object.keys(this.getListPlayers())) {
-          if (this._isOut[key] === undefined)
+      if (this.nbPlayer > 1) {
+        for (let key of Object.keys(this.listPlayers)) {
+          if (this.isOut[key] === undefined)
             winnerId = key;
         }
         winnerInfo = {
-          name: String(this.getListPlayers(winnerId).getName()),
+          name: String(this.listPlayers[winnerId].name),
           id: winnerId,
         };
       }
-      this._isOut = undefined;
+      this.isOut = {};
       this.endGame();
       this.emitAll('theEnd', undefined, { winnerInfo });
       setTimeout(() => {
-        for (let player of Object.values(this.getListPlayers()))
-          player.setGame(undefined);
+        for (let player of Object.values(this.listPlayers))
+          player.game = undefined;
       }, 1500);
     }
   }
 
-  setInGame(value) {
-    this._inGame = value;
-  }
-
   endGame(res) {
-    clearInterval(this._interval);
-    this.setPending(true);
-    this._interval = undefined;
-    this.setInGame(undefined);
+    clearInterval(this.roomInterval);
+    this.isPending = true;
+    this.roomInterval = undefined;
+    this.inGame = undefined;
     setTimeout(() => {
-      this._shapes = [];
-      this._shapesId = [];
-      this.setInGame(false);
+      this.shapes = [];
+      this.shapesId = [];
+      this.inGame = false;
       if (res !== undefined)
         res();
     }, 1500);
   }
 
   resetUrl() {
-    this._url = undefined;
+    this.url = undefined;
   }
 
   addNewPlayer(clientId, profil) {
     let owner = false;
 
     if (this._nbPlayer === 0) {
-      this._owner = clientId;
+      this.owner = clientId;
       owner = true;
     }
     profil = { ...profil, owner: owner };
-    this._arrivalOrder.push(clientId);
-    this._listPlayers = { ...this._listPlayers, [clientId]: new Player(profil, clientId, this) };
-    this._nbPlayer++;
-  }
-
-  setPending(value) {
-    this._pending = value;
+    this.arrivalOrder.push(clientId);
+    this.listPlayers = { ...this.listPlayers, [clientId]: new Player(profil, clientId, this) };
+    this.nbPlayer++;
   }
 
   addReadyToStart(clientId) {
-    this._readyToStart = { ...this._readyToStart, [clientId]: true };
+    this.readyToStart = { ...this.readyToStart, [clientId]: true };
   }
 
   addNewShape(shape) {
-    this._shapes.push(shape);
+    this.shapes.push(shape);
   }
 
   addShapesId(id) {
-    this._shapesId.push(id);
+    this.shapesId.push(id);
   }
 
   setAllGames(games) {
-    for (let [id, client] of Object.entries(this.getListPlayers()))
-      client.setGame(games[id]);
+    for (let [id, client] of Object.entries(this.listPlayers))
+      client.game = games[id];
   }
 
   resetReadyToStart() {
-    this._readyToStart = undefined;
+    this.readyToStart = undefined;
   }
 
   removePlayer(clientId) {
-    this._nbPlayer--;
-    if (this._owner === clientId) {
-      if (this._nbPlayer > 0) {
-        this._owner = this._arrivalOrder[1];
-        this._listPlayers[this._owner]._profil.owner = true;
+    this.nbPlayer--;
+    if (this.owner === clientId) {
+      if (this.nbPlayer > 0) {
+        this.owner = this.arrivalOrder[1];
+        this.listPlayers[this.owner].profil.owner = true;
       }
     }
-    this._arrivalOrder.splice(this._arrivalOrder.indexOf(clientId), 1);
-    if (this.isOut(clientId) !== undefined)
-      delete this._isOut[clientId];
-    delete this._listPlayers[clientId];
-    delete this._sioList[clientId];
-    this.emitAll('refreshRoomInfo', clientId, this.getRoomInfo());
+    this.arrivalOrder.splice(this.arrivalOrder.indexOf(clientId), 1);
+    if (this.isOut[clientId] !== undefined)
+      delete this.isOut[clientId];
+    delete this.listPlayers[clientId];
+    delete this.sioList[clientId];
+    this.emitAll('refreshRoomInfo', clientId, this.roomInfo);
   }
 
   launchGame() {
     initShapes(this);
     this.initGames();
-    this.setInGame(true);
-    this.setPending(false);
-    this._interval = setInterval(this.gameLoop.bind(this), 1000, this.getSio(), this.getUrl());
-    this._readyToStart = undefined;
+    this.inGame = true;
+    this.isPending = false;
+    this.roomInterval = setInterval(this.gameLoop.bind(this), 1000, this.sioList, this.url);
+    this.readyToStart = undefined;
   }
 
   hiddenSpec(ret) {
@@ -272,15 +311,15 @@ export default class Room {
     let retHidden = [];
     let ret = [];
 
-    for (let [id, player] of Object.entries(this.getListPlayers())) {
-      if (id !== exception && player && player.getGame() && player.getGame().getSpec()) {
+    for (let [id, player] of Object.entries(this.listPlayers)) {
+      if (id !== exception && player && player.game && player.game.spec) {
         ret.push({
-          lines: _.cloneDeep(player.getGame().getSpec()),
-          name: player.getName(),
+          lines: _.cloneDeep(player.game.spec),
+          name: player.name,
         });
       }
     }
-    if (this.getNbPlayer() > 1 && ret) {
+    if (this.nbPlayer > 1 && ret) {
       if (hidden)
         retHidden = this.hiddenSpec(ret);
       return (retHidden);
@@ -289,8 +328,8 @@ export default class Room {
   }
 
   initGames() {
-    for (let player of Object.values(this.getListPlayers())) {
-      player.setNewGame(this.getShapes(), this.getShapesId());
+    for (let player of Object.values(this.listPlayers)) {
+      player.setNewGame(this.shapes, this.shapesId);
     }
   }
 
@@ -299,14 +338,15 @@ export default class Room {
 
     if (only !== undefined) {
       ret = _.cloneDeep(this.getAllGames(only));
-      addTetri(ret);
-      return (ret.formatIt());
+      if (!this.isOut[only])
+        addTetri(ret);
+      return (ret.formated);
     }
   }
 
-  refreshAllVues(socketClients, url, exception) {
+  refreshAllVues(socketClients, exception) {
     for (let [id, client] of Object.entries(socketClients)) {
-      if (this.isInGame() === true && id !== exception) {
+      if (this.inGame === true && id !== exception) {
         let flatGame = this.flatGames(id);
         client.emit('refreshVue', flatGame, this.createSpecList(id));
       }
@@ -318,17 +358,17 @@ export default class Room {
     let gamesTmp = this.getAllGames();
 
     for (let id of Object.keys(socketClients)) {
-      if (this.isInGame() === true && !this.isOut(id))
+      if (this.inGame === true && !this.isOut[id])
         gamesTmp[id] = refresh(gamesTmp[id], this, id);
     }
-    if (this.isInGame() === true) {
+    if (this.inGame === true) {
       this.setAllGames(gamesTmp);
-      this.refreshAllVues(socketClients, url);
+      this.refreshAllVues(socketClients);
     }
   }
 
   emitAll(message, except, obj, spec) {
-    let clientList = this.getSio();
+    let clientList = this.sioList;
 
     for (let [id, client] of Object.entries(clientList)) {
       if (id !== except) {
@@ -338,7 +378,7 @@ export default class Room {
   }
 
   emitOnly(message, only, obj, spec) {
-    let clientList = this.getSio();
+    let clientList = this.sioList;
 
     for (let [id, client] of Object.entries(clientList)) {
       if (id === only)

@@ -53,7 +53,7 @@ describe('Game Tests', () => {
 
     it('Shouldn\'t launch game (not enough players RTS)', async () => {
       await api.readyToStart(sockets[0], room.getUrl());
-      expect(room.isInGame()).to.be.false;
+      expect(room.inGame).to.be.false;
     });
 
     it('Should launch game (every players RTS)', async () => {
@@ -62,7 +62,7 @@ describe('Game Tests', () => {
       await api.readyToStart(sockets[3], room.getUrl());
       expect(room.getInterval()).to.not.be.undefined;
       clearInterval(room.getInterval());
-      expect(room.isInGame()).to.be.true;
+      expect(room.inGame).to.be.true;
     });
   });
 
@@ -101,10 +101,10 @@ describe('Game Tests', () => {
     it('Api should turn', async () => {
       for (let [key, value] of Object.entries(gamesCpy)) {
         await api.move('turn', room.getUrl(), sockets.find(socket => socket.id === key));
-        if (room.getAllGames(key).getId() === 5)
-          expect(room.getAllGames(key).getActualShape()).to.be.eql(value.getActualShape());
+        if (room.getAllGames(key).getTetri().getId() === 5)
+          expect(room.getAllGames(key).getTetri().getActualShape()).to.be.eql(value.getTetri().getActualShape());
         else
-          expect(room.getAllGames(key).getActualShape()).to.not.be.eql(value.getActualShape());
+          expect(room.getAllGames(key).getTetri().getActualShape()).to.not.be.eql(value.getTetri().getActualShape());
       }
     });
 
@@ -112,10 +112,10 @@ describe('Game Tests', () => {
       let isSquare = 0;
 
       for (let [key, value] of Object.entries(gamesCpy)) {
-        isSquare = value.getId() === 5 ? 1 : 0;
+        isSquare = value.getTetri().getId() === 5 ? 1 : 0;
         await api.move('stash', room.getUrl(), sockets.find(socket => socket.id === key));
         expect(room.getAllGames(key).getY()).to.not.be.eql(value.getY());
-        expect(room.getAllGames(key).getY()).to.be.eql(20 - room.getAllGames(key).getActualShape().length + isSquare);
+        expect(room.getAllGames(key).getY()).to.be.eql(20 - room.getAllGames(key).getTetri().getActualShape().length + isSquare);
       }
     });
 
@@ -130,7 +130,7 @@ describe('Game Tests', () => {
       for (let i in sockets)
         api.askToEndGame(sockets[i], room.getUrl());
       await waitAMinute(500);
-      expect(room.isInGame()).to.satisfy((value) => {
+      expect(room.inGame).to.satisfy((value) => {
         if (value === false || (value === undefined && room.isPending() === true))
           return (true);
         else
