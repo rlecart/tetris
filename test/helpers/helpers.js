@@ -11,27 +11,26 @@ import roomReducer from "../../src/client/reducers/roomReducer.js";
 import gameReducer from "../../src/client/reducers/gameReducer.js";
 
 const expectNewRoom = (room, playerId) => {
-  expect(room.isInGame()).to.be.eql(false);
+  expect(room.inGame).to.be.eql(false);
   expect(room).to.exist;
-  expect(room.getNbPlayer()).to.be.eql(1);
-  expect(room.getRules()).to.be.eql(defaultRules);
-  expect(room.getInterval()).to.be.eql(undefined);
-  expect(room.getShapes()).to.be.eql([]);
-  expect(room.getShapesId()).to.be.eql([]);
-  expect(room.getReadyToStart()).to.be.eql({});
-  expect(room.getReadyToStart()).to.be.eql({});
-  expect(room.getOwner()).to.be.eql(playerId);
-  expect(room.getArrivalOrder()).to.be.eql([playerId]);
+  expect(room.nbPlayer).to.be.eql(1);
+  expect(room.rules).to.be.eql(defaultRules);
+  expect(room.roomInterval).to.be.eql(undefined);
+  expect(room.shapes).to.be.eql([]);
+  expect(room.shapesId).to.be.eql([]);
+  expect(room.readyToStart).to.be.eql({});
+  expect(room.owner).to.be.eql(playerId);
+  expect(room.arrivalOrder).to.be.eql([playerId]);
 };
 
 const expectJoinRoom = (room, playerId, playerName, nbPlayer) => {
-  let player = room.getListPlayers(playerId);
+  let player = room.listPlayers[playerId];
 
-  expect(player.getId()).to.be.eql(playerId);
-  expect(player.getProfil()).to.eql({
-    ...playerName, url: room.getUrl(), owner: false
+  expect(player.id).to.be.eql(playerId);
+  expect(player.profil).to.eql({
+    ...playerName, url: room.url, owner: false
   });
-  expect(room.getNbPlayer()).to.be.eql(nbPlayer);
+  expect(room.nbPlayer).to.be.eql(nbPlayer);
 };
 
 const addNewClients = (nb, done, addOn) => {
@@ -57,7 +56,7 @@ const addNewClients = (nb, done, addOn) => {
 
 const removeEveryClients = (master) => {
   return (new Promise(res => {
-    for (let client in master.getSioList()) {
+    for (let client in master.sioClientList) {
       master.removeSio(client);
     }
     res();

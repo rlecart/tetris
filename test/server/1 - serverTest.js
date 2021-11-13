@@ -9,7 +9,7 @@ describe('Server tests', () => {
   before(() => {
     master = new Master();
     master.startServer();
-    server = master.getServer();
+    server = master.server;
   });
 
   after(() => {
@@ -21,10 +21,10 @@ describe('Server tests', () => {
       assert.exists(server);
     });
     it('Http server should exists', () => {
-      assert.exists(server.getHttpServer());
+      assert.exists(server.httpServer);
     });
     it('Io server should exists', () => {
-      assert.exists(server.getIoServer());
+      assert.exists(server.ioServer);
     });
   });
 
@@ -37,14 +37,14 @@ describe('Server tests', () => {
 
     after(async () => {
       await removeEveryClients(master);
-      expect(Object.keys(master.getSioList()).length).to.be.eql(0);
+      expect(Object.keys(master.sioClientList).length).to.be.eql(0);
     });
 
     it('Socket list exists', () => {
-      assert.exists(master.getSioList());
+      assert.exists(master.sioClientList);
     });
     it('Socket list nicely filled', () => {
-      expect(Object.keys(master.getSioList()).length).to.be.eql(1);
+      expect(Object.keys(master.sioClientList).length).to.be.eql(1);
     });
     it('Emit test with ping', (done) => {
       sockets[0].on('pong', done);
@@ -52,7 +52,7 @@ describe('Server tests', () => {
     });
     it('Remove client', () => {
       master.removeSio(sockets[0].id);
-      expect(Object.keys(master.getSioList()).length).to.be.eql(0);
+      expect(Object.keys(master.sioClientList).length).to.be.eql(0);
     });
   });
 
@@ -65,12 +65,12 @@ describe('Server tests', () => {
 
     after(async () => {
       await removeEveryClients(master);
-      expect(Object.keys(master.getSioList()).length).to.be.eql(0);
+      expect(Object.keys(master.sioClientList).length).to.be.eql(0);
     });
 
     it('Socket list nicely filled', async () => {
       await waitAMinute(500);
-      expect(Object.keys(master.getSioList()).length).to.be.eql(50);
+      expect(Object.keys(master.sioClientList).length).to.be.eql(50);
     });
     it('Emit test with ping', (done) => {
       let doneAlready = 0;
@@ -86,7 +86,7 @@ describe('Server tests', () => {
     });
     it('Remove 50 clients', async () => {
       await removeEveryClients(master);
-      expect(Object.keys(master.getSioList()).length).to.be.eql(0);
+      expect(Object.keys(master.sioClientList).length).to.be.eql(0);
     });
   });
 });

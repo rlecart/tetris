@@ -122,7 +122,7 @@ describe('<Game /> component test', () => {
         .then(() => {
           expect(wrapper.find('.board')).to.exists;
           expect(historySpy.push.calledThrice).to.be.false;
-          expect(master.getRoom(roomPath).isInGame()).to.be.false;
+          expect(master.roomsList[roomPath].inGame).to.be.false;
         });
     });
 
@@ -132,7 +132,7 @@ describe('<Game /> component test', () => {
         .then(() => {
           expect(wrapper.find('.board')).to.exists;
           expect(historySpy.push.calledThrice).to.be.false;
-          expect(master.getRoom(roomPath).isInGame()).to.be.true;
+          expect(master.roomsList[roomPath].inGame).to.be.true;
         });
     });
   });

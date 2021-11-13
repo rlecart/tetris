@@ -33,35 +33,35 @@ describe('Game Tests', () => {
     before(() => {
       master.createRoom(sockets[0].id, players[0], cb);
       room = master.getRoomFromPlayerId(sockets[0].id, master);
-      master.joinRoom(sockets[1].id, players[1], room.getUrl(), cb);
-      master.joinRoom(sockets[2].id, players[2], room.getUrl(), cb);
-      master.joinRoom(sockets[3].id, players[3], room.getUrl(), cb);
+      master.joinRoom(sockets[1].id, players[1], room.url, cb);
+      master.joinRoom(sockets[2].id, players[2], room.url, cb);
+      master.joinRoom(sockets[3].id, players[3], room.url, cb);
     });
 
     it('Shouldn\'t goToGame (bad rights)', async () => {
-      for (let i = 1; i < room.getNbPlayer(); i++) {
-        await api.askToStartGame(sockets[i], room.getUrl());
+      for (let i = 1; i < room.nbPlayer; i++) {
+        await api.askToStartGame(sockets[i], room.url);
         expect(wasAskedToGoToGame).to.be.false;
       }
     });
 
     it('Should goToGame (room\'s admin asked for)', async () => {
-      await api.askToStartGame(sockets[0], room.getUrl());
+      await api.askToStartGame(sockets[0], room.url);
       await waitAMinute(200); // wait 'goToGame' reponse
       expect(wasAskedToGoToGame).to.be.true;
     });
 
     it('Shouldn\'t launch game (not enough players RTS)', async () => {
-      await api.readyToStart(sockets[0], room.getUrl());
+      await api.readyToStart(sockets[0], room.url);
       expect(room.inGame).to.be.false;
     });
 
     it('Should launch game (every players RTS)', async () => {
-      await api.readyToStart(sockets[1], room.getUrl());
-      await api.readyToStart(sockets[2], room.getUrl());
-      await api.readyToStart(sockets[3], room.getUrl());
-      expect(room.getInterval()).to.not.be.undefined;
-      clearInterval(room.getInterval());
+      await api.readyToStart(sockets[1], room.url);
+      await api.readyToStart(sockets[2], room.url);
+      await api.readyToStart(sockets[3], room.url);
+      expect(room.roomInterval).to.not.be.undefined;
+      clearInterval(room.roomInterval);
       expect(room.inGame).to.be.true;
     });
   });
@@ -74,37 +74,37 @@ describe('Game Tests', () => {
     });
 
     it('Should gameLoop init values', () => {
-      room.gameLoop(master.getSioListFromRoom(room.getUrl()), room.getUrl());
+      room.gameLoop(master.getSioListFromRoom(room.url), room.url);
       expect(room.getAllGames()).to.not.be.eql(gamesCpy);
     });
 
     it('Y should be +1 for every clients', () => {
-      room.gameLoop(master.getSioListFromRoom(room.getUrl()), room.getUrl());
+      room.gameLoop(master.getSioListFromRoom(room.url), room.url);
       for (let [key, value] of Object.entries(gamesCpy))
-        expect(room.getAllGames(key).getY()).to.be.eql(value.getY() + 1);
+        expect(room.getAllGames(key).tetri.y).to.be.eql(value.tetri.y + 1);
     });
 
     it('Api should move right', async () => {
       for (let [key, value] of Object.entries(gamesCpy)) {
-        await api.move('right', room.getUrl(), sockets.find(socket => socket.id === key));
-        expect(room.getAllGames(key).getX()).to.be.eql(value.getX() + 1);
+        await api.move('right', room.url, sockets.find(socket => socket.id === key));
+        expect(room.getAllGames(key).tetri.x).to.be.eql(value.tetri.x + 1);
       }
     });
 
     it('Api should move left', async () => {
       for (let [key, value] of Object.entries(gamesCpy)) {
-        await api.move('left', room.getUrl(), sockets.find(socket => socket.id === key));
-        expect(room.getAllGames(key).getX()).to.be.eql(value.getX() - 1);
+        await api.move('left', room.url, sockets.find(socket => socket.id === key));
+        expect(room.getAllGames(key).tetri.x).to.be.eql(value.tetri.x - 1);
       }
     });
 
     it('Api should turn', async () => {
       for (let [key, value] of Object.entries(gamesCpy)) {
-        await api.move('turn', room.getUrl(), sockets.find(socket => socket.id === key));
-        if (room.getAllGames(key).getTetri().getId() === 5)
-          expect(room.getAllGames(key).getTetri().getActualShape()).to.be.eql(value.getTetri().getActualShape());
+        await api.move('turn', room.url, sockets.find(socket => socket.id === key));
+        if (room.getAllGames(key).tetri.id === 5)
+          expect(room.getAllGames(key).tetri.actualShape).to.be.eql(value.tetri.actualShape);
         else
-          expect(room.getAllGames(key).getTetri().getActualShape()).to.not.be.eql(value.getTetri().getActualShape());
+          expect(room.getAllGames(key).tetri.actualShape).to.not.be.eql(value.tetri.actualShape);
       }
     });
 
@@ -112,26 +112,26 @@ describe('Game Tests', () => {
       let isSquare = 0;
 
       for (let [key, value] of Object.entries(gamesCpy)) {
-        isSquare = value.getTetri().getId() === 5 ? 1 : 0;
-        await api.move('stash', room.getUrl(), sockets.find(socket => socket.id === key));
-        expect(room.getAllGames(key).getY()).to.not.be.eql(value.getY());
-        expect(room.getAllGames(key).getY()).to.be.eql(20 - room.getAllGames(key).getTetri().getActualShape().length + isSquare);
+        isSquare = value.tetri.id === 5 ? 1 : 0;
+        await api.move('stash', room.url, sockets.find(socket => socket.id === key));
+        expect(room.getAllGames(key).tetri.y).to.not.be.eql(value.tetri.y);
+        expect(room.getAllGames(key).tetri.y).to.be.eql(20 - room.getAllGames(key).tetri.actualShape.length + isSquare);
       }
     });
 
     it('Api should do nothing', async () => {
       for (let [key, value] of Object.entries(gamesCpy)) {
-        await api.move('somethingThatDoesntExist', room.getUrl(), sockets.find(socket => socket.id === key));
+        await api.move('somethingThatDoesntExist', room.url, sockets.find(socket => socket.id === key));
         expect(room.getAllGames(key)).to.be.eql(gamesCpy[key]);
       }
     });
 
     it('Api should endGame', async () => {
       for (let i in sockets)
-        api.askToEndGame(sockets[i], room.getUrl());
+        api.askToEndGame(sockets[i], room.url);
       await waitAMinute(500);
       expect(room.inGame).to.satisfy((value) => {
-        if (value === false || (value === undefined && room.isPending() === true))
+        if (value === false || (value === undefined && room.isPending === true))
           return (true);
         else
           return (false);
@@ -149,7 +149,7 @@ describe('Game Tests', () => {
     it('Api get roomInfo', async () => {
       let infoToTest;
 
-      await api.getRoomInfo(sockets[0], room.getUrl())
+      await api.getRoomInfo(sockets[0], room.url)
         .then((roomInfo) => { infoToTest = roomInfo; });
       expect(infoToTest).to.not.be.undefined;
     });
@@ -161,13 +161,20 @@ describe('Game Tests', () => {
     });
 
     it('Api joinRoom', async () => {
-      await api.joinRoom(newSockets[1], { name: 'benjam2' }, room.getUrl());
+      await api.joinRoom(newSockets[1], { name: 'benjam2' }, room.url);
       expect(master.getRoomFromPlayerId(newSockets[1].id, master)).to.not.be.undefined;
     });
 
     it('Api leaveRoom', async () => {
-      await api.leaveRoom(newSockets[1], room.getUrl());
+      await api.leaveRoom(newSockets[1], room.url);
       expect(master.getRoomFromPlayerId(newSockets[1].id, master)).to.be.undefined;
+    });
+
+    it('Api askEverybodyToCalmDown', async () => {
+      let haveBeenCalled = false;
+      newSockets[0].on('nowChillOutDude', () => haveBeenCalled = true);
+      await api.askEverybodyToCalmDown(newSockets[0], room.url);
+      expect(haveBeenCalled).to.be.true;
     });
   });
 });

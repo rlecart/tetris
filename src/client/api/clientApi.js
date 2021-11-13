@@ -91,7 +91,12 @@ const readyToStart = (socket, idRoom) => {
 const askEverybodyToCalmDown = (socket, idRoom) => {
   return (new Promise((res, rej) => {
     if (socket && socket.connected && socket.id)
-      socket.emit('askEverybodyToCalmDown', socket.id, idRoom, res);
+      socket.emit('askEverybodyToCalmDown', socket.id, idRoom, (reponse) => {
+        if (reponse && reponse.type === 'ok')
+          res();
+        else
+          rej(reponse.value);
+      });
     else
       rej('socket not connected');
   }));

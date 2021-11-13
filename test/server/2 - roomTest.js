@@ -65,10 +65,10 @@ describe('Room Tests', () => {
 		it('Should join room ', () => {
 			room = master.getRoomFromPlayerId(playersId[0]);
 
-			master.joinRoom(playersId[1] + 1, players[1], room.getUrl(), cb);
+			master.joinRoom(playersId[1] + 1, players[1], room.url, cb);
 			expectJoinRoom(room, playersId[1] + 1, players[1], 2);
 
-			master.joinRoom(playersId[2] + 1, players[2], room.getUrl(), cb);
+			master.joinRoom(playersId[2] + 1, players[2], room.url, cb);
 			expectJoinRoom(room, playersId[2] + 1, players[2], 3);
 		});
 
@@ -76,10 +76,10 @@ describe('Room Tests', () => {
 			master.createRoom(mainId + nbPlayer, { name: 'joueur' + nbPlayer }, cb);
 			room = master.getRoomFromPlayerId(mainId + nbPlayer);
 			while (++nbPlayer <= 8)
-				master.joinRoom(mainId + nbPlayer, { name: 'joueur' + nbPlayer }, room.getUrl(), cb);
+				master.joinRoom(mainId + nbPlayer, { name: 'joueur' + nbPlayer }, room.url, cb);
 			let fullRoom = _.cloneDeep(room);
 
-			master.joinRoom(667, { name: 'joueur2trop' }, room.getUrl(), cb);
+			master.joinRoom(667, { name: 'joueur2trop' }, room.url, cb);
 			expect(master.getRoomFromPlayerId(667)).to.be.undefined;
 			expect(room).to.be.eql(fullRoom);
 		});
@@ -90,29 +90,29 @@ describe('Room Tests', () => {
 			let roomCpy = _.cloneDeep(room);
 
 			nbPlayer = 8;
-			master.leaveRoom(mainId + nbPlayer, room.getUrl(), cb);
+			master.leaveRoom(mainId + nbPlayer, room.url, cb);
 			expect(room).to.not.be.eql(roomCpy);
-			expect(room.getNbPlayer()).eql(7);
+			expect(room.nbPlayer).eql(7);
 			expect(master.getRoomFromPlayerId(mainId + nbPlayer)).to.be.undefined;
 		});
 
 		it('Delete 6 of the 7 players and give admin rights', () => {
 			nbPlayer = 7;
 			while (--nbPlayer > 0)
-				master.leaveRoom(mainId + nbPlayer, room.getUrl(), cb);
-			expect(room.getNbPlayer()).to.be.eql(1);
-			expect(room.getOwner()).to.be.eql(mainId + 7);
+				master.leaveRoom(mainId + nbPlayer, room.url, cb);
+			expect(room.nbPlayer).to.be.eql(1);
+			expect(room.owner).to.be.eql(mainId + 7);
 		});
 
 		it('Try to get a nonexistent player to leave the room', () => {
 			let roomCpy = _.cloneDeep(room);
 
-			master.leaveRoom(8566, room.getUrl(), cb);
+			master.leaveRoom(8566, room.url, cb);
 			expect(room).to.be.eql(roomCpy);
 		});
 
 		it('Delete last player (game too)', () => {
-			master.leaveRoom(mainId + 7, room.getUrl(), cb);
+			master.leaveRoom(mainId + 7, room.url, cb);
 			room = master.getRoomFromPlayerId(mainId + 7);
 			expect(room).to.be.undefined;
 		});

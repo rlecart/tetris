@@ -95,7 +95,7 @@ export default class mainServer {
       client.on('askToStartGame', (clientId, url, res) => { master.askToStartGame(clientId, url, res); });
       client.on('readyToStart', (clientId, url, res) => { master.readyToStart(clientId, url, res); });
       client.on('askToEndGame', (clientId, url, res) => { master.askToEndGame(clientId, url, res); });
-      client.on('askEverybodyToCalmDown', (clientId, url, res) => { master.askEverybodyToCalmDown(clientId, url, res); });
+      client.on('askEverybodyToCalmDown', (clientId, url, cb) => { master.askEverybodyToCalmDown(clientId, url, cb); });
       client.on('ping', () => { client.emit('pong'); });
       client.conn.on('heartbeat', () => { master.heartbeat(client); });
       // console.log('connected')

@@ -240,18 +240,18 @@ export default class Master {
       cb({ type: 'err', value: 'cant find room' });
   }
 
-  askEverybodyToCalmDown(clientId, url, res) {
-    let room = {};
-    let sioClientList = {};
+  askEverybodyToCalmDown(clientId, url, cb) {
+    let room = this.roomsList[url];
 
-    if ((room = this.roomsList[url]) && room.owner === clientId && (sioClientList = room.sioList)) {
-      for (let [id, client] of Object.entries(sioClientList)) {
+    if (room && room.owner === clientId) {
+      for (let [id, client] of Object.entries(room.sioList)) {
         client.emit('nowChillOutDude', `/${url}[${String(room.listPlayers[id].name)}]`);
       }
       room.isPending = true;
-      if (res !== undefined)
-        res();
+      cb({ type: 'ok' });
     }
+    else
+      cb({ type: 'err', value: 'cant find room or not owner' });
   }
 
   heartbeat(client) {
