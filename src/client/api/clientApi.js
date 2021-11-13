@@ -1,7 +1,12 @@
 const move = (dir, idRoom, socket) => {
   return (new Promise((res, rej) => {
     if (socket && socket.connected && socket.id)
-      socket.emit('move', socket.id, idRoom, dir, res);
+      socket.emit('move', socket.id, idRoom, dir, (reponse) => {
+        if (reponse && reponse.type === 'ok')
+          res();
+        else
+          rej(reponse.value);
+      });
     else
       rej('socket not connected');
   }));
@@ -55,7 +60,12 @@ const joinRoom = (socket, profil, idRoom) => {
 const askToStartGame = (socket, idRoom) => {
   return (new Promise((res, rej) => {
     if (socket && socket.connected && socket.id)
-      socket.emit('askToStartGame', socket.id, idRoom, res);
+      socket.emit('askToStartGame', socket.id, idRoom, (reponse) => {
+        if (reponse && reponse.type === 'ok')
+          res();
+        else
+          rej(reponse.value);
+      });
     else
       rej('socket not connected');
   }));
@@ -64,7 +74,12 @@ const askToStartGame = (socket, idRoom) => {
 const leaveRoom = (socket, idRoom) => {
   return (new Promise((res, rej) => {
     if (socket && socket.connected && socket.id)
-      socket.emit('leaveRoom', socket.id, idRoom, res);
+      socket.emit('leaveRoom', socket.id, idRoom, (reponse) => {
+        if (reponse && reponse.type === 'ok')
+          res();
+        else
+          rej(reponse.value);
+      });
     else
       rej('socket not connected');
   }));

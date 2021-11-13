@@ -210,11 +210,9 @@ const checkFilledLine = (game) => {
   return (count);
 };
 
-const endGame = (room, id, res) => {
+const endGame = (room, id) => {
   room.addOut(id);
   room.emitOnly('endGame', id);
-  if (res)
-    res();
 };
 
 function addFilledLine(room, exception, amount) {

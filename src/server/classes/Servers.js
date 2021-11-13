@@ -87,14 +87,14 @@ export default class mainServer {
   listenSio(master) {
     this.ioServer.on('connection', (client) => {
       master.addNewSio(client);
-      client.on('move', (clientId, url, dir, res) => { master.askToMove(clientId, url, dir, res); });
+      client.on('move', (clientId, url, dir, cb) => { master.askToMove(clientId, url, dir, cb); });
       client.on('createRoom', (clientId, profil, cb) => { master.createRoom(clientId, profil, cb); });
       client.on('joinRoom', (clientId, profil, url, cb) => { master.joinRoom(clientId, profil, url, cb); });
-      client.on('leaveRoom', (clientId, url, res) => { master.leaveRoom(clientId, url, res); });
+      client.on('leaveRoom', (clientId, url, cb) => { master.leaveRoom(clientId, url, cb); });
       client.on('getRoomInfo', (url, cb) => { master.askToGetRoomInfo(url, cb); });
-      client.on('askToStartGame', (clientId, url, res) => { master.askToStartGame(clientId, url, res); });
-      client.on('readyToStart', (clientId, url, res) => { master.readyToStart(clientId, url, res); });
-      client.on('askToEndGame', (clientId, url, res) => { master.askToEndGame(clientId, url, res); });
+      client.on('askToStartGame', (clientId, url, cb) => { master.askToStartGame(clientId, url, cb); });
+      client.on('readyToStart', (clientId, url, cb) => { master.readyToStart(clientId, url, cb); });
+      client.on('askToEndGame', (clientId, url, cb) => { master.askToEndGame(clientId, url, cb); });
       client.on('askEverybodyToCalmDown', (clientId, url, cb) => { master.askEverybodyToCalmDown(clientId, url, cb); });
       client.on('ping', () => { client.emit('pong'); });
       client.conn.on('heartbeat', () => { master.heartbeat(client); });

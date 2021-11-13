@@ -48,7 +48,7 @@ const Home = ({
   }, []);
 
   const submitForm = (event) => {
-    return (new Promise((res, rej) => {
+    new Promise((res, rej) => {
       event.preventDefault();
       if (whichButton === 'joinRoom') {
         setWhichButton(undefined);
@@ -62,7 +62,7 @@ const Home = ({
             history.push(`/#${url}[${homeReducer.profil.name}]`);
             res();
           })
-          .catch((err) => { rej(err); });
+          .catch((err) => rej(err));
       }
       else if (whichButton === 'createRoom') {
         setWhichButton(undefined);
@@ -76,11 +76,11 @@ const Home = ({
             history.push(`/#${url}[${homeReducer.profil.name}]`);
             res();
           })
-          .catch((err) => { rej(err); });
+          .catch((err) => rej(err));
       }
       else
         res();
-    }));
+    }).catch((err) => console.log(err));
   };
 
   return (

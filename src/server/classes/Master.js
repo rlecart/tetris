@@ -151,16 +151,17 @@ export default class Master {
       cb({ type: 'err', value: 'bad profil or clienId' });
   }
 
-  leaveRoom(clientId, url, res) {
+  leaveRoom(clientId, url, cb) {
     let room;
 
     if ((room = this.roomsList[url]) && room.listPlayers[clientId]) {
       room.removePlayer(clientId);
       if (room.nbPlayer <= 0)
         this.closeRoom(room);
-      if (res !== undefined)
-        res();
+      cb({ type: 'ok' });
     }
+    else
+      cb({ type: 'err', value: 'cant find room or player not inside' });
   }
 
   closeRoom(room) {
@@ -176,22 +177,26 @@ export default class Master {
     delete this._roomsList[url];
   }
 
-  askToStartGame(clientId, url, res) {
+  askToStartGame(clientId, url, cb) {
     let room = {};
 
-    if ((room = this.roomsList[url]) && room.isOwner(clientId) && room.inGame === false)
+    if ((room = this.roomsList[url]) && room.isOwner(clientId) && room.inGame === false) {
       room.emitAll('goToGame');
-    if (res !== undefined)
-      res();
+      cb({ type: 'ok' });
+    }
+    else
+      cb({ type: 'err', value: 'room closed, not owner or already in game' });
   }
 
-  askToEndGame(clientId, url, res) {
+  askToEndGame(clientId, url, cb) {
     let room = {};
 
-    if ((room = this.roomsList[url]))
-      endGame(room, clientId, res);
-    // if (res !== undefined)
-    //   res();
+    if ((room = this.roomsList[url])) {
+      endGame(room, clientId);
+      cb({ type: 'ok' });
+    }
+    else
+      cb({ type: 'err', value: 'cant find room' });
   }
 
   tryToStart(clientsRTS, nbPlayers) {
@@ -204,21 +209,23 @@ export default class Master {
     return false;
   }
 
-  readyToStart(clientId, url, res) {
+  readyToStart(clientId, url, cb) {
     let room;
 
     if (url && clientId && (room = this.roomsList[url]) && room.listPlayers[clientId] && room.inGame === false && room.isPending) {
       room.addReadyToStart(clientId);
       if (this.tryToStart(room.readyToStart, room.nbPlayer))
         room.launchGame();
-      if (res !== undefined)
-        res();
+      cb({ type: 'ok' });
     }
     else if (room !== undefined && room.listPlayers[clientId] && !room.isPending)
       room.emitOnly('nowChillOutDude', clientId, `/${url}[${String(room.listPlayers[clientId].name)}]`);
+    else
+      cb({ type: 'err', value: 'bad url, bad clientId, cant find room, cant find player, room already in game or is pending' });
+
   }
 
-  askToMove(clientId, url, dir, res) {
+  askToMove(clientId, url, dir, cb) {
     let room = {};
     let player = {};
     let game = {};
@@ -226,9 +233,10 @@ export default class Master {
     if ((room = this.roomsList[url]) && room.inGame === true && (player = room.listPlayers[clientId])) {
       if ((game = player.game) && game.y !== -1)
         player.move(dir, room);
-      if (res !== undefined)
-        res();
+      cb({ type: 'ok' });
     }
+    else
+      cb({ type: 'err', value: 'room closed, in game or player not in room' });
   }
 
   askToGetRoomInfo(url, cb) {

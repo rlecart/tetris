@@ -30,17 +30,17 @@ const GameContainer = ({
     if (event.key === "z")
       acidMode(dispatch);
     else if (event.key === 'ArrowRight')
-      api.move('right', roomReducer.url, socketReducer.socket);
+      api.move('right', roomReducer.url, socketReducer.socket).catch(err => console.log(err));
     else if (event.key === 'ArrowLeft')
-      api.move('left', roomReducer.url, socketReducer.socket);
+      api.move('left', roomReducer.url, socketReducer.socket).catch(err => console.log(err));
     else if (event.key === ' ')
-      api.move('down', roomReducer.url, socketReducer.socket);
+      api.move('down', roomReducer.url, socketReducer.socket).catch(err => console.log(err));
     else if (event.key === 'ArrowUp')
-      api.move('turn', roomReducer.url, socketReducer.socket);
+      api.move('turn', roomReducer.url, socketReducer.socket).catch(err => console.log(err));
     else if (event.key === 'ArrowDown')
-      api.move('stash', roomReducer.url, socketReducer.socket);
+      api.move('stash', roomReducer.url, socketReducer.socket).catch(err => console.log(err));
     else if (event.key === 'c') {
-      api.askToEndGame(socketReducer.socket, roomReducer.url);
+      api.askToEndGame(socketReducer.socket, roomReducer.url).catch(err => console.log(err));
     }
   };
 
@@ -83,7 +83,7 @@ const GameContainer = ({
               addWinner(dispatch, winnerInfo);
             });
             if (!loaded.current)
-              api.readyToStart(socketReducer.socket, roomReducer.url);
+              api.readyToStart(socketReducer.socket, roomReducer.url).catch(err => console.log(err));
           })
         .catch(() => { history.push('/'); });
     }

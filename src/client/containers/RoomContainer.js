@@ -34,16 +34,15 @@ const RoomContainer = ({
   const ifOwner = () => {
     if (roomReducer && roomReducer.owner && socketReducer.socket.id === roomReducer.owner)
       return (
-        <button className="roomButton" id="launch" onClick={() => { api.askToStartGame(socketReducer.socket, roomReducer.url); }}>
+        <button className="roomButton" id="launch" onClick={() => { api.askToStartGame(socketReducer.socket, roomReducer.url).catch(err => console.log(err)); }}>
           <span className="textButton">Lancer la partie</span>
         </button>
       );
   };
 
   const pleaseUnmountRoom = (completly) => {
-    if (!isEmpty(socketReducer) && !isEmpty(socketReducer.socket)) {
+    if (!isEmpty(socketReducer) && !isEmpty(socketReducer.socket))
       socketReducer.socket.removeAllListeners();
-    }
     if (completly)
       deleteRoomData(dispatch);
     loaded.current = false;
@@ -61,28 +60,36 @@ const RoomContainer = ({
             pleaseUnmountRoom();
             history.push(`${location.pathname}/game`);
           });
-          socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) => { setNewRoomInfo(dispatch, newRoomInfo); });
+          socketReducer.socket.on('refreshRoomInfo', (newRoomInfo) => {
+            setNewRoomInfo(dispatch, newRoomInfo);
+          });
           if (!loaded.current) {
             api.getRoomInfo(socketReducer.socket, homeReducer.joinUrl)
-              .then((newRoomInfo) => { setNewRoomInfo(dispatch, newRoomInfo); })
+              .then((newRoomInfo) => {
+                console.log(newRoomInfo);
+                setNewRoomInfo(dispatch, newRoomInfo);
+              })
               .catch((err) => {
+                console.log(err);
                 pleaseUnmountRoom('completly');
                 history.push('/');
               });
             loaded.current = true;
           }
         })
-      .catch(() => { history.push('/'); });
-    return (() => { socketReducer.socket.removeAllListeners(); });
+      .catch(() => {
+        history.push('/');
+      });
+    return (() => socketReducer.socket.removeAllListeners());
   }, [roomReducer]);
 
   const leaveRoom = () => {
     api.leaveRoom(socketReducer.socket, roomReducer.url)
       .then(() => {
-        pleaseUnmountRoom('completly');
         history.replace('/');
+        pleaseUnmountRoom('completly');
       })
-      .catch(() => { });
+      .catch((err) => { console.log(err); });
   };
 
   let players = createList();
