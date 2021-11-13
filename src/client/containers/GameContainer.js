@@ -55,6 +55,7 @@ const GameContainer = ({
               history.push('/');
             });
             socketReducer.socket.on('refreshVue', (newGame, newSpec) => {
+              console.log(newGame);
               let ret = { ...gameReducer, spec: newSpec };
               if (newGame)
                 ret = { ...newGame, spec: newSpec };
@@ -142,6 +143,11 @@ const GameContainer = ({
       idTetri={gameReducer.tetri.nextId} />
     : undefined;
 
+  const gameOverSelf = (isOut && !(gameReducer.winner !== undefined)) ?
+    <div className="gameOverDisplay" id='self'>
+    </div>
+    : undefined;
+
   return (
     <Fragment>
       <Display>
@@ -149,6 +155,7 @@ const GameContainer = ({
         <GamePanel displayLines={displayLines} nextTetri={nextTetri} />
         {specList[1]}
       </Display>
+      {gameOverSelf}
       {gameOverDisplay}
     </Fragment>
   );
