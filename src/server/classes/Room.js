@@ -201,6 +201,7 @@ export default class Room {
           id: winnerId,
         };
       }
+      
       this.isOut = {};
       this.endGame();
       this.emitAll('theEnd', undefined, { winnerInfo });
