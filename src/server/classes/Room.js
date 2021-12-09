@@ -264,6 +264,8 @@ export default class Room {
   }
 
   removePlayer(clientId) {
+    if (this.nbPlayer > 2)
+      this.addOut(clientId);
     this.nbPlayer--;
     if (this.owner === clientId) {
       if (this.nbPlayer > 0) {
@@ -316,6 +318,7 @@ export default class Room {
         ret.push({
           lines: _.cloneDeep(player.game.spec),
           name: player.name,
+          id: id,
         });
       }
     }

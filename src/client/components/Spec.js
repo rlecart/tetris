@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 
-const Spec = ({ name, lines }) => (
+const Spec = ({ name, lines, key }) => (
   <Fragment>
     <div className='blocSpec'>
       <div className="board" id='spec'>

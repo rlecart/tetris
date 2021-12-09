@@ -6,23 +6,23 @@ import LinesContainer from "./LinesContainer";
 const createSpec = (players) => {
   let ret = [];
 
-  for (let player of players) {
-    ret.push(
-      <Spec
-        key={player.name}
-        name={player.name}
-        lines={
-          <LinesContainer
-            key={player.name}
-            lines={player.lines}
-            lineClass={'line'}
-            blocClass={'lineBloc'}
-            id={'spec'}
-          />
-        }
-      />
-    );
-  }
+  ret = players.map((player, key) => {
+    return (
+      <div key={key}>
+        <Spec
+          name={player.name}
+          lines={
+            <LinesContainer
+              lines={player.lines}
+              lineClass={'line'}
+              blocClass={'lineBloc'}
+              id={'spec'}
+            />
+          }
+        />
+      </div>
+    )
+  })
   return (ret);
 };
 
