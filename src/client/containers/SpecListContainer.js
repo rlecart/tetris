@@ -9,7 +9,7 @@ const createSpec = (players) => {
   for (let player of players) {
     ret.push(
       <Spec
-        key={player.name}
+        key={player.id}
         name={player.name}
         lines={
           <LinesContainer
